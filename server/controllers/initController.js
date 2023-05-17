@@ -180,14 +180,14 @@ const users = [
         login: "user",
         email: "user@mail.com",
         password: "$2b$07$uIwOOaHec//zgRdJ/AQvJehrwk4qWw.qthABSBXABf5A5ZiV8zqHm",
-        img: "user.png",
+        img: "unauthorizedUser.png",
         role: "USER",
     },
     {
         login: "admin",
         email: "admin@mail.com",
         password: "$2b$07$uIwOOaHec//zgRdJ/AQvJehrwk4qWw.qthABSBXABf5A5ZiV8zqHm",
-        img: "user.png",
+        img: "unauthorizedUser.png",
         role: "ADMIN",
     }
 ]

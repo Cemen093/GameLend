@@ -1,0 +1,8 @@
+export const MAIN_ROUTE = '/'
+export const SEARCH_ROUTE = '/search'
+export const GAME_ROUTE = '/game'
+export const ORDERING_ROUTE = '/ordering'
+export const ACCOUNT_ROUTE = '/account'
+export const BASKET_ROUTE = '/basket'
+export const WISHLIST_ROUTE = '/wishlist'
+export const ADMIN_ROUTE = '/admin'

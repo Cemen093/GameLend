@@ -1,0 +1,12 @@
+.modal-title {
+    width: 100%;
+}
+
+.modal-title .type {
+    cursor: pointer;
+    user-select: none;
+}
+
+.modal-title .active{
+    border-bottom: 3px solid var(--almostBlack);
+}

@@ -1,6 +1,6 @@
 const Router = require('express')
 const router = new Router()
-const wishListController = require('../contrellers/wishListController')
+const wishListController = require('../controllers/wishListController')
 const authMiddleware = require("../middleware/authMiddleware");
 const checkGameIdMiddleware = require("../middleware/checkGameIdMiddleware");
 

@@ -1,0 +1,108 @@
+.game-item {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    background-color: var(--almostBlack);
+    color: var(--white);
+    height: 100px;
+}
+
+.game-item .image{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    object-position: center;
+    cursor: pointer;
+}
+
+.game-item .textContainer {
+    flex: 1;
+    padding-left: 10px;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.game-item .title {
+
+}
+
+.game-item .platforms {
+    display: flex;
+}
+
+.game-item .platform {
+    margin-right: 12px;
+}
+
+.game-item .buttonsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+.game-item .buttonsContainer .rowButtons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.game-item .buttonsContainer .rowButtons img{
+    margin-right: 10px;
+    width: 25px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.game-item .basket {
+
+}
+
+.game-item .wastebasket {
+
+}
+
+.game-item .buy {
+    padding: 3px;
+    padding-inline: 10px;
+    color: var(--almostBlack);
+    background-color: var(--white);
+    cursor: pointer;
+}
+
+.game-item .wishlist {
+    padding: 3px;
+    padding-inline: 10px;
+    background-color: var(--grayBrown);
+    cursor: pointer;
+}
+
+.bg-item-almostBlack .game-item {
+    background-color: var(--almostBlack);
+}
+
+.bg-item-grayBrown .game-item {
+    background-color: var(--grayBrown);
+}
+
+.no-basket .game-item .buttonsContainer .rowButtons .basket {
+    display: none;
+}
+
+.no-wastebasket .game-item .buttonsContainer .rowButtons .wastebasket {
+    display: none;
+}
+
+.no-buy .game-item .buttonsContainer .rowButtons .buy {
+    display: none;
+}
+
+.no-wishlist .game-item .buttonsContainer .wishlist {
+    display: none;
+}
