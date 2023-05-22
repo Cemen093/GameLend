@@ -1,14 +1,18 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Container} from "react-bootstrap";
 import {Context} from "../index";
 import "../styles/account.css"
 import pencil from "../assets/pencil.png"
+import {useNavigate} from "react-router-dom";
+import {BASKET_ROUTE, GAME_ROUTE, ORDERS_ROUTE, WISHLIST_ROUTE} from "../utils/consts";
 
-const AccountPage = () => {
+const AccountPage = ({isLoading = false}) => {
+    const navigate = useNavigate();
     const {userStore, dataStore} = useContext(Context)
-    const basketGames = dataStore.games;
-    const wishlistGames = dataStore.games;
-    const boughtGames = dataStore.games;
+
+    if (isLoading) {
+        return <div>Account page loading</div>
+    }
 
     const handleEditLogin = () => {
 
@@ -18,6 +22,21 @@ const AccountPage = () => {
 
     }
 
+    const BoughtList = ({ ...props}) => {
+        return (
+            <div className="bought" {...props}>
+                <div className="bought-title" onClick={() => navigate(ORDERS_ROUTE)}>Куплено</div>
+                <div className="bought-list">
+                    {userStore.boughtGames.count > 0 ?
+                        userStore.boughtGames.rows.map(game => <BoughtItem key={"bought " + game.id} game={game}/>)
+                    :
+                        <div>Пустой bought list еще не реализован</div>
+                    }
+                </div>
+            </div>
+        )
+    }
+
     const BoughtItem = ({game, ...props}) => {
         return (
             <div className="bought-item" {...props}>
@@ -25,7 +44,36 @@ const AccountPage = () => {
                 <div className="bought-item-content">
                     <div className="bought-item-title">{game.title}</div>
                     <div className="bought-item-bought-at">Куплено: 12.03.2023</div>
-                    {/*//TODO*/}
+                </div>
+            </div>
+        )
+    }
+
+    const Basket = ({...props}) => {
+        return (
+            <div className="basket" {...props}>
+                <div className="title" onClick={() => navigate(BASKET_ROUTE)}>Корзина</div>
+                <div className="container">
+                    {userStore.basketGames.count > 0 ?
+                        userStore.basketGames.rows.map(game => <BasketItem key={"basket " + game.id} game={game}/>)
+                        :
+                        <div>Пустая корзина еще не реализована</div>
+                    }
+                </div>
+            </div>
+        )
+    }
+
+    const Wishlist = ({...props}) => {
+        return (
+            <div className="wishlist" {...props}>
+                <div className="title" onClick={() => navigate(WISHLIST_ROUTE)}>Список желаемого</div>
+                <div className="container">
+                    {userStore.wishlistGames.count > 0 ?
+                        userStore.wishlistGames.rows.map(game => <BasketItem key={"wishlist " + game.id} game={game}/>)
+                        :
+                        <div>Пустой wishlist еще не реализован</div>
+                    }
                 </div>
             </div>
         )
@@ -33,8 +81,8 @@ const AccountPage = () => {
 
     const BasketItem = ({game, ...props}) => {
         return (
-            <div className="basket-item" {...props}>
-                <img src={game.img} alt="picture"/>
+            <div className="basket-item" {...props} onClick={() => navigate(GAME_ROUTE + '/' + game.id)}>
+                <img src={process.env.REACT_APP_API_URL + '/' + game.img} alt="picture"/>
                 <div className="basket-item-title">{game.title}</div>
             </div>
         )
@@ -56,26 +104,11 @@ const AccountPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className="bought">
-                    <div className="bought-title">Куплено</div>
-                    <div className="bought-list">
-                        {boughtGames.map(game => <BoughtItem key={"bought " + game.id} game={game}/>)}
-                    </div>
-                </div>
+                <BoughtList/>
             </div>
             <div className="column-two">
-                <div className="basket">
-                    <div className="title">Корзина</div>
-                    <div className="container">
-                        {basketGames.map(game => <BasketItem key={"basket " + game.id} game={game}/>)}
-                    </div>
-                </div>
-                <div className="wishlist">
-                    <div className="title">Список желаемого</div>
-                    <div className="container">
-                        {wishlistGames.map(game => <BasketItem key={"wishlist " + game.id} game={game}/>)}
-                    </div>
-                </div>
+                <Basket/>
+                <Wishlist/>
             </div>
         </Container>
     );

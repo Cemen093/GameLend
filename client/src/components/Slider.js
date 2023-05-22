@@ -2,22 +2,33 @@ import React, {useEffect, useState} from 'react';
 import '../styles/slider.css'
 import {useNavigate} from "react-router-dom";
 import {GAME_ROUTE} from "../utils/consts";
+import {Spinner} from "react-bootstrap";
 
-const Slider = ({items, className, style, ...props}) => {
+const Slider = ({items, className, style, isLoading, ...props}) => {
     const navigate = useNavigate();
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
     const [pauseTimeout, setPauseTimeout] = useState(null);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            if (!isPaused) {
-                setCurrentIndex((prevIndex) => (prevIndex === items.length - 1 ? 0 : prevIndex + 1));
-            }
-        }, 7000);
+        if (!isLoading) {
+            const interval = setInterval(() => {
+                if (!isPaused) {
+                    setCurrentIndex((prevIndex) => (prevIndex === items.length - 1 ? 0 : prevIndex + 1));
+                }
+            }, 7000);
 
-        return () => clearInterval(interval);
+            return () => clearInterval(interval);
+        }
     }, [isPaused]);
+
+    if (isLoading) {
+        return <div>Загрузка данных пока не реализована</div>
+    }
+
+    if (items.length <= 0) {
+        return <div>Пустой слайдер, пока не реализовано</div>
+    }
 
     const handleButtonClick = () => {
         setIsPaused(true);
@@ -55,7 +66,7 @@ const Slider = ({items, className, style, ...props}) => {
                 <div className="slider-image-container">
                     <img
                         className="slider-image"
-                         src={items[currentIndex].img} alt="Product"
+                         src={process.env.REACT_APP_API_URL + '/' + items[currentIndex].img} alt="Product"
                         onClick={() => {handleImg(items[currentIndex].id)}}
                     />
                 </div>
@@ -64,7 +75,7 @@ const Slider = ({items, className, style, ...props}) => {
                     <div className="slider-description">{items[currentIndex].description}</div>
                     <div className="slider-platforms">
                         {items[currentIndex].platforms.map((platform, index) => (
-                            <div key={index} className="slider-platform">{platform}</div>
+                            <div key={index} className="slider-platform">{platform.title}</div>
                         ))}
                     </div>
                 </div>

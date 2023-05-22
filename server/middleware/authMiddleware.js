@@ -10,6 +10,8 @@ module.exports = function (req, res, next) {
             if (token) {
                 req.user = jwt.verify(token, process.env.SECRET_KEY)
                 next()
+            } else {
+                next(ApiError.unauthorized("Не авторизован"))
             }
         } catch (e) {
             next(ApiError.unauthorized("Не авторизован"))

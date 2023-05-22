@@ -55,8 +55,8 @@
     background-color: var(--grayBrown);
 }
 
-.account-container .bought .title {
-
+.account-container .bought .bought-title {
+    cursor: pointer;
 }
 
 .account-container .bought .bought-list {
@@ -68,6 +68,7 @@
     flex-direction: row;
     margin-top: 10px;
     background-color: var(--almostBlack);
+    cursor: pointer;
 }
 
 .bought-item img{
@@ -107,6 +108,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    cursor: pointer;
 }
 
 .basket-item img {
@@ -131,4 +133,5 @@
 
 .basket .title, .wishlist .title{
     font-size: 20px;
+    cursor: pointer;
 }

@@ -2,14 +2,13 @@ import React, {useContext, useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import '../../styles/authorization.css'
 import {Context} from "../../index";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import userImg from "../../assets/profile.jpg";
 import {MAIN_ROUTE} from "../../utils/consts";
-import {registration} from "../../http/userAPI";
+import {login, registration} from "../../http/userAPI";
 
 const AuthorizationModal = ({...props}) => {
     const {userStore} = useContext(Context)
-    const location = useLocation()
     const navigation = useNavigate()
     const [isLoginForm, setIsLoginForm] = useState(true)
     const [formData, setFormData] = useState({
@@ -119,26 +118,24 @@ const AuthorizationModal = ({...props}) => {
 
     const signIn = async () => {
         try {
-            //TODO отправка API запроса
-            const data = {id: 1, login: 'login', email: 'email@mail.com', img: userImg};
-            auth(data)
+            const user = await login(formData.email, formData.password);
+            auth(user)
         } catch (e) {
-            alert('Что то пошло не так\n' + e.response.message);
+            alert('Что то пошло не так\n' + e.response.data.message);
         }
     }
     const signUp = async () => {
         try {
-            //TODO отправка API запроса
-            const data = {id: 1, login: 'login', email: 'email@mail.com', img: userImg};
-            auth(data)
+            const user = await registration(formData.login, formData.email, formData.password);
+            auth(user)
         } catch (e) {
-            alert('что то пошло не так\n' + e.response.message);
+            alert('что то пошло не так\n' + e.response.data.message);
         }
     }
 
-    const auth = (data) => {
-        userStore.setUser(data)
-        navigation(MAIN_ROUTE)
+    const auth = (user) => {
+        userStore.setUser(user)
+        //navigation(MAIN_ROUTE)
     }
 
     const createHeader = () => {

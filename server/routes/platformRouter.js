@@ -1,12 +1,12 @@
 const Router = require('express')
 const router = new Router()
-const gameController = require('../controllers/gameController')
+const platformController = require('../controllers/platformController')
 const checkAdminMiddleware = require('../middleware/checkAdminMiddleware')
 const authMiddleware = require('../middleware/authMiddleware')
 
-router.post('/', authMiddleware, checkAdminMiddleware, gameController.create)
-router.get('/', gameController.getAll)
-router.get('/:id', gameController.getOne)
+router.post('/', authMiddleware, checkAdminMiddleware, platformController.create)
+router.get('/', platformController.getAll)
+router.get('/:id', platformController.getOne)
 // router.delete('/')
 // router.put('/')
 

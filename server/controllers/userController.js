@@ -1,21 +1,33 @@
 const ApiError = require('../error/ApiError')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const {User, Basket, WishList} = require('../models/models')
+const {User, Basket, Wishlist, OrderList} = require('../models/models')
 const {Op} = require("sequelize");
+const sequelize = require("../db");
 
 const generateJwt = (user) => {
-    const {id, login, email, role} = user
+    const {id, login, email, img, role} = user
     return jwt.sign(
-        {id, login, email, role},
+        {id, login, email, img, role},
         process.env.SECRET_KEY,
         {expiresIn: '12h'}
     )
 }
+
+
+function updateUser(user) {
+    const {dataValues} = user;
+    return {
+        ...dataValues,
+        img: process.env.API_URL + dataValues.img,
+    };
+}
+
 class UserController {
-    async registration (req, res, next) {
+    async registration(req, res, next) {
+        let transaction;
         try {
-            const {login, email, password, img, role} = req.body
+            const {login, email, password, img = 'defaultUser.png', role} = req.body
             if (!email || !password) {
                 return next(ApiError.badRequest('Некорректный email или password'))
             }
@@ -24,13 +36,21 @@ class UserController {
                 return next(ApiError.badRequest('Пользователь уже существует'))
             }
             const hashPassword = await bcrypt.hash(password, 7)
-            const user = await User.create(
-                {login, email, password: hashPassword, img, role})
-            const basket = await Basket.create({userId: user.id})
-            const wishList = await WishList.create({userId: user.id})
-            const token = generateJwt(user);
+            const user = {login, email, password: hashPassword, img, role};
+
+            transaction = await sequelize.transaction();
+            const newUser = await User.create(user, { transaction })
+            await Basket.create({userId: newUser.id}, { transaction })
+            await Wishlist.create({userId: newUser.id}, { transaction })
+            await OrderList.create({userId: newUser.id}, { transaction })
+            await transaction.commit();
+
+            const token = generateJwt(updateUser(newUser));
             return res.json({token})
         } catch (e) {
+            if (transaction) {
+                await transaction.rollback();
+            }
             next(ApiError.badRequest(e.message))
         }
     }
@@ -47,20 +67,21 @@ class UserController {
         const user = await User.findOne({
             where: whereClause
         });
-        if (!user){
+        if (!user) {
             return next(ApiError.badRequest("Неверный логин или email"))
         }
         const comparePassword = bcrypt.compareSync(password, user.password);
-        if (!comparePassword){
+        if (!comparePassword) {
             return next(ApiError.badRequest("Неверный пароль"))
         }
-        const token = generateJwt(user)
+
+        const token = generateJwt(updateUser(user));
         return res.json({token})
     }
 
     async check(req, res, next) {
         const token = generateJwt({...req.user})
-        res.json(token)
+        return res.json({token})
     }
 }
 

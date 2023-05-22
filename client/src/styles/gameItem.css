@@ -90,19 +90,3 @@
 .bg-item-grayBrown .game-item {
     background-color: var(--grayBrown);
 }
-
-.no-basket .game-item .buttonsContainer .rowButtons .basket {
-    display: none;
-}
-
-.no-wastebasket .game-item .buttonsContainer .rowButtons .wastebasket {
-    display: none;
-}
-
-.no-buy .game-item .buttonsContainer .rowButtons .buy {
-    display: none;
-}
-
-.no-wishlist .game-item .buttonsContainer .wishlist {
-    display: none;
-}

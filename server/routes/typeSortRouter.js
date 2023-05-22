@@ -1,12 +1,12 @@
 const Router = require('express')
 const router = new Router()
-const gameController = require('../controllers/gameController')
+const typeSortController = require('../controllers/typeSortController')
 const checkAdminMiddleware = require('../middleware/checkAdminMiddleware')
 const authMiddleware = require('../middleware/authMiddleware')
 
-router.post('/', authMiddleware, checkAdminMiddleware, gameController.create)
-router.get('/', gameController.getAll)
-router.get('/:id', gameController.getOne)
+router.post('/', authMiddleware, checkAdminMiddleware, typeSortController.create)
+router.get('/', typeSortController.getAll)
+router.get('/:id', typeSortController.getOne)
 // router.delete('/')
 // router.put('/')
 

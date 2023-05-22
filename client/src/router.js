@@ -1,6 +1,6 @@
 import {
     ACCOUNT_ROUTE, ADMIN_ROUTE, BASKET_ROUTE,
-    GAME_ROUTE, MAIN_ROUTE, ORDERING_ROUTE,
+    GAME_ROUTE, MAIN_ROUTE, ORDERING_ROUTE, ORDERS_ROUTE,
     SEARCH_ROUTE, WISHLIST_ROUTE
 } from "./utils/consts";
 import MainPage from "./pages/MainPage";
@@ -11,6 +11,7 @@ import BasketPage from "./pages/BasketPage";
 import WishlistPage from "./pages/WishlistPage";
 import OrderingPage from "./pages/OrderingPage";
 import AdminPage from "./pages/AdminPage";
+import OrdersPages from "./pages/OrdersPages";
 
 export const publicRoutes = [
     {
@@ -24,11 +25,7 @@ export const publicRoutes = [
     {
         path: GAME_ROUTE + '/:id',
         Component: GamePage
-    },
-    {
-        path: ORDERING_ROUTE,
-        Component: OrderingPage
-    },
+    }
 ]
 export const unauthorizedRoutes = [
 ]
@@ -44,6 +41,14 @@ export const authorizedRoutes = [
     {
         path: WISHLIST_ROUTE,
         Component: WishlistPage
+    },
+    {
+        path: ORDERS_ROUTE,
+        Component: OrdersPages
+    },
+    {
+        path: ORDERING_ROUTE,
+        Component: OrderingPage
     },
 ]
 export const adminRoutes = [

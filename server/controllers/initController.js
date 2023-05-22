@@ -1,7 +1,21 @@
 const ApiError = require("../error/ApiError");
-const {Game, MinRequirement, RecRequirement, User} = require("../models/models");
-const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const {
+    Game,
+    MinRequirement,
+    RecRequirement,
+    User,
+    Platform,
+    GamePlatform,
+    TypeSort,
+    Basket,
+    Wishlist, OrderList
+} = require("../models/models");
+const sequelize = require("../db");
+
+const platforms = [
+    {title: "PC"},
+    {title: "Playstation"},
+]
 
 const gameData =
     [
@@ -9,9 +23,9 @@ const gameData =
             game: {
                 title: "Assassin\s Creed Valhalla",
                 description: "Assassin\s Creed Valhalla — игра в жанре action/RPG, разработанная студией Ubisoft Montreal и изданная Ubisoft. Игра была выпущена 10 ноября 2020 года на платформах PlayStation 4, PlayStation 5, Xbox One, Xbox Series X/S, Microsoft Windows и Stadia.",
-                platform: "PS4, PS5, Xbox One, Xbox Series X/S, PC, Stadia",
+                price: "1500",
                 img: "gameImage.jpg",
-                trailer: "https://www.youtube.com/watch?v=ssrDYcCi_4I",
+                trailer: "ssrDYcCi_4I",
             },
             minRequirement: {
                 cpu: "Intel Core i3",
@@ -24,15 +38,16 @@ const gameData =
                 ram: "8GB",
                 os: "Windows 10",
                 space: "256GB"
-            }
+            },
+            platformsIds: [1, 2]
         },
         {
             game: {
                 "title": "The Witcher 3: Wild Hunt",
                 "description": "The Witcher 3: Wild Hunt — игра в жанре action/RPG, разработанная и изданная польской студией CD Projekt RED. Игра была выпущена 19 мая 2015 года на платформах PlayStation 4, Xbox One и Microsoft Windows.",
-                "platform": "PS4, Xbox One, PC",
+                "price": "1700",
                 "img": "gameImage.jpg",
-                "trailer": "https://www.youtube.com/watch?v=c0i88t0Kacs",
+                "trailer": "c0i88t0Kacs",
             },
             minRequirement: {
                 "cpu": "AMD Ryzen 3",
@@ -45,15 +60,16 @@ const gameData =
                 "ram": "16GB",
                 "os": "Windows 11",
                 "space": "512GB"
-            }
+            },
+            platformsIds: [2]
         },
         {
             game: {
                 "title": "Cyberpunk 2077",
                 "description": "Cyberpunk 2077 — игра в жанре action/RPG, разработанная и изданная польской студией CD Projekt RED. Игра была выпущена 10 декабря 2020 года на платформах PlayStation 4, PlayStation 5, Xbox One, Xbox Series X/S, Microsoft Windows и Stadia.",
-                "platform": "PS4, PS5, Xbox One, Xbox Series X/S, PC, Stadia",
+                "price": "1800",
                 "img": "gameImage.jpg",
-                "trailer": "https://www.youtube.com/watch?v=qIcTM8WXFjk",
+                "trailer": "qIcTM8WXFjk",
             },
             minRequirement: {
                 "cpu": "Intel Pentium",
@@ -66,15 +82,16 @@ const gameData =
                 "ram": "12GB",
                 "os": "MacOS",
                 "space": "1TB"
-            }
+            },
+            platformsIds: [1]
         },
         {
             game: {
                 "title": "Grand Theft Auto V",
                 "description": "Grand Theft Auto V — игра в жанре action/автосимулятор, разработанная студией Rockstar North и изданная компанией Rockstar Games. Игра была выпущена 17 сентября 2013 года на платформах PlayStation 3 и Xbox 360, а затем 18 ноября 2014 года на PlayStation 4 и Xbox One, и наконец 14 апреля 2015 года на PC.",
-                "platform": "PS3, Xbox 360, PS4, Xbox One, PC",
+                "price": "1300",
                 "img": "gameImage.jpg",
-                "trailer": "https://www.youtube.com/watch?v=qIcTM8WXFjk",
+                "trailer": "qIcTM8WXFjk",
             },
             minRequirement: {
                 "cpu": "AMD Athlon II",
@@ -88,14 +105,15 @@ const gameData =
                 "os": "Linux",
                 "space": "256GB"
             },
+            platformsIds: [1, 2]
         },
         {
             game: {
                 "title": "Red Dead Redemption 2",
                 "description": "Red Dead Redemption 2 — игра в жанре action/adventure, разработанная и изданная компанией Rockstar Games. Игра была выпущена 26 октября 2018 года на платформах PlayStation 4, Xbox One и Microsoft Windows.",
-                "platform": "PS4, Xbox One, PC",
+                "price": "2000",
                 "img": "gameImage.jpg",
-                "trailer": "https://www.youtube.com/watch?v=gmA6MrX81z4",
+                "trailer": "gmA6MrX81z4",
             },
             minRequirement: {
                 "cpu": "Intel Core i5",
@@ -109,14 +127,15 @@ const gameData =
                 "os": "Windows 10",
                 "space": "2TB"
             },
+            platformsIds: [1, 2]
         },
         {
             game: {
                 "title": "FIFA 21",
                 "description": "FIFA 21 — футбольный симулятор, разработанный и изданный компанией Electronic Arts. Игра была выпущена 9 октября 2020 года на платформах PlayStation 4, PlayStation 5, Xbox One, Xbox Series X/S, Nintendo Switch и Microsoft Windows.",
-                "platform": "PS4, PS5, Xbox One, Xbox Series X/S, Nintendo Switch, PC",
+                "price": "1400",
                 "img": "gameImage.jpg",
-                "trailer": "https://www.youtube.com/watch?v=_z-4y8SBxno",
+                "trailer": "_z-4y8SBxno",
             },
             minRequirement: {
                 "cpu": "AMD Ryzen 5",
@@ -130,14 +149,15 @@ const gameData =
                 "os": "Windows 11",
                 "space": "512GB"
             },
+            platformsIds: [1]
         },
         {
             game: {
                 "title": "Minecraft",
                 "description": "Minecraft — песочница с открытым миром, разработанная и изданная компанией Mojang Studios. Игра была выпущена 18 ноября 2011 года на платформах PlayStation 4, Xbox One, Nintendo Switch, Android, iOS и Microsoft Windows.",
-                "platform": "PS4, Xbox One, Nintendo Switch, Android, iOS, PC",
+                "price": "1100",
                 "img": "gameImage.jpg",
-                "trailer": "https://www.youtube.com/watch?v=MmB9b5njVbA",
+                "trailer": "MmB9b5njVbA",
             },
             minRequirement: {
                 "cpu": "Intel Core 2 Duo",
@@ -151,14 +171,15 @@ const gameData =
                 "os": "Windows 10",
                 "space": "512GB"
             },
+            platformsIds: [2]
         },
         {
             game: {
                 "title": "The Legend of Zelda: Breath of the Wild",
                 "description": "The Legend of Zelda: Breath of the Wild — приключенческая игра, разработанная и изданная компанией Nintendo. Игра была выпущена 3 марта 2017 года на платформе Nintendo Switch.",
-                "platform": "Nintendo Switch",
+                "price": "1800",
                 "img": "gameImage.jpg",
-                "trailer": "https://www.youtube.com/watch?v=zw47_q9wbBE",
+                "trailer": "zw47_q9wbBE",
             },
             minRequirement: {
                 "cpu": "AMD A10",
@@ -172,38 +193,105 @@ const gameData =
                 "os": "Linux",
                 "space": "1TB"
             },
+            platformsIds: [1, 2]
         },
     ]
 
 const users = [
     {
         login: "user",
-        email: "user@mail.com",
-        password: "$2b$07$uIwOOaHec//zgRdJ/AQvJehrwk4qWw.qthABSBXABf5A5ZiV8zqHm",
-        img: "unauthorizedUser.png",
+        email: "user@gmail.com",
+        password: "$2b$07$Xx6sCuI52u0CdHfZg84hDeQ8OoSQCo5atpx0rVbW.Y6YdR.r.7EXW",
+        img: "defaultUser.png",
         role: "USER",
     },
     {
         login: "admin",
         email: "admin@mail.com",
-        password: "$2b$07$uIwOOaHec//zgRdJ/AQvJehrwk4qWw.qthABSBXABf5A5ZiV8zqHm",
-        img: "unauthorizedUser.png",
+        password: "$2b$07$Xx6sCuI52u0CdHfZg84hDeQ8OoSQCo5atpx0rVbW.Y6YdR.r.7EXW",
+        img: "defaultUser.png",
         role: "ADMIN",
     }
 ]
+
+const typesSort = [
+    {
+        title: "descending price",
+        order: [['price', 'DESC']],
+    },
+    {
+        title: "ascending price",
+        order: [['price', 'ASC']],
+    },
+    {
+        title: "descending rating",
+        order: [['rating', 'DESC']],
+    },
+    {
+        title: "ascending rating",
+        order: [['rating', 'ASC']],
+    },
+]
+
 class InitController {
     async create(req, res, next) {
         try {
-            for (const data of gameData) {
-                const {game, minRequirement, recRequirement} = data;
-                const newGame = await Game.create({...game})
-                MinRequirement.create({...minRequirement, gameId: newGame.id})
-                RecRequirement.create({...recRequirement, gameId: newGame.id})
+            for (const platform of platforms) {
+                await Platform.create({...platform})
             }
+            console.log('Массив platforms успешно инициализирован.');
 
+            for (const typeSort of typesSort) {
+                await TypeSort.create({...typeSort})
+            }
+            console.log('Массив typesSort успешно инициализирован.');
+
+            for (const data of gameData) {
+                const {
+                    game,
+                    minRequirement,
+                    recRequirement,
+                    platformsIds
+                } = data;
+                let transaction;
+                try {
+                    transaction = await sequelize.transaction();
+                    const newGame = await Game.create(game, {transaction});
+                    await MinRequirement.create({...minRequirement, gameId: newGame.id}, {transaction});
+                    await RecRequirement.create({...recRequirement, gameId: newGame.id}, {transaction});
+                    await GamePlatform.bulkCreate(
+                        platformsIds.map(platformId => ({ gameId: newGame.id, platformId })),
+                        { transaction }
+                    );
+
+                    await transaction.commit();
+                } catch (e) {
+                    if (transaction) {
+                        await transaction.rollback()
+                        console.error("\n**************************************\n")
+                        console.error("одна из игр не была инициализирована\n" + e.message)
+                    }
+                }
+            }
             console.log('Массив Game успешно инициализирован.');
+
             for (const user of users) {
-                User.create({...user});
+                let transaction;
+                try {
+                    transaction = await sequelize.transaction();
+                    const newUser = await User.create({...user}, {transaction});
+                    await Basket.create({userId: newUser.id}, {transaction})
+                    await Wishlist.create({userId: newUser.id}, {transaction})
+                    await OrderList.create({userId: newUser.id}, {transaction})
+
+                    await transaction.commit();
+                } catch (e) {
+                    if (transaction) {
+                        await transaction.rollback()
+                        console.error("\n**************************************\n")
+                        console.error("один из пользователей не был инициализирован\n" + e.message)
+                    }
+                }
             }
             console.log('Массив User успешно инициализирован.');
 

@@ -1,16 +1,20 @@
-import React, {useContext} from 'react';
-import {Context} from "../index";
+import React, {useContext, useEffect, useState} from 'react';
 import Slider from "../components/Slider";
+import {Context} from "../index";
 
-const MainPage = () => {
+const MainPage = ({isLoading = false}) => {
     const {dataStore} = useContext(Context)
+
+    if (isLoading){
+        return <div>Main page loading</div>
+    }
 
     return (
         <div>
-            <Slider items={dataStore.games} className="mt-2"/>
+            <Slider items={dataStore.gamesAllPlatform.rows} className="mt-2"/>
             <div className="d-flex flex-row justify-content-around small my-2">
-                <Slider items={dataStore.games} className=""/>
-                <Slider items={dataStore.games} className="ms-5"/>
+                <Slider items={dataStore.gamesPcPlatform.rows} className=""/>
+                <Slider items={dataStore.gamesPlaystationPlatform.rows} className="ms-5"/>
             </div>
         </div>
     );

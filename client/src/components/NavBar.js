@@ -1,27 +1,25 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {Context} from "../index";
 import {Container, Nav, Navbar} from "react-bootstrap";
 import { useLocation, useNavigate} from "react-router-dom";
 import {
     ACCOUNT_ROUTE,
-    ADMIN_ROUTE,
-    BASKET_ROUTE, GAME_ROUTE,
-    LOGIN_ROUTE,
+    BASKET_ROUTE,
     MAIN_ROUTE,
-    SEARCH_ROUTE,
     WISHLIST_ROUTE,
 } from "../utils/consts";
 import {observer} from "mobx-react-lite";
 import unauthorizedUser from '../assets/unauthorizedUser.png'
-import header from '../styles/header.css'
+import '../styles/header.css'
 import SearchDropdown from "./SearchDropdown";
 import AuthorizationModal from "./modal/AuthorizationModal";
 
-const NavBar = observer(() => {
+const NavBar = () => {
     const {userStore, dataStore} = useContext(Context)
     const location = useLocation();
     const navigate = useNavigate();
     const [authorizationModalShow, setAuthorizationModalShow] = React.useState(false);
+
     const handleBrand = () => {
         navigate(MAIN_ROUTE)
     }
@@ -42,12 +40,10 @@ const NavBar = observer(() => {
             notLogin()
         }
     }
-    const handleSearch = (query) => {
-        navigate(`${SEARCH_ROUTE}?query=${query}`);
-    };
     const handleAuthBtn = () => {
         if (userStore.isAuth) {
             userStore.setUser({})
+            localStorage.removeItem('token');
         } else {
             //navigate(LOGIN_ROUTE)
             setAuthorizationModalShow(true);
@@ -59,9 +55,6 @@ const NavBar = observer(() => {
         } else {
             notLogin()
         }
-    }
-    const handleDropdownItem = (id) => {
-        navigate(GAME_ROUTE + '/' + id)
     }
     const notLogin = () => {
         alert('А ты зарегистрировался?')
@@ -116,6 +109,8 @@ const NavBar = observer(() => {
         )
     }
 
+    //TODO запрос для игр нав бара
+
     return (
         <div className="header">
             <Navbar>
@@ -124,17 +119,13 @@ const NavBar = observer(() => {
                     <Navbar.Toggle aria-controls="NavbarScroll"/>
                     <Navbar.Collapse id="NavbarScroll">
                         {createNav()}
-                        <SearchDropdown
-                            items={dataStore.games}
-                            ItemOnClick={handleDropdownItem}
-                            IconOnClick={handleSearch}
-                        />
+                        <SearchDropdown/>
                         {createAccountBox()}
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
         </div>
     );
-});
+};
 
-export default NavBar;
+export default observer(NavBar);

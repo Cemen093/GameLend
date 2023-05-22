@@ -14,16 +14,30 @@ const Basket = sequelize.define('basket', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
 })
 
-const BasketItem = sequelize.define('basket_game', {
+const BasketItem = sequelize.define('basket_item', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     quantity: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
 })
 
-const WishList = sequelize.define('wish_list', {
+const Wishlist = sequelize.define('wish_list', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
 })
 
-const WishListItem = sequelize.define('wish_list_game', {
+const WishlistItem = sequelize.define('wishlist_item', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    quantity: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
+})
+
+const OrderList = sequelize.define('order_list', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+})
+
+const Order = sequelize.define('order', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    isPaid: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false},
+})
+
+const OrderItem = sequelize.define('order_item', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     quantity: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
 })
@@ -32,21 +46,20 @@ const Game = sequelize.define('game', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     title: {type: DataTypes.STRING, allowNull: false},
     description: {type: DataTypes.STRING(1000), allowNull: false},
-    platform: {type: DataTypes.STRING, allowNull: false},
+    price: {type: DataTypes.STRING, allowNull: false},
+    rating: {type: DataTypes.STRING, allowNull: false, defaultValue: 7},
     img: {type: DataTypes.STRING, allowNull: false},
     trailer: {type: DataTypes.STRING, allowNull: false},
 })
 
-const Comment = sequelize.define('comment', {
+const Platform = sequelize.define('platform', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    text: {type: DataTypes.STRING, allowNull: false},
-    date: {type: DataTypes.DATE, allowNull: false},
+    title: {type: DataTypes.STRING, allowNull: false},
 })
 
-const Key = sequelize.define('key', {
+const GamePlatform = sequelize.define('gamePlatform', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    key: {type: DataTypes.STRING, unique: true, allowNull: false}
-})
+}, {tableName: "gamePlatform"});
 
 const MinRequirement = sequelize.define('min_requirement', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
@@ -64,51 +77,77 @@ const RecRequirement = sequelize.define('rec_requirement', {
     space: {type: DataTypes.STRING, allowNull: false},
 })
 
-const UserGame = sequelize.define('user_game', {
+const Comment = sequelize.define('comment', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    date: {type: DataTypes.DATE, allowNull: false},
+    text: {type: DataTypes.STRING, allowNull: false},
 })
 
+const Key = sequelize.define('key', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    key: {type: DataTypes.STRING, unique: true, allowNull: false}
+})
+
+const TypeSort = sequelize.define('type_sort', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    title: {type: DataTypes.STRING, allowNull: false},
+    order: {type: DataTypes.JSON, allowNull: false},
+})
+
+//корзина
 User.hasOne(Basket, {foreignKey: {name: 'userId', allowNull: false}});
-User.hasOne(WishList, {foreignKey: { name: 'userId', allowNull: false}});
-
 Basket.belongsTo(User, {foreignKey: { name: 'userId', allowNull: false}});
-WishList.belongsTo(User, {foreignKey: { name: 'userId', allowNull: false}});
-
-Game.hasOne(MinRequirement, {foreignKey: { name: 'gameId', allowNull: false}});
-Game.hasOne(RecRequirement, {foreignKey: { name: 'gameId', allowNull: false}});
-
-MinRequirement.belongsTo(Game, {foreignKey: { name: 'gameId', allowNull: false}});
-RecRequirement.belongsTo(Game, {foreignKey: { name: 'gameId', allowNull: false}});
-
-User.belongsToMany(Game, {through: UserGame})
-Game.belongsToMany(User, {through: UserGame})
-
 Basket.belongsToMany(Game, {through: BasketItem})
 Game.belongsToMany(Basket, {through: BasketItem})
 
-WishList.belongsToMany(Game, {through: WishListItem})
-Game.belongsToMany(WishList, {through: WishListItem})
+//список желаемого
+User.hasOne(Wishlist, {foreignKey: { name: 'userId', allowNull: false}});
+Wishlist.belongsTo(User, {foreignKey: { name: 'userId', allowNull: false}});
+Wishlist.belongsToMany(Game, {through: WishlistItem})
+Game.belongsToMany(Wishlist, {through: WishlistItem})
 
+//список заказов
+User.hasOne(OrderList, {foreignKey: {name: 'userId', allowNull: false}});
+OrderList.belongsTo(User, {foreignKey: { name: 'userId', allowNull: false}});
+OrderList.hasMany(Order, {foreignKey: { name: 'orderListId', allowNull: false}});
+Order.belongsTo(OrderList, {foreignKey: { name: 'orderListId', allowNull: false}});
+Order.belongsToMany(Game, { through: OrderItem });
+Game.belongsToMany(Order, { through: OrderItem });
+OrderItem.belongsTo(Order);
+OrderItem.belongsTo(Game);
+
+//комментарии
+User.hasMany(Comment);
+Game.hasMany(Comment);
 Comment.belongsTo(User);
 Comment.belongsTo(Game);
 
-User.hasMany(Comment);
-Game.hasMany(Comment);
+//игра
+Game.hasOne(MinRequirement, {foreignKey: { name: 'gameId', allowNull: false}});
+MinRequirement.belongsTo(Game, {foreignKey: { name: 'gameId', allowNull: false}});
+Game.hasOne(RecRequirement, {foreignKey: { name: 'gameId', allowNull: false}});
+RecRequirement.belongsTo(Game, {foreignKey: { name: 'gameId', allowNull: false}});
+Game.belongsToMany(Platform, { through: GamePlatform, as: "platforms" });
+Platform.belongsToMany(Game, { through: GamePlatform, as: "games" });
 
+//ключи
 Game.hasMany(Key, {foreignKey: { name: 'gameId', allowNull: false}});
 Key.belongsTo(Game, {foreignKey: { name: 'gameId', allowNull: false}});
 
 module.exports = {
     User,
     Basket,
-    WishList,
+    BasketItem,
+    Wishlist,
+    WishlistItem,
+    OrderList,
+    Order,
+    OrderItem,
     Game,
-    Comment,
-    Key,
+    Platform,
+    GamePlatform,
     MinRequirement,
     RecRequirement,
-    BasketItem,
-    WishListItem,
-    UserGame,
+    Comment,
+    Key,
+    TypeSort,
 }
