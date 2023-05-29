@@ -117,12 +117,7 @@ class GameController {
     }
 
     async getOne(req, res, next) {
-        console.log("\n\n*************************************")
-        console.log("req.params")
-        console.log(req.params)
         const {id} = req.params
-        console.log("id")
-        console.log(id)
         try {
             const game = await Game.findOne({
                 where: {id: id},

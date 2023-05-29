@@ -30,6 +30,15 @@ export default class UserStore {
         this._orders = value;
     }
 
+    logOut() {
+        this.setUser({})
+        this.setBasketGames([]);
+        this.setWishlistGames([]);
+        this.setBoughtGames([]);
+        this.setOrders([]);
+        localStorage.removeItem('token');
+    }
+
     get user() {
         return this._user
     }

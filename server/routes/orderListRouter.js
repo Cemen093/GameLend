@@ -1,7 +1,7 @@
 const Router = require('express')
 const router = new Router()
 const orderListController = require('../controllers/orderListController')
-const authMiddleware = require('../middleware/authMiddleware')
+const authMiddleware = require('../middleware/checkAuthMiddleware')
 const checkAdminMiddleware = require('../middleware/checkAdminMiddleware')
 
 router.get('/', authMiddleware, orderListController.getAllOrders);

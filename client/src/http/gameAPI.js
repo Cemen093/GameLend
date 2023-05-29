@@ -15,6 +15,5 @@ export const fetchGames = async ({title='', platformsId=[], typeSortId=1, page=1
 
 export const fetchGame = async (id) => {
     const {data} = await $host.get('api/game/' + id)
-    console.log(data)
     return data;
 }

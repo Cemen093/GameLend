@@ -1,0 +1,97 @@
+.ordering-container {
+    background-color: var(--almostBlack);
+}
+
+.game-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.game-list .item {
+    display: flex;
+    flex-direction: row;
+    color: var(--white);
+    margin: 10px;
+    padding: 20px;
+}
+
+.game-list .item img{
+    width: 360px;
+    height: 199px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.item-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+.item-content .title-container {
+    flex-grow: 1;
+    margin: 15px;
+}
+
+.title-container .title {
+    font-size: 35px;
+}
+
+.item-content .quantity-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.quantity-container .quantity-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    width: 48px;
+    background-color: var(--grayBrown);
+    cursor: pointer;
+}
+
+.quantity-container .quantity-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    width: 75px;
+    border-left: 2px solid var(--white);
+    border-right: 2px solid var(--white);
+    background-color: var(--grayBrown);
+}
+
+.item-content .price-container {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.price-container .price{
+    margin-left: 20px;
+    font-size: 30px;
+    white-space: nowrap;
+}
+
+.white-line {
+    margin: 30px 20px;
+    border: 1px solid var(--white);
+}
+
+.total-price-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.total-price {
+    margin-right: 30px;
+    font-size: 30px;
+    white-space: nowrap;
+    color: var(--white);
+}

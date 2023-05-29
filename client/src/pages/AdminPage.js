@@ -1,4 +1,5 @@
 import React from 'react';
+import {observer} from "mobx-react-lite";
 
 const AdminPage = () => {
     return (
@@ -8,4 +9,4 @@ const AdminPage = () => {
     );
 };
 
-export default AdminPage;
+export default observer(AdminPage);

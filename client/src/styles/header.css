@@ -2,6 +2,12 @@
     border-bottom: 3px solid var(--almostBlack);
 }
 
+.brand {
+    font-weight: 700;
+    font-size: 25px;
+    font-family: livvic, sans-serif;
+}
+
 .navbar-nav .nav-link.active {
     border-bottom: 3px solid var(--almostBlack);
 }

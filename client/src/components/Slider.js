@@ -65,14 +65,15 @@ const Slider = ({items, className, style, isLoading, ...props}) => {
             <div className="slider-content">
                 <div className="slider-image-container">
                     <img
-                        className="slider-image"
                          src={process.env.REACT_APP_API_URL + '/' + items[currentIndex].img} alt="Product"
                         onClick={() => {handleImg(items[currentIndex].id)}}
                     />
                 </div>
                 <div className="slider-details">
                     <div className="slider-price">{items[currentIndex].price} ₴</div>
-                    <div className="slider-description">{items[currentIndex].description}</div>
+                    <div className="slider-description">
+                        <p className="description-text">{items[currentIndex].description}</p>
+                    </div>
                     <div className="slider-platforms">
                         {items[currentIndex].platforms.map((platform, index) => (
                             <div key={index} className="slider-platform">{platform.title}</div>

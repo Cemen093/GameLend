@@ -1,0 +1,17 @@
+.styled-input {
+    display: flex;
+    flex-direction: row;
+    color: var(--white);
+}
+
+.styled-input-title {
+    white-space: nowrap;
+
+}
+
+.styled-input input {
+    margin-left: 10px;
+    padding-right: 2em;
+    color: var(--white);
+    background-color: var(--grayBrown);
+}

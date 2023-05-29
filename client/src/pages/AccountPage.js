@@ -5,6 +5,7 @@ import "../styles/account.css"
 import pencil from "../assets/pencil.png"
 import {useNavigate} from "react-router-dom";
 import {BASKET_ROUTE, GAME_ROUTE, ORDERS_ROUTE, WISHLIST_ROUTE} from "../utils/consts";
+import {observer} from "mobx-react-lite";
 
 const AccountPage = ({isLoading = false}) => {
     const navigate = useNavigate();
@@ -114,4 +115,4 @@ const AccountPage = ({isLoading = false}) => {
     );
 };
 
-export default AccountPage;
+export default observer(AccountPage);

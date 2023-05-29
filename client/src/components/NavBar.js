@@ -5,7 +5,7 @@ import { useLocation, useNavigate} from "react-router-dom";
 import {
     ACCOUNT_ROUTE,
     BASKET_ROUTE,
-    MAIN_ROUTE,
+    MAIN_ROUTE, ORDERS_ROUTE,
     WISHLIST_ROUTE,
 } from "../utils/consts";
 import {observer} from "mobx-react-lite";
@@ -40,12 +40,17 @@ const NavBar = () => {
             notLogin()
         }
     }
+    const handleOrders = () => {
+        if (userStore.isAuth) {
+            navigate(ORDERS_ROUTE)
+        } else {
+            notLogin()
+        }
+    }
     const handleAuthBtn = () => {
         if (userStore.isAuth) {
-            userStore.setUser({})
-            localStorage.removeItem('token');
+            userStore.logOut()
         } else {
-            //navigate(LOGIN_ROUTE)
             setAuthorizationModalShow(true);
         }
     }
@@ -63,26 +68,17 @@ const NavBar = () => {
     const createNav = () => {
         return (
             <Nav className="my-2 my-lg-0">
-                <Nav.Link
-                    active={location.pathname === MAIN_ROUTE}
-                    href='#'
-                    onClick={handleMain}
-                >
+                <Nav.Link active={location.pathname === MAIN_ROUTE} href='#' onClick={handleMain}>
                     Главное меню
                 </Nav.Link>
-                <Nav.Link
-                    active={location.pathname === BASKET_ROUTE}
-                    href='#'
-                    onClick={handleBasket}
-                >
+                <Nav.Link active={location.pathname === BASKET_ROUTE} href='#' onClick={handleBasket}>
                     Корзина
                 </Nav.Link>
-                <Nav.Link
-                    active={location.pathname === WISHLIST_ROUTE}
-                    href='#'
-                    onClick={handleWishlist}
-                >
+                <Nav.Link active={location.pathname === WISHLIST_ROUTE} href='#' onClick={handleWishlist}>
                     Список желаемого
+                </Nav.Link>
+                <Nav.Link active={location.pathname === ORDERS_ROUTE} href='#' onClick={handleOrders}>
+                    Заказы
                 </Nav.Link>
             </Nav>
         );
@@ -109,13 +105,11 @@ const NavBar = () => {
         )
     }
 
-    //TODO запрос для игр нав бара
-
     return (
         <div className="header">
             <Navbar>
                 <Container fluid>
-                    <Navbar.Brand className="fw-bold cursor-pointer" onClick={handleBrand}>Game Land</Navbar.Brand>
+                    <Navbar.Brand className="brand cursor-pointer" onClick={handleBrand}>Game Land</Navbar.Brand>
                     <Navbar.Toggle aria-controls="NavbarScroll"/>
                     <Navbar.Collapse id="NavbarScroll">
                         {createNav()}

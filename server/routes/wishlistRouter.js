@@ -1,7 +1,7 @@
 const Router = require('express')
 const router = new Router()
 const wishListController = require('../controllers/wishlistController')
-const authMiddleware = require("../middleware/authMiddleware");
+const authMiddleware = require("../middleware/checkAuthMiddleware");
 const checkGameIdMiddleware = require("../middleware/checkGameIdMiddleware");
 
 router.get('/', authMiddleware, wishListController.getAllGameFromWishList);

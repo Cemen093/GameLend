@@ -15,7 +15,7 @@ import {
 import {Context} from "../index";
 
 const GameItem = ({game, className, style, isLoading = false, buttons, ...props}) => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const {userStore} = useContext(Context);
 
     if (isLoading) {
@@ -62,10 +62,7 @@ const GameItem = ({game, className, style, isLoading = false, buttons, ...props}
                                  .catch(e => console.error(e.response.data.message))}/>
                     }
                     {buttons?.buy &&
-                        <div className="buy" onClick={() => addGameToBasket(game.id)
-                            .then(() => navigate(ORDERING_ROUTE))
-                            .then(() => getAllGamesFromBasket().then(data => {userStore.setBasketGames(data)}))
-                            .catch(e => console.error(e.response.data.message))}>{game.price} ₴</div>
+                        <div className="buy" onClick={() => navigate(ORDERING_ROUTE + '/game/' + game.id)}>{game.price} ₴</div>
                     }
                 </div>
                 {buttons?.addToWishlist &&

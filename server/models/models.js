@@ -82,15 +82,15 @@ const Comment = sequelize.define('comment', {
     text: {type: DataTypes.STRING, allowNull: false},
 })
 
-const Key = sequelize.define('key', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    key: {type: DataTypes.STRING, unique: true, allowNull: false}
-})
-
 const TypeSort = sequelize.define('type_sort', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     title: {type: DataTypes.STRING, allowNull: false},
     order: {type: DataTypes.JSON, allowNull: false},
+})
+
+const Key = sequelize.define('key', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    key: {type: DataTypes.STRING, unique: true, allowNull: false}
 })
 
 //корзина
@@ -132,6 +132,8 @@ Platform.belongsToMany(Game, { through: GamePlatform, as: "games" });
 //ключи
 Game.hasMany(Key, {foreignKey: { name: 'gameId', allowNull: false}});
 Key.belongsTo(Game, {foreignKey: { name: 'gameId', allowNull: false}});
+Platform.hasOne(Key, { foreignKey: 'platformId' });
+Key.belongsTo(Platform, { foreignKey: 'platformId' });
 
 module.exports = {
     User,

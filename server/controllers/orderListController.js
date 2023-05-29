@@ -9,7 +9,8 @@ class OrderListController {
         const offset = (page - 1) * limit;
         try {
             const orderList = await OrderList.findOne({where: {userId}})
-            const orders = await Order.findAll({
+            const orders = await Order.findAndCountAll({
+                distinct: true,
                 where: {orderListId: orderList.id},
                 include: [
                     {model: Game, through: {model: OrderItem, attributes: []}}],
@@ -28,9 +29,16 @@ class OrderListController {
         try {
             const orderList = await OrderList.findOne({where: {userId}})
             const orders = await Order.findAll({
-                where: {orderListId: orderList.id},
+                where: {
+                    orderListId: orderList.id,
+                    isPaid: true
+                },
                 include: [
-                    {model: Game, through: {attributes: []}}],
+                    {
+                        model: Game,
+                        through: {attributes: []}
+                    }
+                    ],
             });
             const games = orders.flatMap(order => order.games);
 
@@ -42,7 +50,7 @@ class OrderListController {
 
     async createOrder(req, res, next) {
         const userId = req.user.id;
-        const {games} = req.body
+        const {items} = req.body
         const orderList = await OrderList.findOne({where: {userId},});
         if (!orderList) {
             return next(ApiError.notFound('OrderList не найден для пользователя'));
@@ -53,12 +61,24 @@ class OrderListController {
             transaction = await sequelize.transaction();
             const newOrder = await Order.create({orderListId: orderList.id},
                 {transaction});
-            const orderItems = games.map((game) => ({...game, orderId: newOrder.id,}));
+            const orderItems = items.map((item) => ({
+                orderId: newOrder.id,
+                gameId: item.id,
+                quantity: item.quantity
+            }));
             await OrderItem.bulkCreate(orderItems, {transaction});
 
             await transaction.commit();
 
-            return res.json({message: 'Заказ успешно создан'});
+            const orders = await Order.findAndCountAll({
+                distinct: true,
+                where: {orderListId: orderList.id},
+                include: [
+                    {model: Game, through: {model: OrderItem, attributes: []}}],
+                limit: 10,
+            });
+
+            return res.json(orders)
         } catch (e) {
             if (transaction) {
                 await transaction.rollback();

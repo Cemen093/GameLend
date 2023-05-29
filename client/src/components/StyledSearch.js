@@ -1,11 +1,11 @@
 import React from 'react';
 import {FaSearch} from "react-icons/fa";
 import {observer} from "mobx-react-lite";
-import search from '../styles/search.css'
+import '../styles/search.css'
 
 const StyledSearch = ({searchText, setSearchText, onClick, className = '', placeholder, ...props}) => {
     return (
-        <div className={'search-input ' + className}  {...props}>
+        <div className={'styled-search ' + className}  {...props}>
             <input
                 type="text"
                 value={searchText}

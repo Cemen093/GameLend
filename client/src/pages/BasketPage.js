@@ -4,9 +4,12 @@ import GameList from "../components/GameList";
 import {Container} from "react-bootstrap";
 import {getAllGamesConfirmedOrders, getAllGamesFromBasket, getAllGamesFromWishlist} from "../http/userAPI";
 import {observer} from "mobx-react-lite";
+import {useNavigate} from "react-router-dom";
+import {ORDERING_ROUTE} from "../utils/consts";
 
 const BasketPage = ({isLoading = false}) => {
-    const {userStore, dataStore} = useContext(Context)
+    const {userStore, dataStore} = useContext(Context);
+    const navigate = useNavigate();
 
     if (isLoading) {
         return (
@@ -31,7 +34,10 @@ const BasketPage = ({isLoading = false}) => {
                 }
             </Container>
             <Container className="mt-1 mb-2 bg-almostBlack d-flex justify-content-end">
-                <div className="my-3 align-self-end p-1 px-3 bg-white d-flex">
+                <div className="my-3 align-self-end p-1 px-3 bg-white d-flex"
+                     style={{cursor: "pointer"}}
+                    onClick={() => navigate(ORDERING_ROUTE)}
+                >
                     Купить
                 </div>
             </Container>

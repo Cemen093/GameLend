@@ -14,8 +14,7 @@ export const login = async (email, password) => {
 }
 export const checkAuth = async () => {
     const {data} = await $authHost.get('api/user/auth');
-    localStorage.setItem('token', data.token);
-    return jwt_decode(data.token);
+    return jwt_decode(data.token)
 }
 
 //Корзина
@@ -32,7 +31,11 @@ export const updateGameQuantityInBasket = async (gameId, operation) => {
     return data;
 }
 export const removeGameFromBasket = async (gameId) => {
-    const {data} = await $authHost.delete('api/basket/' + gameId, );
+    const {data} = await $authHost.delete('api/basket/' + gameId);
+    return data;
+}
+export const removeAllGameFromBasket = async () => {
+    const {data} = await $authHost.delete('api/basket/all');
     return data;
 }
 
@@ -50,7 +53,7 @@ export const removeGameFromWishlist = async (gameId) => {
     return data;
 }
 export const moveGameFromWishlistToBasket = async (gameId) => {
-    const {data} = await $authHost.put('api/wishlist/moveToBasket', {gameId});
+    const {data} = await $authHost.post('api/wishlist/moveToBasket', {gameId});
     return data;
 }
 
@@ -63,8 +66,8 @@ export const getAllGamesConfirmedOrders = async () => {
     const {data} = await $authHost.get('api/orderList/get-all-games-confirmed-orders');
     return data;
 }
-export const createOrder = async (games) => {
-    const {data} = await $authHost.post('api/orderList', {games});
+export const createOrder = async (items) => {
+    const {data} = await $authHost.post('api/orderList', {items});
     return data;
 }
 export const confirmPaymentOrder = async (gameId) => {

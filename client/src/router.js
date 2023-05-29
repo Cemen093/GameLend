@@ -50,6 +50,10 @@ export const authorizedRoutes = [
         path: ORDERING_ROUTE,
         Component: OrderingPage
     },
+    {
+        path: ORDERING_ROUTE + '/game/:gameId',
+        Component: OrderingPage
+    },
 ]
 export const adminRoutes = [
     {

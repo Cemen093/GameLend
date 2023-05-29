@@ -39,10 +39,10 @@ class UserController {
             const user = {login, email, password: hashPassword, img, role};
 
             transaction = await sequelize.transaction();
-            const newUser = await User.create(user, { transaction })
-            await Basket.create({userId: newUser.id}, { transaction })
-            await Wishlist.create({userId: newUser.id}, { transaction })
-            await OrderList.create({userId: newUser.id}, { transaction })
+            const newUser = await User.create(user, {transaction})
+            await Basket.create({userId: newUser.id}, {transaction})
+            await Wishlist.create({userId: newUser.id}, {transaction})
+            await OrderList.create({userId: newUser.id}, {transaction})
             await transaction.commit();
 
             const token = generateJwt(updateUser(newUser));
@@ -80,8 +80,19 @@ class UserController {
     }
 
     async check(req, res, next) {
-        const token = generateJwt({...req.user})
-        return res.json({token})
+        try {
+            const user = await User.findOne({
+                where: {id: req.user.id}
+            });
+            if (user) {
+                const token = generateJwt(updateUser(user));
+                return res.json({token: token})
+            } else {
+                return next(ApiError.unauthorized("Не авторизован"))
+            }
+        } catch (e) {
+            return next(ApiError.badRequest("check auth token error"))
+        }
     }
 }
 

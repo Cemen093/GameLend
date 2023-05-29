@@ -6,9 +6,20 @@ import StyledSearch from "../components/StyledSearch";
 import GameList from "../components/GameList";
 import {Context} from "../index";
 import {fetchGames} from "../http/gameAPI";
+import {observer} from "mobx-react-lite";
+
+const getPlatform = (platforms) => {
+    const allPlatformIds = platforms.map(platform => platform.id);
+    const allPlatforms = { title: 'All', ids: allPlatformIds };
+    return [allPlatforms, ...platforms.map(platform => ({
+        title: platform.title,
+        ids: [platform.id],
+    }))];
+}
 
 const SearchPage = () => {
     const {dataStore} = useContext(Context);
+    const platforms = getPlatform(dataStore.platforms.rows)
     const location = useLocation();
 
     const [searchQuery, setSearchQuery] = useState('');
@@ -25,8 +36,8 @@ const SearchPage = () => {
 
     useEffect(() => {
         const init = async () => {
-            setSelectedPlatform(dataStore.platforms[0])
-            setSelectedSort(dataStore.typesSort[0])
+            setSelectedPlatform(platforms[0])
+            setSelectedSort(dataStore.typesSort.rows[0])
             await fetchGames({})
                 .then(data => dataStore.setGamesSearch(data)).catch(e => console.error(e.message));
             setIsLoading(false);
@@ -51,17 +62,12 @@ const SearchPage = () => {
         return <Spinner/>
     }
 
-    //TODO пагинация
-
     return (
         <Container fluid className="p-0 my-2">
             <div className="d-flex flex-row align-items-center p-2 bg-almostBlack color-white">
                 <StyledSearch
                     searchText={searchQuery}
                     setSearchText={setSearchQuery}
-                    onClick={() => {
-                        alert("hello")
-                    }}
                     className="width-grow"
                 />
 
@@ -69,7 +75,7 @@ const SearchPage = () => {
                     title="Платформа"
                     selectedItem={selectedPlatform}
                     setSelectedItem={setSelectedPlatform}
-                    items={dataStore.platforms.rows}
+                    items={platforms}
                     className="ms-2"
                 />
                 <StyledDropdown
@@ -88,4 +94,4 @@ const SearchPage = () => {
     );
 };
 
-export default SearchPage;
+export default observer(SearchPage);

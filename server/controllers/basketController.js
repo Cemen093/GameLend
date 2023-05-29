@@ -99,7 +99,6 @@ class BasketController {
         try {
             const userId = req.user.id;
             const {gameId} = req.params;
-            console.log(req.params)
             const basket = await Basket.findOne({where: {userId}});
             const game = await Game.findByPk(gameId);
 
@@ -115,6 +114,21 @@ class BasketController {
             await basket.removeGame(game, {through: BasketItem, individualHooks: true});
 
             return res.json("Игра успешно удалена из корзины");
+        } catch (e) {
+            return next(ApiError.internal(e.message));
+        }
+    }
+
+    async removeAllGameFromBasket(req, res, next) {
+        try {
+            const userId = req.user.id;
+            const basket = await Basket.findOne({where: {userId}});
+            if (!basket) {
+                return next(ApiError.notFound('Корзина не найдена'));
+            }
+            await BasketItem.destroy({ where: { basketId: basket.id } });
+
+            return res.json({ message: 'Все игры удалены из корзины' });
         } catch (e) {
             return next(ApiError.internal(e.message));
         }
