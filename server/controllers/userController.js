@@ -8,19 +8,10 @@ const sequelize = require("../db");
 const generateJwt = (user) => {
     const {id, login, email, img, role} = user
     return jwt.sign(
-        {id, login, email, img, role},
+        {id, login, email, img: imgName, role},
         process.env.SECRET_KEY,
         {expiresIn: '12h'}
     )
-}
-
-
-function updateUser(user) {
-    const {dataValues} = user;
-    return {
-        ...dataValues,
-        img: process.env.API_URL + dataValues.img,
-    };
 }
 
 class UserController {
@@ -36,7 +27,12 @@ class UserController {
                 return next(ApiError.badRequest('Пользователь уже существует'))
             }
             const hashPassword = await bcrypt.hash(password, 7)
-            const user = {login, email, password: hashPassword, img, role};
+            const user = {
+                login,
+                email,
+                password: hashPassword,
+                role
+            };
 
             transaction = await sequelize.transaction();
             const newUser = await User.create(user, {transaction})
@@ -45,7 +41,7 @@ class UserController {
             await OrderList.create({userId: newUser.id}, {transaction})
             await transaction.commit();
 
-            const token = generateJwt(updateUser(newUser));
+            const token = generateJwt(newUser);
             return res.json({token})
         } catch (e) {
             if (transaction) {
@@ -75,23 +71,19 @@ class UserController {
             return next(ApiError.badRequest("Неверный пароль"))
         }
 
-        const token = generateJwt(updateUser(user));
+        const token = generateJwt(user);
         return res.json({token})
     }
 
     async check(req, res, next) {
-        try {
-            const user = await User.findOne({
-                where: {id: req.user.id}
-            });
-            if (user) {
-                const token = generateJwt(updateUser(user));
-                return res.json({token: token})
-            } else {
-                return next(ApiError.unauthorized("Не авторизован"))
-            }
-        } catch (e) {
-            return next(ApiError.badRequest("check auth token error"))
+        const user = await User.findOne({
+            where: {id: req.user.id}
+        });
+        if (user) {
+            const token = generateJwt(user);
+            return res.json({token: token})
+        } else {
+            return next(ApiError.unauthorized("Не авторизован"))
         }
     }
 }

@@ -47,6 +47,30 @@ class WishlistController {
         }
     }
 
+    async removeGameFromWishList(req, res, next) {
+        try {
+            const userId = req.user.id;
+            const { gameId } = req.params;
+            const wishList = await Wishlist.findOne({ where: { userId } });
+            const game = await Game.findByPk(gameId);
+
+            if (!game) {
+                return next(ApiError.badRequest("Игра не найдена"));
+            }
+
+            const existingItem = await wishList.hasGame(game);
+            if (!existingItem) {
+                return next(ApiError.badRequest("Нет в списке желаемого"));
+            }
+
+            await wishList.removeGame(game, { through: WishlistItem, individualHooks: true });
+
+            return res.json("Игра успешно удалена из списка желаемого" );
+        } catch (e) {
+            return next(ApiError.internal(e.message));
+        }
+    }
+
     async moveGameToBasket(req, res, next) {
         try {
             const userId = req.user.id;
@@ -75,30 +99,6 @@ class WishlistController {
             await basket.addGame(game, { through: BasketItem, individualHooks: true });
 
             return res.json("Игра успешно перемещена из списка желаемого в корзину");
-        } catch (e) {
-            return next(ApiError.internal(e.message));
-        }
-    }
-
-    async removeGameFromWishList(req, res, next) {
-        try {
-            const userId = req.user.id;
-            const { gameId } = req.params;
-            const wishList = await Wishlist.findOne({ where: { userId } });
-            const game = await Game.findByPk(gameId);
-
-            if (!game) {
-                return next(ApiError.badRequest("Игра не найдена"));
-            }
-
-            const existingItem = await wishList.hasGame(game);
-            if (!existingItem) {
-                return next(ApiError.badRequest("Нет в списке желаемого"));
-            }
-
-            await wishList.removeGame(game, { through: WishlistItem, individualHooks: true });
-
-            return res.json("Игра успешно удалена из списка желаемого" );
         } catch (e) {
             return next(ApiError.internal(e.message));
         }

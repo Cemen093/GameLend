@@ -41,7 +41,7 @@ const AccountPage = ({isLoading = false}) => {
     const BoughtItem = ({game, ...props}) => {
         return (
             <div className="bought-item" {...props}>
-                <img src={game.img} alt="poster"/>
+                <img src={game.imgName} alt="poster"/>
                 <div className="bought-item-content">
                     <div className="bought-item-title">{game.title}</div>
                     <div className="bought-item-bought-at">Куплено: 12.03.2023</div>
@@ -83,7 +83,7 @@ const AccountPage = ({isLoading = false}) => {
     const BasketItem = ({game, ...props}) => {
         return (
             <div className="basket-item" {...props} onClick={() => navigate(GAME_ROUTE + '/' + game.id)}>
-                <img src={process.env.REACT_APP_API_URL + '/' + game.img} alt="picture"/>
+                <img src={process.env.REACT_APP_API_URL + '/' + game.imgName} alt="picture"/>
                 <div className="basket-item-title">{game.title}</div>
             </div>
         )
@@ -93,7 +93,7 @@ const AccountPage = ({isLoading = false}) => {
         <Container className="account-container">
             <div className="column-one">
                 <div className="user-container">
-                    <img src={userStore.user.img} alt="profile"/>
+                    <img src={userStore.user.imgName} alt="profile"/>
                     <div className="content">
                         <div className="line">
                             <div>{userStore.user.login}</div>

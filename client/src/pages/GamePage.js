@@ -36,7 +36,7 @@ const GamePage = () => {
     return (
         <Container style={{backgroundColor: colors.black}} className="">
             <Container fluid className="d-flex flex-row justify-content-around mt-5" style={{height: 400}}>
-                <Image width="45%" src={process.env.REACT_APP_API_URL + '/' + dataStore.game.img} className="m-2" style={{ objectFit: 'cover' }} />
+                <Image width="45%" src={process.env.REACT_APP_API_URL + '/' + dataStore.game.imgName} className="m-2" style={{ objectFit: 'cover' }} />
                 <iframe width="45%" src={"https://www.youtube.com/embed/" + dataStore.game.trailer} frameBorder="0"
                         allowFullScreen className="m-2"></iframe>
 

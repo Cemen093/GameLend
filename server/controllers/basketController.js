@@ -51,50 +51,6 @@ class BasketController {
         }
     }
 
-    async updateGameQuantity(req, res, next) {
-        try {
-            const userId = req.user.id;
-            const {gameId, operation} = req.body;
-            const basket = await Basket.findOne({where: {userId}});
-            const game = await Game.findByPk(gameId);
-
-            if (!game) {
-                return next(ApiError.badRequest("Игра не найдена"));
-            }
-            const existingItem = await basket.hasGame(game);
-            if (!existingItem) {
-                return next(ApiError.badRequest("Нет в корзине"));
-            }
-            const gameCount = await BasketItem.sum('quantity', {
-                where: {basketId: basket.id, gameId: game.id}
-            });
-
-            let message = '';
-            if (operation === "increase") {
-                await BasketItem.update(
-                    {quantity: sequelize.literal('quantity + 1')},
-                    {where: {basketId: basket.id, gameId: game.id}}
-                );
-                message = "Количество игры в корзине увеличено на 1";
-            } else if (operation === "decrease") {
-                if (gameCount <= 1) {
-                    return next(ApiError.badRequest("Количество не может быть меньше 1"));
-                }
-                await BasketItem.update(
-                    {quantity: sequelize.literal('quantity - 1')},
-                    {where: {basketId: basket.id, gameId: game.id}}
-                );
-                message = "Количество игры в корзине уменьшено на 1";
-            } else {
-                return next(ApiError.badRequest("operation не корректный"));
-            }
-
-            return res.json(message);
-        } catch (e) {
-            return next(ApiError.internal(e.message));
-        }
-    }
-
     async removeGameFromBasket(req, res, next) {
         try {
             const userId = req.user.id;
@@ -133,15 +89,6 @@ class BasketController {
             return next(ApiError.internal(e.message));
         }
     }
-
-    async buy(req, res, next) {
-        try {
-            return res.json({message: "еще не реализовано"});
-        } catch (e) {
-            return next(ApiError.internal(e.message));
-        }
-    }
-
 }
 
 module.exports = new BasketController();

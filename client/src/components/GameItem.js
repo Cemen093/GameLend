@@ -24,7 +24,7 @@ const GameItem = ({game, className, style, isLoading = false, buttons, ...props}
 
     return (
         <div className={"game-item " + className} style={style} {...props}>
-            <img src={process.env.REACT_APP_API_URL + '/' + game.img} alt={game.title} className="image"
+            <img src={process.env.REACT_APP_API_URL + '/' + game.imgName} alt={game.title} className="image"
                  onClick={() => navigate(GAME_ROUTE + '/' + game.id)}/>
             <div className="textContainer">
                 <div className="title">{game.title}</div>

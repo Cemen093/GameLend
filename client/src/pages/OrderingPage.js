@@ -63,7 +63,7 @@ const OrderingPage = () => {
     const GameItem = ({game, ...props}) => {
         return (
             <div className="item" {...props}>
-                <img src={process.env.REACT_APP_API_URL + '/' + game.img} alt="poster"/>
+                <img src={process.env.REACT_APP_API_URL + '/' + game.imgName} alt="poster"/>
                 <div className="item-content">
                     <div className="title-container">
                         <div className="title">{game.title}</div>

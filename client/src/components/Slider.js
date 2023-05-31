@@ -65,7 +65,7 @@ const Slider = ({items, className, style, isLoading, ...props}) => {
             <div className="slider-content">
                 <div className="slider-image-container">
                     <img
-                         src={process.env.REACT_APP_API_URL + '/' + items[currentIndex].img} alt="Product"
+                        src={process.env.REACT_APP_API_URL + '/' + items[currentIndex].imgName} alt="Product"
                         onClick={() => {handleImg(items[currentIndex].id)}}
                     />
                 </div>

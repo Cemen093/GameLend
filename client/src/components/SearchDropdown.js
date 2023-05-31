@@ -62,7 +62,7 @@ const SearchDropdown = ({className = ''}) => {
                                     handleDropdownItem(item.id)
                                     handleBlur()
                                 }}>
-                                <img src={process.env.REACT_APP_API_URL + '/' + item.img} alt={item.title} style={{width: '70px', marginRight: '5px'}}/>
+                                <img src={process.env.REACT_APP_API_URL + '/' + item.imgName} alt={item.title} style={{width: '70px', marginRight: '5px'}}/>
                                 {item.title}
                             </Dropdown.Item>
                         ))}

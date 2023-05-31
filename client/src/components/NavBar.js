@@ -96,7 +96,7 @@ const NavBar = () => {
                 <AuthorizationModal show={authorizationModalShow} onHide={() => setAuthorizationModalShow(false)}/>
                 <img
                     className="profile-img ms-2"
-                    src={userStore.isAuth ? userStore.user.img : unauthorizedUser}
+                    src={userStore.isAuth ? userStore.user.imgName : unauthorizedUser}
                     onClick={handleProfileImg}
                     alt="profile img"
                 />

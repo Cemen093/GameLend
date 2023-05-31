@@ -26,7 +26,7 @@ class GameController {
             }
 
             const game = await Game.create(
-                {title, description, price, img: imgName, trailer})
+                {title, description, price, imgName: imgName, trailer})
 
             MinRequirement.create(JSON.parse(minRequirement).gameId = game.id);
             RecRequirement.create(JSON.parse(recRequirement).gameId = game.id);
@@ -77,7 +77,6 @@ class GameController {
                 include: [
                     {
                         model: Platform,
-                        as: "platforms",
                         through: {
                             attributes: []
                         },
@@ -98,7 +97,6 @@ class GameController {
                 include: [
                     {
                         model: Platform,
-                        as: "platforms",
                         through: {
                             attributes: []
                         },
@@ -124,7 +122,6 @@ class GameController {
                 include: [
                     {
                         model: Platform,
-                        as: "platforms",
                         through: {
                             attributes: []
                         }

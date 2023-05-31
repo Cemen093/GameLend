@@ -10,7 +10,7 @@ const OrdersPages = () => {
         return (
             <div className="order-row order-item">
                 <div className="order-col order-col-1 order-col-main">
-                    <img src={process.env.REACT_APP_API_URL + '/' + order.games[0].img} alt={order.games.title}/>
+                    <img src={process.env.REACT_APP_API_URL + '/' + order.games[0].imgName} alt={order.games.title}/>
                     <div className=" ">{order.games[0].title}</div>
                 </div>
                 <div className="order-col order-col-2">{order.games.reduce((acc, game) => acc + parseInt(game.price), 0)} ₴</div>
