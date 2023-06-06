@@ -1,7 +1,7 @@
 import {$authHost, $host} from "./index";
 
-export const createPlatform = async () => {
-    const {data} = await $authHost.post('api/platform')
+export const createPlatform = async (title) => {
+    const {data} = await $authHost.post('api/platform', {title})
     return data;
 }
 
@@ -11,6 +11,6 @@ export const fetchPlatforms = async () => {
 }
 
 export const fetchPlatform = async (id) => {
-    const {data} = await $host.get('api/platform/' + id)
+    const {data} = await $host.get(`api/platform/${id}`)
     return data
 }

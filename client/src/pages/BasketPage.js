@@ -1,46 +1,37 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Context} from "../index";
-import GameList from "../components/GameList";
+import GameList from "../components/gameList/GameList";
 import {Container} from "react-bootstrap";
-import {getAllGamesConfirmedOrders, getAllGamesFromBasket, getAllGamesFromWishlist} from "../http/userAPI";
 import {observer} from "mobx-react-lite";
 import {useNavigate} from "react-router-dom";
 import {ORDERING_ROUTE} from "../utils/consts";
+import WhiteButton from "../components/buttons/WhiteButton";
 
-const BasketPage = ({isLoading = false}) => {
+const BasketPage = () => {
     const {userStore, dataStore} = useContext(Context);
     const navigate = useNavigate();
 
-    if (isLoading) {
-        return (
-            <div>Загрузка страницы пока не реализована</div>
-        )
-    }
-
+    console.log(userStore.basketGames)
     return (
-        <Container fluid className="p-0 m-0 d-flex flex-column">
-            <Container fluid className="px-3 mt-2 bg-almostBlack d-flex flex-column">
-                {userStore.basketGames.count > 0 ?
-                    <>
-                        <GameList className="bg-almostBlack bg-item-grayBrown" games={userStore.basketGames.rows}
-                                  buttons={{removeFromBasket: true, buy: true}}/>
-                        <div className="my-3 align-self-end p-1 px-3 color-white d-flex">
-                            Общая
-                            сумма {userStore.basketGames.rows.reduce((sum, game) => sum + Number(game.price), 0)} ₴
-                        </div>
-                    </>
-                    :
-                    <div>Пустая корзина еще не реализована</div>
+        <Container className="page-content">
+            <div className="bg-almostBlack">
+                <GameList
+                    games={userStore.basketGames}
+                    loading={userStore.loading}
+                    textEmpty="В кошику поки немає ігор"
+                    buttons={{removeFromBasket: true, buy: true}}
+                    className="bg-none px-4 py-2"
+                    itemClassName="bg-grayBrown"
+                />
+                {!userStore.loading &&
+                    <div className="d-flex justify-content-end color-white py-2 pe-3">
+                        Спільна сумма {userStore.basketGames.reduce((sum, game) => sum + Number(game.price), 0)} ₴
+                    </div>
                 }
-            </Container>
-            <Container className="mt-1 mb-2 bg-almostBlack d-flex justify-content-end">
-                <div className="my-3 align-self-end p-1 px-3 bg-white d-flex"
-                     style={{cursor: "pointer"}}
-                    onClick={() => navigate(ORDERING_ROUTE)}
-                >
-                    Купить
-                </div>
-            </Container>
+            </div>
+            <div className="bg-almostBlack d-flex justify-content-end mt-2 py-4 pe-3">
+                <WhiteButton onClick={() => navigate(ORDERING_ROUTE)}>Придбати</WhiteButton>
+            </div>
         </Container>
     );
 };

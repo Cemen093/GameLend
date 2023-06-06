@@ -16,7 +16,7 @@ class TypeSortController {
         }
 
         try {
-            const sort = await TypeSort.create(title, JSON.parse(order));
+            const sort = await TypeSort.create({title, order});
 
             return res.json(sort)
         } catch (e) {
@@ -35,7 +35,7 @@ class TypeSortController {
 
     async getOne(req, res, next) {
         try {
-            const {id} = req.params
+            const {id} = req.body
             const typeSort = await TypeSort.findByPk(id);
             res.json(typeSort);
         } catch (e) {

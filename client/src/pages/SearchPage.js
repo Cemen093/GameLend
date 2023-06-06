@@ -1,16 +1,16 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {useLocation} from "react-router-dom";
+import React, {useContext, useEffect, useRef, useState} from 'react';
+import {useLocation, useNavigate} from "react-router-dom";
 import {Container, Spinner} from "react-bootstrap";
 import StyledDropdown from "../components/StyledDropdown";
 import StyledSearch from "../components/StyledSearch";
-import GameList from "../components/GameList";
+import GameList from "../components/gameList/GameList";
 import {Context} from "../index";
-import {fetchGames} from "../http/gameAPI";
 import {observer} from "mobx-react-lite";
+import {SEARCH_ROUTE} from "../utils/consts";
 
 const getPlatform = (platforms) => {
     const allPlatformIds = platforms.map(platform => platform.id);
-    const allPlatforms = { title: 'All', ids: allPlatformIds };
+    const allPlatforms = {title: 'All', ids: allPlatformIds};
     return [allPlatforms, ...platforms.map(platform => ({
         title: platform.title,
         ids: [platform.id],
@@ -18,53 +18,40 @@ const getPlatform = (platforms) => {
 }
 
 const SearchPage = () => {
-    const {dataStore} = useContext(Context);
-    const platforms = getPlatform(dataStore.platforms.rows)
+    const {gameStore, platformsStore, sortTypesStore} = useContext(Context);
+    const platforms = getPlatform(platformsStore.platforms);
     const location = useLocation();
+    const navigate = useNavigate();
 
     const [searchQuery, setSearchQuery] = useState('');
-    const [selectedPlatform, setSelectedPlatform] = useState(null);
-    const [selectedSort, setSelectedSort] = useState(null);
-    const [page, setPage] = useState(1);
-    const [isLoading, setIsLoading] = useState(true);
+    const [selectedPlatform, setSelectedPlatform] = useState(platforms[0]);
+    const [selectedSort, setSelectedSort] = useState(sortTypesStore.typeSorts[0]);
+    const isDataInitialized = useRef(false);
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const query = searchParams.get('query');
-        setSearchQuery(query);
+        if (query) {
+            setSearchQuery(query);
+            navigate(SEARCH_ROUTE);
+        }
     }, [location])
 
+
     useEffect(() => {
-        const init = async () => {
-            setSelectedPlatform(platforms[0])
-            setSelectedSort(dataStore.typesSort.rows[0])
-            await fetchGames({})
-                .then(data => dataStore.setGamesSearch(data)).catch(e => console.error(e.message));
-            setIsLoading(false);
-        }
-        const fetchUpdate = async (...props) => {
-            await fetchGames(...props).then(data => dataStore.setGamesSearch(data)).catch(e => console.error(e.message))
-        }
-
-        if (isLoading) {
-            init();
-        } else {
-            fetchUpdate({
-                title: searchQuery,
-                platformsId: selectedPlatform.ids,
-                typeSortId: selectedSort.id,
-                page: page,
+        if (isDataInitialized.current) {
+            gameStore.fetchGamesSearch({
+                title: searchQuery, platformsId: selectedPlatform.ids,
+                typeSortId: selectedSort.id
             })
+        } else {
+            isDataInitialized.current = true;
         }
-    }, [searchQuery, selectedPlatform, selectedSort, page])
-
-    if (isLoading){
-        return <Spinner/>
-    }
+    }, [searchQuery, selectedPlatform, selectedSort]);
 
     return (
-        <Container fluid className="p-0 my-2">
-            <div className="d-flex flex-row align-items-center p-2 bg-almostBlack color-white">
+        <Container className="page-content">
+            <div className="d-flex flex-row align-items-center py-2 mx-4 px-4 bg-almostBlack color-white">
                 <StyledSearch
                     searchText={searchQuery}
                     setSearchText={setSearchQuery}
@@ -82,14 +69,18 @@ const SearchPage = () => {
                     title="Сортировка"
                     selectedItem={selectedSort}
                     setSelectedItem={setSelectedSort}
-                    items={dataStore.typesSort.rows}
+                    items={sortTypesStore.typeSorts}
                     className="ms-2"
                 />
             </div>
-            <div>
-                <GameList games={dataStore.gamesSearch.rows} isLoading={isLoading}
-                buttons={{addToBasket: true, addToWishlist: true, buy: true}}/>
-            </div>
+            <GameList
+                games={gameStore.gamesSearch}
+                loading={gameStore.loading}
+                textEmpty="За вашим запитом нічого не знайденно"
+                buttons={{addToBasket: true, addToWishlist: true, buy: true}}
+                className="px-4"
+                itemClassName=" "
+            />
         </Container>
     );
 };

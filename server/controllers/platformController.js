@@ -1,11 +1,5 @@
-const uuid = require('uuid')
-const path = require('path')
 const {
-    Game,
-    MinRequirement,
-    RecRequirement,
     Platform,
-    GamePlatform,
 } = require("../models/models");
 const ApiError = require("../error/ApiError");
 const {Op, Sequelize} = require("sequelize");
@@ -17,7 +11,7 @@ class GameController {
             return next(ApiError.badRequest("title не задан"))
         }
         try {
-            const platform = await Platform.create(title);
+            const platform = await Platform.create({ title });
 
             return res.json(platform)
         } catch (e) {
@@ -44,7 +38,7 @@ class GameController {
 
     async getOne(req, res, next) {
         try {
-            const {id} = req.params
+            const {id} = req.body
             const platform = await Platform.findOne({
                 where: {id: id},
             })

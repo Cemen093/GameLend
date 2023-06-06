@@ -1,23 +1,24 @@
 import React, {useContext, useEffect, useState} from 'react';
-import Slider from "../components/Slider";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
+import {Container} from "react-bootstrap";
+import Slider from "../components/slider/Slider";
 
-const MainPage = ({isLoading = false}) => {
-    const {dataStore} = useContext(Context)
+const MainPage = () => {
+    const {slidersStore} = useContext(Context)
 
-    if (isLoading){
-        return <div>Main page loading</div>
-    }
+    useEffect(() => {
+        slidersStore.fetchGames();
+    }, [slidersStore])
 
     return (
-        <div>
-            <Slider items={dataStore.gamesAllPlatform.rows} className="mt-2"/>
+        <Container className="page-content">
+            <Slider loading={slidersStore.loading} items={slidersStore.gamesAllPlatform} className="mt-2"/>
             <div className="d-flex flex-row justify-content-around my-2">
-                <Slider items={dataStore.gamesPcPlatform.rows} className=" small"/>
-                <Slider items={dataStore.gamesPlaystationPlatform.rows} className="ms-4 small"/>
+                <Slider loading={slidersStore.loading} items={slidersStore.gamesPcPlatform} small={true} className=""/>
+                <Slider loading={slidersStore.loading} items={slidersStore.gamesPlaystationPlatform} small={true} className="ms-4"/>
             </div>
-        </div>
+        </Container>
     );
 };
 

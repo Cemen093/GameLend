@@ -5,11 +5,11 @@ const authMiddleware = require('../middleware/checkAuthMiddleware')
 const checkGameIdMiddleware = require('../middleware/checkGameIdMiddleware')
 const checkAdminMiddleware = require('../middleware/checkAdminMiddleware')
 
+router.post('/', authMiddleware, commentController.createComment);
+router.put('/:id', commentController.updateComment);
 router.get('/', commentController.getAllComments);
 router.get('/game/:gameId', commentController.getAllCommentsForGame);
 router.get('/:id', commentController.getCommentById);
-router.post('/', authMiddleware, commentController.createComment);
-router.put('/:id', commentController.updateComment);
-router.delete('/:id',authMiddleware, checkAdminMiddleware, commentController.deleteComment);
+router.delete('/:id',authMiddleware, checkAdminMiddleware, commentController.remove);
 
 module.exports = router;

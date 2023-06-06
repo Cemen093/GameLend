@@ -3,11 +3,11 @@ const router = new Router()
 const orderListController = require('../controllers/orderListController')
 const authMiddleware = require('../middleware/checkAuthMiddleware')
 const checkAdminMiddleware = require('../middleware/checkAdminMiddleware')
+const checkOrderIdMiddleware = require('../middleware/checkOrderIdMiddleware')
 
-router.get('/', authMiddleware, orderListController.getAllOrders);
-router.get('/get-all-games-confirmed-orders', authMiddleware, orderListController.getAllGamesConfirmedOrders);
 router.post('/', authMiddleware, orderListController.createOrder);
-router.put('/confirm-payment', authMiddleware, checkAdminMiddleware, orderListController.confirmPaymentOrder);
+router.put('/confirm-payment', authMiddleware, checkOrderIdMiddleware, checkAdminMiddleware, orderListController.confirmPaymentOrder);
+router.get('/', authMiddleware, orderListController.getAllOrders);
 router.delete('/:orderId', authMiddleware, checkAdminMiddleware, orderListController.deleteOrder);
 
 module.exports = router;

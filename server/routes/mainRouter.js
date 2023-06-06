@@ -16,7 +16,7 @@ mainRouter.use('/wishlist', wishlistRouter)
 mainRouter.use('/orderList', orderList)
 mainRouter.use('/game', gameRouter)
 mainRouter.use('/platform', platformRouter)
-mainRouter.use('/commentRouter', commentRouter)
+mainRouter.use('/comment', commentRouter)
 mainRouter.use('/typeSort', typeSortRouter)
 
 module.exports = mainRouter

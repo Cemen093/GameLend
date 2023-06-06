@@ -1,98 +1,112 @@
-const {OrderList, OrderItem, Order, Game, GamePlatform} = require("../models/models");
+const {OrderList, OrderItem, Order, Game, GamePlatform, Platform} = require("../models/models");
 const ApiError = require("../error/ApiError");
 const sequelize = require('../db');
 
 class OrderListController {
     async getAllOrders(req, res, next) {
         const userId = req.user.id;
-        const {page = 1, limit = 10} = req.query
+        const { page = 1, limit = 10 } = req.query;
         const offset = (page - 1) * limit;
+
         try {
-            const orderList = await OrderList.findOne({where: {userId}})
+            const orderList = await OrderList.findOne({ where: { userId } });
+
             const orders = await Order.findAndCountAll({
                 distinct: true,
-                where: {orderListId: orderList.id},
-                include: [
-                    {model: Game, through: {model: OrderItem, attributes: []}}],
-                offset: offset,
-                limit: limit,
-            });
-
-            return res.json(orders)
-        } catch (e) {
-            return next(ApiError.badRequest(e.message))
-        }
-    };
-
-    async getAllGamesConfirmedOrders(req, res, next) {
-        const userId = req.user.id;
-        try {
-            const orderList = await OrderList.findOne({where: {userId}})
-            const orders = await Order.findAll({
-                where: {
-                    orderListId: orderList.id,
-                    isPaid: true
-                },
+                where: { orderListId: orderList.id },
                 include: [
                     {
                         model: Game,
-                        through: {attributes: []}
+                        through: {model: OrderItem, attributes: ["price", "quantity"]},
+                        include: {model: Platform, through: {attributes: []}}
                     }
-                    ],
+                ],
+                offset,
+                limit,
             });
-            const games = orders.flatMap(order => order.games);
 
-            res.json({count: games.length, rows: games});
-        } catch (error) {
-            return next(ApiError.badRequest(e.message))
+            return res.json(orders);
+        } catch (e) {
+            console.error("getAllOrders")
+            console.error(e.message)
+            return next(ApiError.badRequest(e.message));
+        }
+    }
+
+    async getAllGamesConfirmedOrders(req, res, next) {
+        const userId = req.user.id;
+
+        try {
+            const orderList = await OrderList.findOne({ where: { userId } });
+
+            const orders = await Order.findAll({
+                distinct: true,
+                where: { orderListId: orderList.id, isPaid: true },
+                include: [
+                    {
+                        model: Game,
+                        through: { model: OrderItem, attributes: ["price", "quantity"] },
+                        include: {model: Platform, through: {attributes: []}}
+                    },
+                ],
+            });
+
+            const games = orders.flatMap((order) => order.Games);
+
+            return res.json({ count: games.length, rows: games });
+        } catch (e) {
+            console.error("getAllGamesConfirmedOrders")
+            console.error(e.message)
+            return next(ApiError.badRequest(e.message));
         }
     }
 
     async createOrder(req, res, next) {
         const userId = req.user.id;
-        const {items} = req.body
-        const orderList = await OrderList.findOne({where: {userId},});
-        if (!orderList) {
-            return next(ApiError.notFound('OrderList не найден для пользователя'));
-        }
+        const { items } = req.body;
 
+        const orderList = await OrderList.findOne({ where: { userId } });
         let transaction;
         try {
             transaction = await sequelize.transaction();
-            const newOrder = await Order.create({orderListId: orderList.id},
-                {transaction});
+
+            const newOrder = await Order.create({ orderListId: orderList.id }, { transaction });
+
             const orderItems = items.map((item) => ({
                 orderId: newOrder.id,
                 gameId: item.id,
-                quantity: item.quantity
+                quantity: item.quantity,
             }));
-            await OrderItem.bulkCreate(orderItems, {transaction});
+
+            await OrderItem.bulkCreate(orderItems, { transaction });
 
             await transaction.commit();
 
             const orders = await Order.findAndCountAll({
                 distinct: true,
-                where: {orderListId: orderList.id},
+                where: { orderListId: orderList.id },
                 include: [
-                    {model: Game, through: {model: OrderItem, attributes: []}}],
+                    {
+                        model: Game,
+                        through: { model: OrderItem, attributes: ["price", "quantity"] },
+                        include: [{ model: GamePlatform, through: { attributes: [] } }],
+                    },
+                ],
                 limit: 10,
             });
 
-            return res.json(orders)
+            return res.json(orders);
         } catch (e) {
             if (transaction) {
                 await transaction.rollback();
             }
-            return next(ApiError.badRequest(e.message))
+            return next(ApiError.badRequest(e.message));
         }
-    };
+    }
 
     async confirmPaymentOrder(req, res, next) {
-        const {orderId} = req.params
+        const {orderId} = req.body
         const order = await Order.findByPk(orderId);
-        if (!order) {
-            return next(ApiError.notFound('Заказ не найден'))
-        }
         try {
             order.isPaid = true;
             await order.save();

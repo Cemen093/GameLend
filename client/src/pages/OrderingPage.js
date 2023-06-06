@@ -4,14 +4,14 @@ import {observer} from "mobx-react-lite";
 import {useParams} from "react-router-dom";
 import {fetchGame, fetchGames} from "../http/gameAPI";
 import {Container} from "react-bootstrap";
-import "../styles/ordering.css"
 import StyledDropdown from "../components/StyledDropdown";
 import StyledInput from "../components/StyledInput";
+import "../styles/ordering.css"
 import {createOrder, removeAllGameFromBasket} from "../http/userAPI";
 
 const OrderingPage = () => {
     const {gameId} = useParams();
-    const {userStore, dataStore} = useContext(Context);
+    const {userStore, dataStore, platformsStore} = useContext(Context);
     const [games, setGames] = useState([]);
     const [selectedPlatform, setSelectedPlatform] = useState(null);
     const [promoCode, setPromoCode] = useState('');
@@ -96,7 +96,7 @@ const OrderingPage = () => {
     }
 
     return (
-        <Container fluid className="ordering-container p-0 mt-2 mb-4 pb-4">
+        <Container fluid className="page-content">
             <div className="game-list">
                 {games.map(game => <GameItem key={game.id} game={game}/>)}
             </div>
@@ -111,7 +111,7 @@ const OrderingPage = () => {
                 title="Выберите платформу: "
                 selectedItem={selectedPlatform}
                 setSelectedItem={setSelectedPlatform}
-                items={dataStore.platforms.rows}
+                items={platformsStore.platforms}
                 className="ms-2 mt-4"
             />
             <StyledInput
@@ -122,7 +122,7 @@ const OrderingPage = () => {
             />
             <div className="white-line"/>
             <div className="d-flex justify-content-end">
-                <div className="white-button mt-4 me-4" onClick={() => handleBuy(games)}>Купить</div>
+                <div className="gray-button mt-4 me-4" onClick={() => handleBuy(games)}>Купить</div>
             </div>
         </Container>
     );

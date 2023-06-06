@@ -1,0 +1,61 @@
+.brayButton {
+    padding: 3px;
+    padding-inline: 10px;
+    color: var(--white);
+    background-color: var(--grayBrown);
+    cursor: pointer;
+}
+.brayButtonLoading {
+    min-width: 70px;
+    min-height: 25px;
+}
+.whiteButton {
+    padding: 3px;
+    padding-inline: 10px;
+    color: var(--almostBlack);
+    background-color: var(--white);
+    cursor: pointer;
+}
+.whiteButtonLoading {
+    min-width: 100px;
+    min-height: 25px;
+}
+.outlineButton {
+    display: inline-block;
+    padding: 1px 15px;
+    border: 1px solid var(--almostBlack);
+    border-radius: 4px;
+    background: none;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--almostBlack);
+}
+.roundImageButton {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+}
+.roundImageButtonLoading {
+    background-color: var(--grayBrown);
+}
+.buttonsBox {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+.buttonsBoxRow {
+    margin: 10px 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+.buttonsBoxItem {
+    margin-right: 10px;
+}

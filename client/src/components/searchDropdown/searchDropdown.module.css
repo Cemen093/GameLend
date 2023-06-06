@@ -1,0 +1,34 @@
+.searchDropdown{
+
+}
+.dropdown{
+    margin-top: 2px;
+}
+.menu{
+
+}
+.item{
+    min-height: 50px;
+    min-width: 290px;
+    padding: 4px 16px;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+.image{
+    width: 70px;
+}
+.title{
+    margin-left: 5px;
+}
+.textEmpty{
+    min-height: 30px;
+    min-width: 290px;
+    margin: auto;
+    padding: 4px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+}

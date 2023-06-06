@@ -1,19 +1,29 @@
 import {$authHost, $host} from "./index";
 
-export const createGame = async ({game}) => {
-    const {data} = await $authHost.post('api/game', ...game)
+export const createGame = async (game) => {
+    const {data} = await $authHost.post("api/game", game);
     return data;
-}
+};
 
-export const fetchGames = async ({title='', platformsId=[], typeSortId=1, page=1, limit=10}) => {
-    const { data } = await $host.get(
-        'api/game',
-        {params: {title, platformsId, typeSortId, page, limit}
-    });
+export const updateGame = async (game) => {
+    const {data} = await $authHost.put("api/game", game);
     return data;
-}
+};
+export const fetchGames = async ({...props}) => {
+    const {data} = await $host.get("api/game", {params: {...props},});
+    return data;
+};
+export const fetchRandomGames = async ({...props}) => {
+    const {data} = await $host.get("api/game/random", {params: {...props},});
+    return data;
+};
 
 export const fetchGame = async (id) => {
-    const {data} = await $host.get('api/game/' + id)
+    const {data} = await $host.get(`api/game/${id}`);
     return data;
-}
+};
+
+export const deleteGame = async (id) => {
+    const {data} = await $authHost.delete(`api/game/${id}`);
+    return data;
+};

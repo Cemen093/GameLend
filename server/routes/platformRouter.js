@@ -7,7 +7,5 @@ const authMiddleware = require('../middleware/checkAuthMiddleware')
 router.post('/', authMiddleware, checkAdminMiddleware, platformController.create)
 router.get('/', platformController.getAll)
 router.get('/:id', platformController.getOne)
-// router.delete('/')
-// router.put('/')
 
 module.exports = router

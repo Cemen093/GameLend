@@ -8,6 +8,8 @@ const User = sequelize.define('user', {
     password: {type: DataTypes.STRING, allowNull: false},
     imgName: {type: DataTypes.STRING, defaultValue: "defaultUser.png", allowNull: false},
     role: {type: DataTypes.STRING, defaultValue: "USER", allowNull: false},
+    blocked: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
+    blockedUntil: { type: DataTypes.DATE, allowNull: true },
 })
 
 const Basket = sequelize.define('basket', {
@@ -49,6 +51,8 @@ const Game = sequelize.define('game', {
     rating: {type: DataTypes.STRING, allowNull: false, defaultValue: 7},
     imgName: {type: DataTypes.STRING, allowNull: false},
     trailer: {type: DataTypes.STRING, allowNull: false},
+    discountPercentage: {type: DataTypes.INTEGER, allowNull: false, defaultValue: 0},
+    discountExpirationDate: {type: DataTypes.DATE, allowNull: true},
 })
 
 const Platform = sequelize.define('platform', {
@@ -75,13 +79,6 @@ const RecRequirement = sequelize.define('rec_requirement', {
     os: {type: DataTypes.STRING, allowNull: false},
     space: {type: DataTypes.STRING, allowNull: false},
 })
-
-const Discount = sequelize.define('discount', {
-    // Поля моделі Discount
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    percentage: {type: DataTypes.INTEGER, allowNull: false},
-    expirationDate: {type: DataTypes.DATE, allowNull: true},
-});
 
 const Comment = sequelize.define('comment', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
@@ -136,11 +133,6 @@ RecRequirement.belongsTo(Game, {foreignKey: {allowNull: false}});
 Game.belongsToMany(Platform, { through: GamePlatform });
 Platform.belongsToMany(Game, { through: GamePlatform });
 
-
-//скидка
-Game.hasOne(Discount);
-Discount.belongsTo(Game);
-
 //ключи
 Game.hasMany(Key, {foreignKey: {allowNull: false}});
 Key.belongsTo(Game, {foreignKey: {allowNull: false}});
@@ -161,7 +153,6 @@ module.exports = {
     GamePlatform,
     MinRequirement,
     RecRequirement,
-    Discount,
     Comment,
     Key,
     TypeSort,

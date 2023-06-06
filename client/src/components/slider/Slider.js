@@ -1,17 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import '../styles/slider.css'
 import {useNavigate} from "react-router-dom";
-import {GAME_ROUTE} from "../utils/consts";
-import {Spinner} from "react-bootstrap";
+import {GAME_ROUTE} from "../../utils/consts";
+import styles from "./slider.module.css"
 
-const Slider = ({items, className, style, isLoading, ...props}) => {
+const Slider = ({items, className = '', style, loading = false, small = false, ...props}) => {
     const navigate = useNavigate();
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
     const [pauseTimeout, setPauseTimeout] = useState(null);
 
     useEffect(() => {
-        if (!isLoading) {
+        if (!loading) {
             const interval = setInterval(() => {
                 if (!isPaused) {
                     setCurrentIndex((prevIndex) => (prevIndex === items.length - 1 ? 0 : prevIndex + 1));
@@ -20,9 +19,9 @@ const Slider = ({items, className, style, isLoading, ...props}) => {
 
             return () => clearInterval(interval);
         }
-    }, [isPaused]);
+    }, [isPaused, items.length]);
 
-    if (isLoading) {
+    if (loading) {
         return <div>Загрузка данных пока не реализована</div>
     }
 
@@ -60,23 +59,37 @@ const Slider = ({items, className, style, isLoading, ...props}) => {
         navigate(GAME_ROUTE + '/' + id)
     }
 
+    if (items[currentIndex] === undefined) {
+        console.log("currentIndex")
+        console.log(currentIndex)
+        console.log("items")
+        console.log(items)
+        console.log("items[currentIndex]")
+        console.log(items[currentIndex])
+    }
+
     function getSliderContent() {
         return (
-            <div className="slider-content">
-                <div className="slider-image-container">
+            <div className={styles.content}>
+                <div className={styles.imageContainer}>
                     <img
+                        className={styles.image}
                         src={process.env.REACT_APP_API_URL + '/' + items[currentIndex].imgName} alt="Product"
-                        onClick={() => {handleImg(items[currentIndex].id)}}
+                        onClick={() => {
+                            handleImg(items[currentIndex].id)
+                        }}
                     />
                 </div>
-                <div className="slider-details">
-                    <div className="slider-price">{items[currentIndex].price} ₴</div>
-                    <div className="slider-description">
-                        <p className="description-text">{items[currentIndex].description}</p>
+                <div className={styles.details}>
+                    <div className={styles.price}>{items[currentIndex].price} ₴</div>
+                    <div className={styles.description}>
+                        <p className={`${styles.descriptionText} ${small ? styles.descriptionTextSmall : ''}`}>
+                            {items[currentIndex].description}
+                        </p>
                     </div>
-                    <div className="slider-platforms">
+                    <div className={styles.platformContainer}>
                         {items[currentIndex].platforms.map((platform, index) => (
-                            <div key={index} className="slider-platform">{platform.title}</div>
+                            <div key={index} className={styles.platform}>{platform.title}</div>
                         ))}
                     </div>
                 </div>
@@ -85,17 +98,17 @@ const Slider = ({items, className, style, isLoading, ...props}) => {
     }
 
     return (
-        <div className={"slider " + className} style={style} {...props}>
-            <div className="slider-navigation">
-                <button className="slider-button" onClick={handlePrev}>&lt;</button>
+        <div className={`${styles.container} ${small ? styles.containerSmall : ''}`} style={style} {...props}>
+            <div className={styles.navigation}>
+                <button className={styles.button} onClick={handlePrev}>&lt;</button>
                 {getSliderContent()}
-                <button className="slider-button" onClick={handleNext}>&gt;</button>
+                <button className={styles.button} onClick={handleNext}>&gt;</button>
             </div>
-            <div className="slider-dots">
+            <div className={styles.dotContainer}>
                 {items.map((_, index) => (
                     <div
                         key={index}
-                        className={`slider-dot ${index === currentIndex ? 'active' : ''}`}
+                        className={`${styles.dot} ${index === currentIndex ? styles.dotActive : ''}`}
                         onClick={() => handleDot(index)}
                     />
                 ))}

@@ -6,7 +6,7 @@
     border: 2px solid var(--almostBlack);
 }
 
-.slider-navigation {
+.slider .navigation {
     margin-top: 5px;
     display: flex;
     flex-direction: row;
@@ -15,7 +15,7 @@
     min-height: 85%;
 }
 
-.slider-button {
+.slider button {
     border: none;
     font-size: 30px;
     margin: 2px;
@@ -24,7 +24,7 @@
     color: var(--white);
 }
 
-.slider-content {
+.slider .content {
     display: flex;
     flex-direction: row;
     align-items: stretch;
@@ -32,7 +32,7 @@
     overflow: hidden;
 }
 
-.slider-image-container {
+.slider .image-container {
     flex: 75;
     display: flex;
     justify-content: center;
@@ -40,7 +40,7 @@
     overflow: hidden;
 }
 
-.slider-image-container img {
+.slider img {
     width: 100%;
     height: 100%;
     align-items: center;
@@ -49,7 +49,7 @@
     cursor: pointer;
 }
 
-.slider-details {
+.slider .details {
     flex: 25;
     padding: 10px;
     display: flex;
@@ -60,7 +60,7 @@
     overflow: hidden;
 }
 
-.slider-price {
+.slider .price {
     align-self: center;
     padding: 6px;
     padding-inline: 20px;
@@ -68,13 +68,13 @@
     color: var(--almostBlack)
 }
 
-.slider-description {
+.slider .description {
     margin-top: 5px;
     flex: 1 1 auto;
     overflow: hidden;
 }
 
-.description-text {
+.slider .description-text {
     margin: 0;
     display: -webkit-box;
     -webkit-line-clamp: 15;
@@ -83,7 +83,7 @@
     text-overflow: ellipsis;
 }
 
-.slider-platforms {
+.slider .platforms {
     margin-top: 5px;
     display: flex;
     flex-direction: row;
@@ -91,11 +91,11 @@
     justify-content: start;
 }
 
-.slider-platform {
+.slider .platform {
     margin-right: 5px;
 }
 
-.slider-dots {
+.slider .dots {
     flex: 1;
     display: flex;
     justify-content: center;
@@ -103,7 +103,7 @@
     margin: 10px;
 }
 
-.slider-dot {
+.slider .dot {
     margin: 5px;
     margin-inline: 12px;
     width: 30px;
@@ -112,17 +112,17 @@
     cursor: pointer;
 }
 
-.slider-dot.active {
+.slider .dot.active {
     background-color: var(--black);
 }
 
-.small{
+.slider.small{
     font-size: 10px;
     height: 300px;
 }
 
 
 
-.small .description-text {
+.slider.small .description-text {
     -webkit-line-clamp: 12;
 }

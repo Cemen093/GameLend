@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './styles/global.css';
 import App from './App';
 import UserStore from "./store/UserStore";
-import DataStore from "./store/DataStore";
+import GameStore from "./store/GameStore";
+import SlidersStore from "./store/SlidersStore";
+import PlatformsStore from "./store/PlatformsStore";
+import SortTypesStore from "./store/SortTypesStore";
 
 export const Context = createContext(null);
 
@@ -12,7 +15,10 @@ root.render(
     <React.StrictMode>
         <Context.Provider value={{
             userStore: new UserStore(),
-            dataStore: new DataStore(),
+            gameStore: new GameStore(),
+            slidersStore: new SlidersStore(),
+            platformsStore: new PlatformsStore(),
+            sortTypesStore: new SortTypesStore(),
         }}
         >
             <App/>

@@ -1,0 +1,89 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.item {
+    height: 100px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    color: var(--white);
+    background-color: var(--almostBlack);
+}
+
+.textEmpty {
+    font-size: 25px;
+    align-items: center;
+    justify-content: center;
+}
+
+.image{
+    height: 100px;
+    width: 200px;
+    object-fit: cover;
+    object-position: center;
+    cursor: pointer;
+}
+
+.imageLoading{
+    background-color: var(--grayBrown);
+}
+
+.textContainer {
+    flex: 1;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.title {
+    font-size: 22px;
+}
+
+.titleLoading{
+    height: 30px;
+    width: 220px;
+    background-color: var(--grayBrown);
+}
+
+.platformsContainer {
+    display: flex;
+}
+
+.platform {
+    margin-right: 12px;
+}
+
+.platformOneLoading {
+    height: 20px;
+    width: 50px;
+    background-color: var(--grayBrown);
+}
+
+.platformTwoLoading {
+    height: 20px;
+    width: 110px;
+    background-color: var(--grayBrown);
+}
+
+.buttonsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+.rowButtons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+}

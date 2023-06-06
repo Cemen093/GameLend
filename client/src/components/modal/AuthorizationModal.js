@@ -2,14 +2,9 @@ import React, {useContext, useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import '../../styles/authorization.css'
 import {Context} from "../../index";
-import {useNavigate} from "react-router-dom";
-import userImg from "../../assets/profile.jpg";
-import {MAIN_ROUTE} from "../../utils/consts";
-import {login, registration} from "../../http/userAPI";
 
 const AuthorizationModal = ({...props}) => {
     const {userStore} = useContext(Context)
-    const navigation = useNavigate()
     const [isLoginForm, setIsLoginForm] = useState(true)
     const [formData, setFormData] = useState({
         login: '',
@@ -46,7 +41,6 @@ const AuthorizationModal = ({...props}) => {
         clearFormData();
         clearErrors();
     }
-
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormData((prevData) => ({
@@ -54,7 +48,6 @@ const AuthorizationModal = ({...props}) => {
             [name]: value,
         }));
     };
-
     const handleSubmit = (e) => {
         e.preventDefault();
         clearErrors();
@@ -118,24 +111,17 @@ const AuthorizationModal = ({...props}) => {
 
     const signIn = async () => {
         try {
-            const user = await login(formData.email, formData.password);
-            auth(user)
+            await userStore.login(formData.email, formData.password);
         } catch (e) {
-            alert('Что то пошло не так\n' + e.response.data.message);
+            alert('Щось пішло не так\n' + e.message);
         }
     }
     const signUp = async () => {
         try {
-            const user = await registration(formData.login, formData.email, formData.password);
-            auth(user)
+            await userStore.registration(formData.login, formData.email, formData.password);
         } catch (e) {
-            alert('что то пошло не так\n' + e.response.data.message);
+            alert('Щось пішло не так\n' + e.message);
         }
-    }
-
-    const auth = (user) => {
-        userStore.setUser(user)
-        //navigation(MAIN_ROUTE)
     }
 
     const createHeader = () => {
@@ -162,7 +148,6 @@ const AuthorizationModal = ({...props}) => {
             </Modal.Header>
         )
     }
-
     const createBody = () => {
         return (
             <Modal.Body>
@@ -227,7 +212,6 @@ const AuthorizationModal = ({...props}) => {
             </Modal.Body>
         );
     };
-
     const createFooter = () => {
         return (
             <Modal.Footer>

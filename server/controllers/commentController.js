@@ -3,8 +3,44 @@ const sequelize = require('../db')
 const {User, Game, Comment} = require("../models/models");
 
 class CommentController {
+
+    async createComment(req, res, next) {
+        const userId = req.user.id;
+        const { text, img, gameId } = req.body;
+        //TODO img
+        try {
+            const user = await User.findByPk(userId);
+            const game = await Game.findByPk(gameId);
+            if (!user || !game) {
+                return next(ApiError.notFound("Користувач або гра не знайдені"));
+            }
+            const comment = await Comment.create({ text, userId, gameId });
+            return res.status(201).json(comment);
+        } catch (e) {
+            return next(ApiError.internal(e.message));
+        }
+    }
+
+    async updateComment(req, res, next) {
+        const userId = req.user.id;
+        //TODO проверка на принадлежность комм к пользователю
+        const { id, text, img } = req.body;
+        //TODO img
+        try {
+            const comment = await Comment.findByPk(id);
+            if (comment) {
+                comment.text = text;
+                await comment.save();
+                return res.json(comment);
+            } else {
+                return next(ApiError.notFound("Коментар не знайдено"));
+            }
+        } catch (e) {
+            return next(ApiError.internal(e.message));
+        }
+    }
     async getAllComments(req, res, next) {
-        const {page = 1, limit = 10} = req.query;
+        const {page = 1, limit = 10} = req.body;
         const offset = (page - 1) * limit;
         try {
             const comments = await Comment.findAndCountAll({
@@ -31,9 +67,8 @@ class CommentController {
     }
 
     async getAllCommentsForGame(req, res, next) {
-        const {page = 1, limit = 10} = req.query;
+        const {gameId, page = 1, limit = 10} = req.body;
         const offset = (page - 1) * limit;
-        const { gameId } = req.params;
         try {
             const comments = await Comment.findAndCountAll({
                 where: { gameId },
@@ -61,7 +96,7 @@ class CommentController {
 
 
     async getCommentById(req, res, next) {
-        const { id } = req.params;
+        const { id } = req.body;
         try {
             const comment = await Comment.findByPk(id, {
                 include: [
@@ -88,39 +123,7 @@ class CommentController {
         }
     }
 
-    async createComment(req, res, next) {
-        const { text, userId, gameId } = req.body;
-        try {
-            const user = await User.findByPk(userId);
-            const game = await Game.findByPk(gameId);
-            if (!user || !game) {
-                return next(ApiError.notFound("Користувач або гра не знайдені"));
-            }
-            const comment = await Comment.create({ text, userId, gameId });
-            return res.status(201).json(comment);
-        } catch (e) {
-            return next(ApiError.internal(e.message));
-        }
-    }
-
-    async updateComment(req, res, next) {
-        const { id } = req.params;
-        const { text } = req.body;
-        try {
-            const comment = await Comment.findByPk(id);
-            if (comment) {
-                comment.text = text;
-                await comment.save();
-                return res.json(comment);
-            } else {
-                return next(ApiError.notFound("Коментар не знайдено"));
-            }
-        } catch (e) {
-            return next(ApiError.internal(e.message));
-        }
-    }
-
-    async deleteComment(req, res, next) {
+    async remove(req, res, next) {
         const { id } = req.params;
         try {
             const comment = await Comment.findByPk(id);

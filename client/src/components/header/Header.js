@@ -1,21 +1,18 @@
 import React, {useContext, useEffect} from 'react';
-import {Context} from "../index";
+import {Context} from "../../index";
 import {Container, Nav, Navbar} from "react-bootstrap";
-import { useLocation, useNavigate} from "react-router-dom";
-import {
-    ACCOUNT_ROUTE,
-    BASKET_ROUTE,
-    MAIN_ROUTE, ORDERS_ROUTE,
-    WISHLIST_ROUTE,
-} from "../utils/consts";
 import {observer} from "mobx-react-lite";
-import unauthorizedUser from '../assets/unauthorizedUser.png'
-import '../styles/header.css'
-import SearchDropdown from "./SearchDropdown";
-import AuthorizationModal from "./modal/AuthorizationModal";
+import { useLocation, useNavigate} from "react-router-dom";
+import {ACCOUNT_ROUTE, BASKET_ROUTE, MAIN_ROUTE, ORDERS_ROUTE, WISHLIST_ROUTE,} from "../../utils/consts";
+import SearchDropdown from "../searchDropdown/SearchDropdown";
+import AuthorizationModal from "../modal/AuthorizationModal";
+import RoundImageButton from "../buttons/RoundImageButton";
+import '../../styles/header.css'
+import unauthorizedUser from '../../assets/unauthorizedUser.png'
+import OutlineButton from "../buttons/OutlineButton";
 
-const NavBar = () => {
-    const {userStore, dataStore} = useContext(Context)
+const Header = () => {
+    const {userStore} = useContext(Context)
     const location = useLocation();
     const navigate = useNavigate();
     const [authorizationModalShow, setAuthorizationModalShow] = React.useState(false);
@@ -62,48 +59,42 @@ const NavBar = () => {
         }
     }
     const notLogin = () => {
-        alert('А ты зарегистрировался?')
+        alert('Користувач не загеестрованний.')
     }
 
-    const createNav = () => {
+    const Navs = () => {
         return (
             <Nav className="my-2 my-lg-0">
                 <Nav.Link active={location.pathname === MAIN_ROUTE} href='#' onClick={handleMain}>
-                    Главное меню
+                    Головне меню
                 </Nav.Link>
                 <Nav.Link active={location.pathname === BASKET_ROUTE} href='#' onClick={handleBasket}>
-                    Корзина
+                    Кошик
                 </Nav.Link>
                 <Nav.Link active={location.pathname === WISHLIST_ROUTE} href='#' onClick={handleWishlist}>
-                    Список желаемого
+                    Список бажаного
                 </Nav.Link>
                 <Nav.Link active={location.pathname === ORDERS_ROUTE} href='#' onClick={handleOrders}>
-                    Заказы
+                    Замовлення
                 </Nav.Link>
             </Nav>
         );
     }
 
-    const createAccountBox = () => {
+    const AccountBox = observer(() => {
         return (
             <div className="ms-auto d-flex align-items-center">
-                <div
-                    className="profile-auth-btn"
-                    onClick={handleAuthBtn}
-                >
-                    {userStore.isAuth ? "Выход" : "Вход"}
-                </div>
+                <OutlineButton onClick={handleAuthBtn}>{userStore.isAuth ? "Вихід" : "Вхід"}</OutlineButton>
                 <AuthorizationModal show={authorizationModalShow} onHide={() => setAuthorizationModalShow(false)}/>
-                <img
-                    className="profile-img ms-2"
-                    src={userStore.isAuth ? userStore.user.imgName : unauthorizedUser}
+                <RoundImageButton
+                    className="ms-2"
+                    image={userStore.isAuth ? process.env.REACT_APP_API_URL + '/' + userStore.user.imgName : unauthorizedUser}
                     onClick={handleProfileImg}
-                    alt="profile img"
+                    diameter={40}
                 />
-
             </div>
         )
-    }
+    })
 
     return (
         <div className="header">
@@ -112,9 +103,9 @@ const NavBar = () => {
                     <Navbar.Brand className="brand cursor-pointer" onClick={handleBrand}>Game Land</Navbar.Brand>
                     <Navbar.Toggle aria-controls="NavbarScroll"/>
                     <Navbar.Collapse id="NavbarScroll">
-                        {createNav()}
+                        <Navs/>
                         <SearchDropdown/>
-                        {createAccountBox()}
+                        <AccountBox/>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
@@ -122,4 +113,4 @@ const NavBar = () => {
     );
 };
 
-export default observer(NavBar);
+export default observer(Header);

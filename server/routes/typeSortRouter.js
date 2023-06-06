@@ -7,7 +7,5 @@ const authMiddleware = require('../middleware/checkAuthMiddleware')
 router.post('/', authMiddleware, checkAdminMiddleware, typeSortController.create)
 router.get('/', typeSortController.getAll)
 router.get('/:id', typeSortController.getOne)
-// router.delete('/')
-// router.put('/')
 
 module.exports = router
