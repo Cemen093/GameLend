@@ -7,7 +7,7 @@
 .menu{
 
 }
-.item{
+.itemContainer{
     min-height: 50px;
     min-width: 290px;
     padding: 4px 16px;
@@ -15,7 +15,7 @@
     align-items: center;
     flex-wrap: nowrap;
 }
-.image{
+.itemCardImage{
     width: 70px;
 }
 .title{

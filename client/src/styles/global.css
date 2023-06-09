@@ -49,13 +49,13 @@ body {
     cursor: pointer;
 }
 
-.gray-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    white-space: nowrap;
-    padding: 10px 20px;
-    cursor: pointer;
-    color: var(--white);
-    background-color: var(--grayBrown);
-}
+/*.gray-button {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    white-space: nowrap;*/
+/*    padding: 10px 20px;*/
+/*    cursor: pointer;*/
+/*    color: var(--white);*/
+/*    background-color: var(--grayBrown);*/
+/*}*/

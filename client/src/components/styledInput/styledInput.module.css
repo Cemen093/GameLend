@@ -1,15 +1,15 @@
-.styled-input {
+.container {
     display: flex;
     flex-direction: row;
     color: var(--white);
 }
 
-.styled-input-title {
+.title {
     white-space: nowrap;
 
 }
 
-.styled-input input {
+.input {
     margin-left: 10px;
     padding-right: 2em;
     color: var(--white);

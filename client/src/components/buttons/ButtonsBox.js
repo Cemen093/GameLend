@@ -1,13 +1,13 @@
 import React, {useContext} from 'react';
 import {useNavigate} from "react-router-dom";
-import wastebasket from "../assets/wastebasket.png";
-import {ORDERING_ROUTE} from "../utils/consts";
-import {Context} from "../index";
-import WhiteButton from "./buttons/WhiteButton";
-import GrayButton from "./buttons/GrayButton";
-import RoundImageButton from "./buttons/RoundImageButton";
-import basket from "../assets/basket.png";
-import styles from "../styles/buttons.module.css"
+import wastebasket from "../../assets/wastebasket.png";
+import {ORDERING_ROUTE} from "../../utils/consts";
+import {Context} from "../../index";
+import WhiteButton from "./WhiteButton";
+import GrayButton from "./GrayButton";
+import RoundImageButton from "./RoundImageButton";
+import basket from "../../assets/basket.png";
+import styles from "./buttons.module.css"
 
 const ButtonsBox = ({game, loading, buttons}) => {
     const {userStore} = useContext(Context);

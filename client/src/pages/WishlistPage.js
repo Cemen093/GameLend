@@ -7,7 +7,6 @@ import {observer} from "mobx-react-lite";
 const WishlistPage = () => {
     const {userStore} = useContext(Context)
 
-    console.log(userStore.wishlistGames)
     return (
         <Container className="page-content">
             <GameList

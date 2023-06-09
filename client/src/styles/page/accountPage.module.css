@@ -1,0 +1,155 @@
+/*страница*/
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: var(--almostBlack);
+    color: var(--white);
+}
+.column {
+    width: 49%;
+    display: flex;
+    flex-direction: column;
+}
+
+/*пользователь*/
+.userContainer {
+    display: flex;
+    flex-direction: row;
+}
+.userContainerSkeleton {
+
+}
+
+.profileImage {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    object-position: center;
+    cursor: pointer;
+}
+.profileImageSkeleton {
+    background-color: var(--grayBrown);
+}
+
+.content {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.contentSkeleton {
+
+}
+
+.row {
+    margin: 2px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.rowSkeleton {
+
+}
+
+.text {
+    min-height: 25px;
+    min-width: 100px;
+}
+.textSkeleton {
+    background-color: var(--grayBrown);
+}
+
+.title {
+    font-size: 20px;
+}
+.titleSkeleton {
+
+}
+
+/*предмет купленого*/
+
+.boughtItem {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    cursor: pointer;
+    background-color: var(--almostBlack);
+}
+.boughtItemSkeleton {
+    background: none;
+    border: 1px solid var(--almostBlack);
+}
+
+.boughtImage{
+    height: 100px;
+    width: 50%;
+    object-fit: cover;
+    object-position: center;
+}
+.boughtImageSkeleton {
+
+}
+
+.boughtItemContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.boughtItemContentSkeleton {
+
+}
+
+.boughtItemTitle {
+    font-size: 17px;
+    text-align: center;
+}
+.boughtItemTitleSkeleton {
+
+}
+
+.boughtItemBoughtAt {
+
+}
+.boughtItemBoughtAtSkeleton {
+
+}
+
+/*предмет кошику*/
+.itemContainer {
+    margin: 10px;
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+}
+.itemContainerSkeleton {
+    margin: 10px;
+    height: 70px;
+    border: 1px solid var(--almostBlack);
+}
+
+.itemImage {
+    margin: 2px 0;
+    height: 100%;
+    width: 150px;
+    object-fit: cover;
+    object-position: center;
+}
+.itemImageSkeleton {
+    padding: 2px 0;
+    height: 100%;
+    width: 150px;
+    border-right: 1px solid var(--almostBlack);
+}
+
+.itemTitle {
+    margin-left: 10px;
+}
+.itemTitleSkeleton {
+    border: 1px solid var(--almostBlack);
+}

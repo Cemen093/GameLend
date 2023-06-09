@@ -11,23 +11,18 @@ class OrderListController {
         try {
             const orderList = await OrderList.findOne({ where: { userId } });
 
-            const orders = await Order.findAndCountAll({
-                distinct: true,
+            const orders = await Order.findAll({
                 where: { orderListId: orderList.id },
-                include: [
-                    {
-                        model: Game,
-                        through: {model: OrderItem, attributes: ["price", "quantity"]},
-                        include: {model: Platform, through: {attributes: []}}
-                    }
-                ],
-                offset,
+                include: {
+                    model: OrderItem,
+                    include: Game,
+                },
                 limit,
+                offset
             });
 
-            return res.json(orders);
+            return res.json({count: orders.length, rows: orders});
         } catch (e) {
-            console.error("getAllOrders")
             console.error(e.message)
             return next(ApiError.badRequest(e.message));
         }
@@ -40,15 +35,12 @@ class OrderListController {
             const orderList = await OrderList.findOne({ where: { userId } });
 
             const orders = await Order.findAll({
-                distinct: true,
-                where: { orderListId: orderList.id, isPaid: true },
-                include: [
-                    {
-                        model: Game,
-                        through: { model: OrderItem, attributes: ["price", "quantity"] },
-                        include: {model: Platform, through: {attributes: []}}
-                    },
-                ],
+                where: { orderListId: orderList.id, isPaid: true  },
+                include: {
+                    model: OrderItem,
+                    include: Game,
+                    attributes: ['id', 'price', 'quantity'],
+                }
             });
 
             const games = orders.flatMap((order) => order.Games);
@@ -64,6 +56,8 @@ class OrderListController {
     async createOrder(req, res, next) {
         const userId = req.user.id;
         const { items } = req.body;
+        console.log(req.body)
+        console.log(req.params)
 
         const orderList = await OrderList.findOne({ where: { userId } });
         let transaction;
@@ -75,6 +69,7 @@ class OrderListController {
             const orderItems = items.map((item) => ({
                 orderId: newOrder.id,
                 gameId: item.id,
+                price: item.price,
                 quantity: item.quantity,
             }));
 
@@ -82,17 +77,14 @@ class OrderListController {
 
             await transaction.commit();
 
-            const orders = await Order.findAndCountAll({
-                distinct: true,
+            const orders = await Order.findAll({
                 where: { orderListId: orderList.id },
-                include: [
-                    {
-                        model: Game,
-                        through: { model: OrderItem, attributes: ["price", "quantity"] },
-                        include: [{ model: GamePlatform, through: { attributes: [] } }],
-                    },
-                ],
-                limit: 10,
+                include: {
+                    model: OrderItem,
+                    include: Game,
+                    attributes: ['id', 'price', 'quantity'],
+                },
+                limit: 10
             });
 
             return res.json(orders);

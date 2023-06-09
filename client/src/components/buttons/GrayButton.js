@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "../../styles/buttons.module.css"
+import styles from "./buttons.module.css"
 
 const GrayButton = ({className='', style={}, onClick, children, loading}) => {
 

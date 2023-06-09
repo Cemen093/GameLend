@@ -1,0 +1,67 @@
+.header {
+    margin-top: 10px;
+    padding-inline: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: var(--almostBlack);
+    border-bottom: 3px solid var(--almostBlack);
+}
+
+.brand {
+    font-weight: 700;
+    font-size: 25px;
+    font-family: livvic, sans-serif;
+    cursor: pointer;
+}
+
+.navContainer {
+    margin: 0 5px;
+    display: flex;
+    flex-direction: row;
+}
+
+.nav {
+    margin: 10px 10px;
+    cursor: pointer;
+}
+
+.navLincActive {
+    font-weight: bold;
+    border-bottom: 3px solid var(--almostBlack);
+}
+
+.accountBox {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.profileButton {
+    margin-left: 10px;
+}
+
+
+@media (min-width: 576px) {
+    .container {
+        max-width: 540px;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+    }
+}
+
+@media (min-width: 992px) {
+    .container {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+}

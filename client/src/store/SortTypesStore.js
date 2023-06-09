@@ -4,7 +4,7 @@ import {fetchPlatforms} from "../http/platformAPI";
 import {createSortType, fetchSortTypes} from "../http/sortTypesAPI";
 
 export default class SortTypesStore {
-    _sortsType = [];
+    _sortTypes = [];
     _loading = false;
 
     constructor() {
@@ -27,7 +27,7 @@ export default class SortTypesStore {
             runInAction(() => this._loading = true);
             const typeSorts = await fetchSortTypes().then(data => data.rows);
             runInAction(() => {
-                this._sortsType = typeSorts;
+                this._sortTypes = typeSorts;
                 this._loading = false;
             });
         } catch (error) {
@@ -44,8 +44,8 @@ export default class SortTypesStore {
             this._loading = false;
         }
     }
-    get sortsType() {
-        return this._sortsType;
+    get sortTypes() {
+        return this._sortTypes;
     }
 
     get loading() {

@@ -1,13 +1,6 @@
 import {makeAutoObservable, runInAction} from "mobx";
 import jwt_decode from "jwt-decode";
-import {
-    registration,
-    login,
-    checkAuth,
-    updateUser,
-    updateUserByAdmin,
-    deleteUserByAdmin
-} from "../http/userAPI";
+import {checkAuth, deleteUserByAdmin, login, registration, updateUser, updateUserByAdmin} from "../http/userAPI";
 import {
     addGameToBasket,
     fetchAllGamesFromBasket,
@@ -15,24 +8,19 @@ import {
     removeGameFromBasket
 } from "../http/basketAPI";
 import {
-    fetchAllGamesFromWishlist,
     addGameToWishlist,
+    fetchAllGamesFromWishlist,
     moveGameFromWishlistToBasket,
     removeGameFromWishlist
 } from "../http/wishlistAPI";
-import {
-    fetchAllOrders,
-    confirmPaymentOrder,
-    createOrder,
-    deleteOrder
-} from "../http/orderAPI";
+import {confirmPaymentOrder, createOrder, deleteOrder, fetchAllOrders} from "../http/orderAPI";
 
 export default class UserStore {
     _user = {};
     _basketGames = [];
     _wishlistGames = [];
     _orders = [];
-    _loading = false;
+    _loading = true;
 
     constructor() {
         makeAutoObservable(this)
@@ -50,10 +38,24 @@ export default class UserStore {
         return this._wishlistGames;
     }
 
-    get boughtGames() {
-        return this._wishlistGames
-            .filter(item => item.isPaid)
-            .flatMap(item => item.games);
+    get orderGames() {
+        return this._orders.flatMap(order =>
+            order.order_items.flatMap(item =>
+                Array.from({ length: item.quantity }, () => ({
+                    ...item.game,
+                    price: item.price,
+                    isPaid: order.isPaid,
+                    buyAt: order.createdAt
+                }))
+            )
+        )
+
+    }
+
+    get boughtOrderGames() {
+        return this.orderGames
+        .filter(item => item.isPaid)
+
     }
 
     get orders() {
@@ -140,7 +142,7 @@ export default class UserStore {
                 this._orders = orders;
             });
         } catch (error) {
-            console.error('Помилка при отриманні даних користувача:', error);
+            console.error('Помилка при отриманні додаткових данних користувача:', error);
             this.logOut();
             this._loading = false;
         }
@@ -294,7 +296,7 @@ export default class UserStore {
         try {
             runInAction(() => this._loading = true);
 
-            const orders = await createOrder().then(data => data.rows)
+            const orders = await createOrder(items).then(data => data.rows)
             if (isFromBasket){
                 await removeAllGameFromBasket();
             }
@@ -303,9 +305,11 @@ export default class UserStore {
                 this._orders = orders;
                 this._loading = false;
             });
+            return true
         } catch (error) {
             console.error('Помилка при створенні заказу:', error);
             this._loading = false;
+            return false
         }
     }
 

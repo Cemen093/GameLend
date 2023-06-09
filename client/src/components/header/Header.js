@@ -1,13 +1,12 @@
 import React, {useContext, useEffect} from 'react';
 import {Context} from "../../index";
-import {Container, Nav, Navbar} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
-import { useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {ACCOUNT_ROUTE, BASKET_ROUTE, MAIN_ROUTE, ORDERS_ROUTE, WISHLIST_ROUTE,} from "../../utils/consts";
 import SearchDropdown from "../searchDropdown/SearchDropdown";
-import AuthorizationModal from "../modal/AuthorizationModal";
+import AuthorizationModal from "../modal/authorization/AuthorizationModal";
 import RoundImageButton from "../buttons/RoundImageButton";
-import '../../styles/header.css'
+import styles from './header.module.css'
 import unauthorizedUser from '../../assets/unauthorizedUser.png'
 import OutlineButton from "../buttons/OutlineButton";
 
@@ -64,30 +63,34 @@ const Header = () => {
 
     const Navs = () => {
         return (
-            <Nav className="my-2 my-lg-0">
-                <Nav.Link active={location.pathname === MAIN_ROUTE} href='#' onClick={handleMain}>
+            <div className={`${styles.navContainer}`}>
+                <div className={`${styles.nav} ${location.pathname === MAIN_ROUTE && styles.navLincActive}`}
+                     onClick={handleMain}>
                     Головне меню
-                </Nav.Link>
-                <Nav.Link active={location.pathname === BASKET_ROUTE} href='#' onClick={handleBasket}>
+                </div>
+                <div className={`${styles.nav} ${location.pathname === BASKET_ROUTE && styles.navLincActive}`}
+                     onClick={handleBasket}>
                     Кошик
-                </Nav.Link>
-                <Nav.Link active={location.pathname === WISHLIST_ROUTE} href='#' onClick={handleWishlist}>
+                </div>
+                <div className={`${styles.nav} ${location.pathname === WISHLIST_ROUTE && styles.navLincActive}`}
+                     onClick={handleWishlist}>
                     Список бажаного
-                </Nav.Link>
-                <Nav.Link active={location.pathname === ORDERS_ROUTE} href='#' onClick={handleOrders}>
+                </div>
+                <div className={`${styles.nav} ${location.pathname === ORDERS_ROUTE && styles.navLincActive}`}
+                     onClick={handleOrders}>
                     Замовлення
-                </Nav.Link>
-            </Nav>
+                </div>
+            </div>
         );
     }
 
     const AccountBox = observer(() => {
         return (
-            <div className="ms-auto d-flex align-items-center">
+            <div className={styles.accountBox}>
                 <OutlineButton onClick={handleAuthBtn}>{userStore.isAuth ? "Вихід" : "Вхід"}</OutlineButton>
                 <AuthorizationModal show={authorizationModalShow} onHide={() => setAuthorizationModalShow(false)}/>
                 <RoundImageButton
-                    className="ms-2"
+                    className={styles.profileButton}
                     image={userStore.isAuth ? process.env.REACT_APP_API_URL + '/' + userStore.user.imgName : unauthorizedUser}
                     onClick={handleProfileImg}
                     diameter={40}
@@ -97,18 +100,11 @@ const Header = () => {
     })
 
     return (
-        <div className="header">
-            <Navbar>
-                <Container fluid>
-                    <Navbar.Brand className="brand cursor-pointer" onClick={handleBrand}>Game Land</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="NavbarScroll"/>
-                    <Navbar.Collapse id="NavbarScroll">
-                        <Navs/>
-                        <SearchDropdown/>
-                        <AccountBox/>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
+        <div className={`${styles.header}`}>
+            <div className={styles.brand} onClick={handleBrand}>Game Land</div>
+            <Navs/>
+            <SearchDropdown/>
+            <AccountBox/>
         </div>
     );
 };

@@ -12,6 +12,3 @@ router.put('/update/:email', authMiddleware, checkAdminMiddleware, userControlle
 router.delete('/:userId', authMiddleware, checkAdminMiddleware, userController.deleteUser);
 
 module.exports = router
-
-
-

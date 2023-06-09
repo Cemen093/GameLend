@@ -1,11 +1,14 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Container} from "react-bootstrap";
+import React, {useContext} from 'react';
 import {Context} from "../index";
-import "../styles/account.css"
 import pencil from "../assets/pencil.png"
 import {useNavigate} from "react-router-dom";
 import {ADMIN_ROUTE, BASKET_ROUTE, GAME_ROUTE, ORDERS_ROUTE, WISHLIST_ROUTE} from "../utils/consts";
 import {observer} from "mobx-react-lite";
+import PageContent from "../components/pageContent/PageContent";
+import GrayButton from "../components/buttons/GrayButton";
+import RoundImageButton from "../components/buttons/RoundImageButton";
+import List from "../components/list/List";
+import styles from "../styles/page/accountPage.module.css"
 
 const AccountPage = () => {
     const navigate = useNavigate();
@@ -19,111 +22,136 @@ const AccountPage = () => {
 
     }
 
-    const BoughtList = ({...props}) => {
-        return (
-            <div className="bought" {...props}>
-                <div className="bought-title" onClick={() => navigate(ORDERS_ROUTE)}>Куплено</div>
-                <div className="bought-list">
-                    {userStore.loading
-                        ?
-                        [...Array(5)].map((_, i) => <div key={i} className="bought-item"/>)
-                        :
-                        userStore.boughtGames.length > 0 ?
-                            userStore.boughtGames.map(game =>
-                                <div key={game.id} className="bought-item">
-                                    <img src={process.env.REACT_APP_API_URL + '/' + game.imgName} alt="poster"/>
-                                    <div className="bought-item-content">
-                                        <div className="bought-item-title">{game.title}</div>
-                                        <div className="bought-item-bought-at">Куплено: 12.03.2023</div>
-                                    </div>
-                                </div>
-                            )
-                            :
-                            <div>Куплених ігор поки немає</div>
-                    }
-                </div>
-            </div>
-        )
-    }
-
-    const Basket = ({...props}) => {
-        return (
-            <div className="basket" {...props}>
-                <div className="title" onClick={() => navigate(BASKET_ROUTE)}>Корзина</div>
-                <div className="container">
-                    {userStore.loading
-                        ?
-                        [...Array(10)].map((_, i) => <div key={i} className="basket-item"/>)
-                        :
-                        userStore.basketGames.length > 0 ?
-                            userStore.basketGames.map(game =>
-                                <div key={game.id} className="basket-item"
-                                     onClick={() => navigate(GAME_ROUTE + '/' + game.id)}>
-                                    <img src={process.env.REACT_APP_API_URL + '/' + game.imgName} alt="picture"/>
-                                    <div className="basket-item-title">{game.title}</div>
-                                </div>
-                            )
-                            :
-                            <div>В кошику поки немає ігор</div>
-                    }
-                </div>
-            </div>
-        )
-    }
-
-    const Wishlist = ({...props}) => {
-        return (
-            <div className="wishlist" {...props}>
-                <div className="title" onClick={() => navigate(WISHLIST_ROUTE)}>Список бажаного</div>
-                <div className="container">
-                    {userStore.loading
-                        ?
-                        [...Array(5)].map((_, i) => <div key={i} className="basket-item"/>)
-                        :
-                        userStore.wishlistGames.length > 0 ?
-                            userStore.wishlistGames.map(game =>
-                                <div key={game.id} className="basket-item"
-                                     onClick={() => navigate(GAME_ROUTE + '/' + game.id)}>
-                                    <img src={process.env.REACT_APP_API_URL + '/' + game.imgName} alt="picture"/>
-                                    <div className="basket-item-title">{game.title}</div>
-                                </div>
-                            )
-                            :
-                            <div>В списку бажаного поки нема ігор</div>
-                    }
-                </div>
-            </div>
-        )
-    }
-
-    return (
-        <Container className="account-container">
-            <div className="column-one">
-                <div className="user-container">
-                    <img src={process.env.REACT_APP_API_URL + '/' + userStore.user.imgName} alt="profile"/>
-                    <div className="content">
-                        <div className="line">
-                            <div>{userStore.user.login}</div>
-                            <img className="edit-button" src={pencil} alt="edit-btn" onClick={handleEditLogin}></img>
+    const User = ({...props}) => {
+        if (userStore.loading) {
+            return (
+                <div className={styles.userContainer} {...props}>
+                    <div className={`${styles.profileImageSkeleton} ${styles.profileImage}`}/>
+                    <div className={`${styles.contentSkeleton} ${styles.content}`}>
+                        <div className={styles.row}>
+                            <div className={`${styles.text} ${styles.textSkeleton}`}/>
+                            <RoundImageButton className={`m-2`} loading={true}/>
                         </div>
-                        <div className="line">
-                            <div>{userStore.user.email}</div>
-                            <img className="edit-button" src={pencil} alt="edit-btn" onClick={handleEditEmail}></img>
+                        <div className={styles.row}>
+                            <div className={`${styles.text} ${styles.textSkeleton}`}/>
+                            <RoundImageButton className={`m-2`} loading={true}/>
                         </div>
                         {userStore.isAdmin &&
-                        <div className="line">
-                            <div className="gray-button" onClick={() => navigate(ADMIN_ROUTE)}>Адмінка</div>
-                        </div>
+                            <div className={styles.row}>
+                                <GrayButton loading={true}>Адмінка</GrayButton>
+                            </div>
                         }
                     </div>
                 </div>
-                <BoughtList/>
+            )
+        }
+
+        return (
+            <div className={styles.userContainer} {...props}>
+                <img className={styles.profileImage} src={process.env.REACT_APP_API_URL + '/' + userStore.user.imgName}
+                     alt="profile"/>
+                <div className={styles.content}>
+                    <div className={styles.row}>
+                        <div className={`${styles.text}`}>{userStore.user.login}</div>
+                        <RoundImageButton className={`m-2`} image={pencil} diameter={23} alt="edit-btn"
+                                          onClick={handleEditLogin}/>
+                    </div>
+                    <div className={styles.row}>
+                        <div className={`${styles.text}`}>{userStore.user.email}</div>
+                        <RoundImageButton className={`m-2`} image={pencil} diameter={23} alt="edit-btn"
+                                          onClick={handleEditEmail}/>
+                    </div>
+                    {userStore.isAdmin &&
+                        <div className={styles.row}>
+                            <GrayButton onClick={() => navigate(ADMIN_ROUTE)}>Адмінка</GrayButton>
+                        </div>
+                    }
+                </div>
             </div>
-            <div className="column-two">
-                <Basket/>
-                <Wishlist/>
+        )
+    }
+
+    const BoughtItem = ({item, loading, className, style = {}, ...props}) => {
+        if (loading) {
+            return (
+                <div className={`${styles.boughtItem} ${styles.boughtItemSkeleton}`}>
+                    <div className={`${styles.boughtImage} ${styles.boughtImageSkeleton}`}/>
+                    <div className={`${styles.boughtItemContent} ${styles.boughtItemContentSkeleton}`}>
+                        <div className={`${styles.boughtItemTitle} ${styles.boughtItemTitleSkeleton}`}/>
+                        <div className={`${styles.boughtItemBoughtAt} ${styles.boughtItemBoughtAtSkeleton}`}/>
+                    </div>
+                </div>
+            )
+        }
+
+        return (
+            <div key={item.id} className={styles.boughtItem}>
+                <img className={styles.boughtImage} src={process.env.REACT_APP_API_URL + '/' + item.imgName}
+                     alt="poster"/>
+                <div className={styles.boughtItemContent}>
+                    <div className={styles.boughtItemTitle}>{item.title}</div>
+                    <div className={styles.boughtItemBoughtAt}>Куплено: {(new Date(item.buyAt)).toLocaleDateString()}</div>
+                </div>
             </div>
-        </Container>
+        )
+    }
+
+    const Item = ({item, loading, className, style = {}, ...props}) => {
+
+        if (loading) {
+            return (
+                <div className={styles.itemContainerSkeleton}>
+                    <div className={styles.itemImageSkeleton}/>
+                </div>
+            )
+        }
+
+        return (
+            <div className={`${styles.itemContainer} ${className}`} style={style}
+                 onClick={() => navigate(GAME_ROUTE + '/' + item?.id)}>
+                <img className={styles.itemImage} src={process.env.REACT_APP_API_URL + '/' + item?.imgName}
+                     alt="picture"/>
+                <div className={styles.itemTitle}>{item?.title}</div>
+            </div>
+        )
+    }
+
+
+    return (
+        <PageContent className={`${styles.container}`}>
+            <div className={styles.column}>
+                <User/>
+                <List
+                    className={'p-2 mt-4'}
+                    title="Придбанно"
+                    textEmpty="В придбаному поки нема ігор"
+                    onTitleClick={() => navigate(ORDERS_ROUTE)}
+                    items={userStore.boughtOrderGames}
+                    itemsComponent={<BoughtItem className={""}/>}
+                    loading={userStore.loading}
+                />
+            </div>
+            <div className={styles.column}>
+                <List
+                    className={'p-2 mt-2'}
+                    title="Кошик"
+                    textEmpty="В кошику поки нема ігор"
+                    onTitleClick={() => navigate(BASKET_ROUTE)}
+                    items={userStore.basketGames}
+                    itemsComponent={<Item className={""}/>}
+                    loading={userStore.loading}
+                />
+                <List
+                    className={'p-2 mt-2'}
+                    title="Список бажаного"
+                    textEmpty="В списку бажаного поки нема ігор"
+                    onTitleClick={() => navigate(WISHLIST_ROUTE)}
+                    items={userStore.wishlistGames}
+                    itemsComponent={<Item className={""}/>}
+                    loading={userStore.loading}
+                />
+            </div>
+        </PageContent>
     );
 };
 

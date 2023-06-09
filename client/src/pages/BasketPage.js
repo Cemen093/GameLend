@@ -1,19 +1,18 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Context} from "../index";
-import GameList from "../components/gameList/GameList";
-import {Container} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
 import {useNavigate} from "react-router-dom";
 import {ORDERING_ROUTE} from "../utils/consts";
 import WhiteButton from "../components/buttons/WhiteButton";
+import PageContent from "../components/pageContent/PageContent";
+import GameList from "../components/gameList/GameList";
 
 const BasketPage = () => {
     const {userStore, dataStore} = useContext(Context);
     const navigate = useNavigate();
 
-    console.log(userStore.basketGames)
     return (
-        <Container className="page-content">
+        <PageContent>
             <div className="bg-almostBlack">
                 <GameList
                     games={userStore.basketGames}
@@ -32,7 +31,7 @@ const BasketPage = () => {
             <div className="bg-almostBlack d-flex justify-content-end mt-2 py-4 pe-3">
                 <WhiteButton onClick={() => navigate(ORDERING_ROUTE)}>Придбати</WhiteButton>
             </div>
-        </Container>
+        </PageContent>
     );
 };
 

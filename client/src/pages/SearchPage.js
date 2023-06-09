@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
 import {Container, Spinner} from "react-bootstrap";
-import StyledDropdown from "../components/StyledDropdown";
-import StyledSearch from "../components/StyledSearch";
+import StyledDropdown from "../components/styledDropdown/StyledDropdown";
+import StyledSearch from "../components/styledSearch/StyledSearch";
 import GameList from "../components/gameList/GameList";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
@@ -25,7 +25,7 @@ const SearchPage = () => {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedPlatform, setSelectedPlatform] = useState(platforms[0]);
-    const [selectedSort, setSelectedSort] = useState(sortTypesStore.typeSorts[0]);
+    const [selectedSort, setSelectedSort] = useState(sortTypesStore.sortTypes[0]);
     const isDataInitialized = useRef(false);
 
     useEffect(() => {
@@ -56,6 +56,7 @@ const SearchPage = () => {
                     searchText={searchQuery}
                     setSearchText={setSearchQuery}
                     className="width-grow"
+                    style={{width: "100%"}}
                 />
 
                 <StyledDropdown
@@ -69,7 +70,7 @@ const SearchPage = () => {
                     title="Сортировка"
                     selectedItem={selectedSort}
                     setSelectedItem={setSelectedSort}
-                    items={sortTypesStore.typeSorts}
+                    items={sortTypesStore.sortTypes}
                     className="ms-2"
                 />
             </div>

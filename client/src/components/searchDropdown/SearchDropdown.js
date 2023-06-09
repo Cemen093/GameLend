@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {Dropdown} from 'react-bootstrap';
 import {Context} from "../../index";
 import {GAME_ROUTE, SEARCH_ROUTE} from "../../utils/consts";
-import StyledSearch from "../StyledSearch";
+import StyledSearch from "../styledSearch/StyledSearch";
 import {observer} from "mobx-react-lite";
 import styles from "./searchDropdown.module.css"
 

@@ -6,15 +6,16 @@ import {Context} from "../index";
 import {useLocation, useParams} from "react-router-dom";
 import {fetchGame} from "../http/gameAPI";
 import {observer} from "mobx-react-lite";
-import ButtonsBox from "../components/ButtonsBox";
+import ButtonsBox from "../components/buttons/ButtonsBox";
 
 const GamePage = () => {
     const {gameStore} = useContext(Context);
     const location = useLocation();
     const {id} = useParams();
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        gameStore.fetchGame(id)
+        gameStore.fetchGame(id).then(() => setIsLoading(false))
     }, [location])
 
     const createRequirement = ({cpu, ram, os, space}) => {
@@ -30,10 +31,9 @@ const GamePage = () => {
         )
     }
 
-    if (gameStore.loading){
+    if (gameStore.loading || isLoading){
         return <div></div>
     }
-    console.log(gameStore.game)
 
     return (
         <Container style={{backgroundColor: colors.black}} className="">

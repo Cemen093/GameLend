@@ -1,0 +1,69 @@
+.container {
+    color: var(--white);
+}
+
+/*table*/
+.orderRow {
+    display: flex;
+    flex-direction: row;
+    min-height: 60px;
+}
+.orderCol {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2px;
+    background-color: var(--black);
+}
+.orderCol1 {
+    flex: 45;
+}
+.orderCol2 {
+    flex: 15;
+}
+.orderCol3 {
+    flex: 25;
+}
+.orderCol4 {
+    flex: 15
+}
+
+/*header*/
+.headerTitle {
+    font-size: 20px;
+}
+
+/*item*/
+.itemCardContainer{
+    justify-content: flex-start;
+    align-items: center;
+}
+.itemCardContainerSkeleton{
+}
+.itemCardImage {
+    width: 200px;
+    height: 100px;
+    object-fit: cover;
+    object-position: center;
+}
+.itemCardImageSkeleton {
+    background-color: var(--grayBrown);
+}
+.itemCardTitle {
+    margin: 10px;
+    font-size: 18px;
+}
+.itemCardTitleSkeleton {
+}
+
+/*empty*/
+.itemsEmpty {
+    margin: 2px;
+    min-height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    color: var(--white);
+    background-color: var(--almostBlack);
+}

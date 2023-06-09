@@ -1,0 +1,12 @@
+.listContainer {
+    text-align: center;
+    background-color: var(--grayBrown);
+}
+
+.listTitle {
+    cursor: pointer;
+}
+
+.listItemsContainer {
+
+}

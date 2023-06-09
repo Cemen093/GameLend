@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
-import '../../styles/authorization.css'
-import {Context} from "../../index";
+import {Context} from "../../../index";
+import styles from './authorizationModal.module.css'
 
 const AuthorizationModal = ({...props}) => {
     const {userStore} = useContext(Context)
@@ -127,18 +127,18 @@ const AuthorizationModal = ({...props}) => {
     const createHeader = () => {
         return (
             <Modal.Header closeButton>
-                <Modal.Title id="modal-title">
+                <Modal.Title id="modal-title" className={styles.title}>
                     <div className="flex-grow-1 d-flex flex-row justify-content-around">
                         <div
                             id="login"
-                            className={"type " + (isLoginForm ? "active" : "")}
+                            className={`${styles.type} ${isLoginForm && styles.titleActive}`}
                             onClick={handleFormChange}
                         >
                             Вход
                         </div>
                         <div
                             id="registration"
-                            className={"type " + (!isLoginForm ? "active" : "")}
+                            className={`${styles.type} ${!isLoginForm && styles.titleActive}`}
                             onClick={handleFormChange}
                         >
                             Регистрация

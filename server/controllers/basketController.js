@@ -27,7 +27,7 @@ class BasketController {
 
             const existingItem = await basket.hasGame(game);
             if (existingItem) {
-                return next(ApiError.badRequest("Уже в корзине"));
+                return next(ApiError.badRequest("Вже у кошику"));
             }
 
             await basket.addGame(game, { through: BasketItem, individualHooks: true });
@@ -50,7 +50,7 @@ class BasketController {
 
             const existingItem = await basket.hasGame(game);
             if (!existingItem) {
-                return next(ApiError.badRequest("Нет в корзине"));
+                return next(ApiError.badRequest("Немає у кошику"));
             }
 
             await basket.removeGame(game, {through: BasketItem, individualHooks: true});

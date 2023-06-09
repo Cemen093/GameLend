@@ -1,13 +1,26 @@
-.ordering-container {
-    background-color: var(--almostBlack);
+.message {
+    width: 100%;
+    min-height: 700px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--white);
 }
 
-.game-list {
+.mTitle {
+    font-size: 40px;
+}
+.mText {
+    font-size: 20px;
+}
+
+
+.boughtList {
     display: flex;
     flex-direction: column;
 }
 
-.game-list .item {
+.itemContainer {
     display: flex;
     flex-direction: row;
     color: var(--white);
@@ -15,29 +28,29 @@
     padding: 20px;
 }
 
-.game-list .item img{
+.itemCardImage{
     width: 360px;
     height: 199px;
     object-fit: cover;
     object-position: center;
 }
 
-.item-content {
+.itemContent {
     flex-grow: 1;
     display: flex;
     flex-direction: row;
 }
 
-.item-content .title-container {
+.titleContainer {
     flex-grow: 1;
     margin: 15px;
 }
 
-.title-container .title {
+.title {
     font-size: 35px;
 }
 
-.item-content .quantity-container {
+.quantityContainer {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -45,7 +58,7 @@
     align-items: center;
 }
 
-.quantity-container .quantity-button {
+.quantityButton {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -55,7 +68,7 @@
     cursor: pointer;
 }
 
-.quantity-container .quantity-count {
+.quantityCount {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -66,32 +79,37 @@
     background-color: var(--grayBrown);
 }
 
-.item-content .price-container {
+.priceContainer {
     display: flex;
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
 }
 
-.price-container .price{
+.price{
     margin-left: 20px;
     font-size: 30px;
     white-space: nowrap;
 }
 
-.white-line {
+.whiteLine {
     margin: 30px 20px;
     border: 1px solid var(--white);
 }
 
-.total-price-container {
+.totalPriceContainer {
     display: flex;
     justify-content: flex-end;
 }
 
-.total-price {
+.totalPrice {
     margin-right: 30px;
     font-size: 30px;
     white-space: nowrap;
     color: var(--white);
+}
+
+.buyButtonContainer {
+    display: flex;
+    justify-content: end;
 }

@@ -112,12 +112,15 @@ Game.belongsToMany(Wishlist, {through: WishlistItem})
 //список заказов
 User.hasOne(OrderList, {foreignKey: {allowNull: false}});
 OrderList.belongsTo(User, {foreignKey: {allowNull: false}});
-OrderList.hasMany(Order, {foreignKey: {allowNull: false}});
-Order.belongsTo(OrderList, {foreignKey: {allowNull: false}});
-Order.belongsToMany(Game, { through: OrderItem });
-Game.belongsToMany(Order, { through: OrderItem });
-OrderItem.belongsTo(Order);
-OrderItem.belongsTo(Game);
+
+OrderList.hasMany(Order, { foreignKey: { allowNull: false } });
+Order.belongsTo(OrderList, { foreignKey: { allowNull: false } });
+
+Order.hasMany(OrderItem, { foreignKey: { allowNull: false } });
+OrderItem.belongsTo(Order, { foreignKey: { allowNull: false } });
+
+OrderItem.belongsTo(Game, { foreignKey: { allowNull: false } });
+Game.hasMany(OrderItem, { foreignKey: { allowNull: false } });
 
 //комментарии
 User.hasMany(Comment);

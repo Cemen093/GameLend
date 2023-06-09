@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import {GAME_ROUTE} from "../../utils/consts";
+import {GAME_ROUTE, ORDERING_ROUTE} from "../../utils/consts";
 import styles from "./slider.module.css"
 
 const Slider = ({items, className = '', style, loading = false, small = false, ...props}) => {
@@ -59,13 +59,8 @@ const Slider = ({items, className = '', style, loading = false, small = false, .
         navigate(GAME_ROUTE + '/' + id)
     }
 
-    if (items[currentIndex] === undefined) {
-        console.log("currentIndex")
-        console.log(currentIndex)
-        console.log("items")
-        console.log(items)
-        console.log("items[currentIndex]")
-        console.log(items[currentIndex])
+    const handleBuy = () => {
+        navigate(ORDERING_ROUTE + '/game/' + items[currentIndex]?.id)
     }
 
     function getSliderContent() {
@@ -81,7 +76,7 @@ const Slider = ({items, className = '', style, loading = false, small = false, .
                     />
                 </div>
                 <div className={styles.details}>
-                    <div className={styles.price}>{items[currentIndex].price} ₴</div>
+                    <div className={styles.price} onClick={handleBuy}>{items[currentIndex].price} ₴</div>
                     <div className={styles.description}>
                         <p className={`${styles.descriptionText} ${small ? styles.descriptionTextSmall : ''}`}>
                             {items[currentIndex].description}

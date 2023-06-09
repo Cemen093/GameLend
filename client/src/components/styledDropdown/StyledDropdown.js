@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {FaChevronDown} from 'react-icons/fa';
-import "../styles/dropdown.css";
+import styles from "./styledDropdown.module.css";
 import {observer} from "mobx-react-lite";
 
-const StyledDropdown = ({title, selectedItem, setSelectedItem, items, className = '', ...props}) => {
+const StyledDropdown = ({title, selectedItem, setSelectedItem, items, className = '', style = {}, ...props}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [isNotEmpty, setIsNotEmpty] = useState(false);
@@ -34,18 +34,18 @@ const StyledDropdown = ({title, selectedItem, setSelectedItem, items, className 
     }
 
     return (
-        <div className={'styled-dropdown-container ' + className} {...props}>
-            <div className="styled-dropdown-title">{title}</div>
-            <div className="styled-dropdown">
-                <div className={`styled-dropdown-input ${isOpen ? 'open' : ''}`}
+        <div className={`${styles.container} ${className}`} style={style} {...props}>
+            <div className={styles.title}>{title}</div>
+            <div className={styles.styledDropdown}>
+                <div className={`${styles.input} ${isOpen && styles.inputOpen}`}
                      onClick={() => setIsOpen(pref => !pref)}>
-                    <span className="selected-item">{selectedItem?.title || 'Выберите элемент'}</span>
-                    <FaChevronDown className="arrow-icon styled-dropdown-arrow"/>
+                    <span className={styles.selectedItem}>{selectedItem?.title || 'Выберите элемент'}</span>
+                    <FaChevronDown className={`${styles.icon}`}/>
                 </div>
                 {isOpen && (
-                    <ul className="styled-dropdown-menu">
+                    <ul className={styles.menu}>
                         {items.map((item, i) =>
-                            <li key={i} onClick={() => selectItem(item)}>{item?.title}</li>
+                            <li className={styles.item} key={i} onClick={() => selectItem(item)}>{item?.title}</li>
                         )}
                     </ul>
                 )}

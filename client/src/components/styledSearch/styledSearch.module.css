@@ -1,13 +1,15 @@
-.styled-search {
+.container {
+    display: inline-flex;
     position: relative;
     display: inline-block;
 }
 
-.styled-search input {
+.input {
+    width: 100%;
     padding-right: 2em;
 }
 
-.styled-search .search-icon {
+.searchIcon {
     position: absolute;
     z-index: 900;
     top: 50%;
@@ -17,13 +19,13 @@
     cursor: pointer;
 }
 
-.styled-search.width-grow {
+.width-growSS {
     display: inline-flex;
     position: relative;
     width: 100%;
 }
 
-.styled-search.width-grow input {
+.inputSS {
     padding-right: 2em;
     width: 100%;
 }

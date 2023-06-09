@@ -1,10 +1,10 @@
-.list {
+.container {
     display: flex;
     flex-direction: column;
     margin-bottom: 10px;
 }
 
-.item {
+.itemContainer {
     height: 100px;
     margin-top: 10px;
     display: flex;
@@ -20,7 +20,7 @@
     justify-content: center;
 }
 
-.image{
+.itemCardImage{
     height: 100px;
     width: 200px;
     object-fit: cover;

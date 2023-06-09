@@ -1,7 +1,7 @@
 import React from 'react';
 import {useNavigate} from "react-router-dom";
 import {observer} from "mobx-react-lite";
-import ButtonsBox from "../ButtonsBox";
+import ButtonsBox from "../buttons/ButtonsBox";
 import {GAME_ROUTE} from "../../utils/consts";
 import styles from "./gameList.module.css"
 
