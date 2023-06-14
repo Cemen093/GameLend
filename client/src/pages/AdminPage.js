@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import AddGameModal from "../components/modal/AddGameModal";
+import AddGameFormModal from "../components/modal/AddGameFormModal";
 import FormModal from "../components/formModal/FormModal";
 import BlackButton from "../components/buttons/BlackButton";
 import PageContent from "../components/pageContent/PageContent";
@@ -10,7 +10,7 @@ import OrdersModal from "../components/modal/orders/OrdersModal";
 import styles from "../styles/page/adminPage.module.css"
 
 const AdminPage = () => {
-    const [showAddGameModal, setShowAddGameModal] = useState(false);
+    const [isAddGameModalOpen, setIsAddGameModalOpen] = useState(false);
     const [isBlockUserModalOpen, setIsBlockUserModalOpen] = useState(false);
     const [isMakeAdminModalOpen, setIsMakeAdminModalOpen] = useState(false);
     const [isOrdersModalOpen, setIsOrdersModalOpen] = useState(false);
@@ -19,6 +19,7 @@ const AdminPage = () => {
     const Modals = () => {
         return (
             <>
+                <AddGameFormModal show={isAddGameModalOpen} onHide={() => setIsAddGameModalOpen(false)}/>
                 <FormModal
                     isOpen={isBlockUserModalOpen}
                     setIsOpen={setIsBlockUserModalOpen}
@@ -56,12 +57,9 @@ const AdminPage = () => {
     return (
         <PageContent>
             <Modals/>
-            <BlackButton className={styles.button} onClick={() => setShowAddGameModal(true)}>
+            <BlackButton className={styles.button} onClick={() => setIsAddGameModalOpen(true)}>
                 Додати гру
             </BlackButton>
-            {showAddGameModal &&
-                <AddGameModal show={showAddGameModal} onHide={() => setShowAddGameModal(false)}/>}
-
             <BlackButton className={styles.button} onClick={() => setIsBlockUserModalOpen(true)}>
                 Заблокувати користувача
             </BlackButton>

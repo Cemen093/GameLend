@@ -5,58 +5,61 @@ import {Context} from "../index";
 import {useLocation, useParams} from "react-router-dom";
 import {observer} from "mobx-react-lite";
 import ButtonsBox from "../components/buttons/ButtonsBox";
+import PageContent from "../components/pageContent/PageContent";
+import styles from "../styles/page/gamePage.module.css"
 
 const GamePage = () => {
     const {gameStore} = useContext(Context);
     const location = useLocation();
     const {id} = useParams();
-    const [isLoading, setIsLoading] = useState(true);
+    const [isInit, setIsInit] = useState(true);
 
     useEffect(() => {
-        gameStore.fetchGame(id).then(() => setIsLoading(false))
+        gameStore.fetchGame(id).then(() => setIsInit(false))
     }, [location])
 
-    const createRequirement = ({cpu, ram, os, space}) => {
+    const Requirement = ({rec}) => {
+        const {cpu, ram, os, space} = rec
         return (
-        <div style={{padding: "20px"}}>
-            <ul style={{listStyleType: "none", paddingLeft: "0"}}>
-                <li><strong>CPU:</strong> {cpu}</li>
-                <li><strong>RAM:</strong> {ram}</li>
-                <li><strong>OS:</strong> {os}</li>
-                <li><strong>Место на жестком диске:</strong> {space}</li>
-            </ul>
-        </div>
+            <div className={styles.requirementContainer}>
+                <ul className={styles.requirementList}>
+                    <li className={styles.requirementListItem}><strong>CPU:</strong> {cpu}</li>
+                    <li className={styles.requirementListItem}><strong>RAM:</strong> {ram}</li>
+                    <li className={styles.requirementListItem}><strong>OS:</strong> {os}</li>
+                    <li className={styles.requirementListItem}><strong>Место на жестком диске:</strong> {space}</li>
+                </ul>
+            </div>
         )
     }
 
-    if (gameStore.loading || isLoading){
+    if (gameStore.loading || isInit) {
         return <div></div>
     }
 
     return (
-        <Container style={{backgroundColor: colors.black}} className="">
-            <Container fluid className="d-flex flex-row justify-content-around mt-5" style={{height: 400}}>
-                <Image width="45%" src={process.env.REACT_APP_API_URL + '/' + gameStore.game.imgName} className="m-2" style={{ objectFit: 'cover' }} />
-                <iframe width="45%" src={"https://www.youtube.com/embed/" + gameStore.game.trailer} frameBorder="0"
-                        allowFullScreen className="m-2"></iframe>
-
-            </Container>
-            <Container fluid className="d-flex justify-content-end">
+        <PageContent className={styles.container}>
+            <div className={styles.multimediaContainer}>
+                <img src={process.env.REACT_APP_API_URL + '/' + gameStore.game.imgName} className={styles.poster}
+                     alt="poster"/>
+                <iframe className={styles.trailer} src={"https://www.youtube.com/embed/" + gameStore.game.trailer} frameBorder="0"
+                        allowFullScreen></iframe>
+            </div>
+            <div className={styles.buttonsContainer}>
                 <ButtonsBox game={gameStore.game} buttons={{addToBasket: true, addToWishlist: true, buy: true}}/>
-            </Container>
-            <Container fluid className="d-flex flex-row justify-content-around my-5" style={{color: colors.white}}>
-                <div style={{width: "45%", backgroundColor: colors.grayBrown}} className="p-3">
-                    <div>Описание</div>
-                    {gameStore.game.description}
+            </div>
+            <div className={styles.textContainer}>
+                <div className={styles.descriptionContainer}>
+                    <div className={styles.descriptionTitle}>Опис</div>
+                    <div className={styles.description}>{gameStore.game.description}</div>
                 </div>
-                <div style={{width: "45%", backgroundColor: colors.grayBrown}} className="p-3">
-                    <h3>Минимальные требования:</h3>
-                    {createRequirement(gameStore.game.min_requirement)}
-                    <h3>Рекомендуемые требования:</h3>
-                    {createRequirement(gameStore.game.rec_requirement)}
+                <div className={styles.requirementsContainer}>
+                    <div className={styles.requirementTitle}>Мінімальні вимоги:</div>
+                    <Requirement rec={gameStore.game.min_requirement}/>
+                    <div className={styles.requirementTitle}>Рекомендовані вимоги:</div>
+                    <Requirement rec={gameStore.game.rec_requirement}/>
                 </div>
-            </Container>
-        </Container>
+            </div>
+        </PageContent>
     );
 };
 

@@ -3,7 +3,7 @@ import {Button, Dropdown, Form, Modal} from 'react-bootstrap';
 import {Context} from "../../index";
 import {createGame} from "../../http/gameAPI";
 
-const AddGameModal = ({...props}) => {
+const AddGameFormModal = ({...props}) => {
     const {gameStore, platformsStore} = useContext(Context)
     const [gameData, setGameData] = useState({
         title: '',
@@ -244,4 +244,4 @@ const AddGameModal = ({...props}) => {
     );
 };
 
-export default AddGameModal;
+export default AddGameFormModal;
