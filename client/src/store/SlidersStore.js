@@ -5,7 +5,7 @@ export default class DataStore {
     _gamesAllPlatform = [];
     _gamesPcPlatform = [];
     _gamesPlaystationPlatform = []
-    _loading = false;
+    _loadingCount = 0;
 
     constructor() {
         makeAutoObservable(this);
@@ -14,22 +14,23 @@ export default class DataStore {
     async fetchGames() {
         try {
             runInAction(() => {
-                this._loading = true;
+                this._loadingCount++;
             });
 
             const allPlatformGames = await fetchRandomGames({ platformsId: [1, 2], limit: 10 });
             const pcPlatformGames = await fetchRandomGames({ platformsId: [1], limit: 6 });
             const playstationPlatformGames = await fetchRandomGames({ platformsId: [2], limit: 6 });
+            await new Promise(resolve => setTimeout(resolve, 1000));
 
             runInAction(() => {
                 this._gamesAllPlatform = allPlatformGames;
                 this._gamesPcPlatform = pcPlatformGames;
                 this._gamesPlaystationPlatform = playstationPlatformGames;
-                this._loading = false;
+                this._loadingCount--;
             });
         } catch (error) {
             console.error('Помилка при отриманні списку ігор:', error);
-            this._loading = false;
+            this._loadingCount--;
         }
     }
 
@@ -46,6 +47,6 @@ export default class DataStore {
     }
 
     get loading() {
-        return this._loading;
+        return this._loadingCount > 0;
     }
 }

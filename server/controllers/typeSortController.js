@@ -26,7 +26,9 @@ class TypeSortController {
 
     async getAll(req, res, next) {
         try {
-            const typeSorts = await TypeSort.findAndCountAll();
+            const typeSorts = await TypeSort.findAndCountAll({
+                order: [['id', 'ASC']]
+            });
             res.json(typeSorts);
         } catch (e) {
             return next(ApiError.badRequest(e.message))

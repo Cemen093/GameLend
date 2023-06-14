@@ -71,7 +71,7 @@ const ButtonsBox = ({game, loading, buttons}) => {
                         onClick={() => userStore.addGameToWishlist(game?.id)}
                         loading={loading}
                     >
-                        В желаемое
+                        В бажане
                     </GrayButton>
                 }
             </div>

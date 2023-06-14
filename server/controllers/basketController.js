@@ -31,11 +31,8 @@ class BasketController {
             }
 
             await basket.addGame(game, { through: BasketItem, individualHooks: true });
-            const games = await basket.getGames({
-                include: [{model: Platform, through: {attributes: [],},},],
-            });
 
-            return res.json({count: games.length, rows: games});
+            return res.json({message: "Гра додана до кошику"});
         } catch (e) {
             return next(ApiError.internal(e.message));
         }
@@ -54,11 +51,8 @@ class BasketController {
             }
 
             await basket.removeGame(game, {through: BasketItem, individualHooks: true});
-            const games = await basket.getGames({
-                include: [{model: Platform, through: {attributes: [],},},],
-            });
 
-            return res.json({count: games.length, rows: games});
+            return res.json({message: "Гра видалена із кошику"});
         } catch (e) {
             return next(ApiError.internal(e.message));
         }
@@ -70,11 +64,8 @@ class BasketController {
             const basket = await Basket.findOne({where: {userId}});
 
             await BasketItem.destroy({ where: { basketId: basket.id } });
-            const games = await basket.getGames({
-                include: [{model: Platform, through: {attributes: [],},},],
-            });
 
-            return res.json({count: games.length, rows: games});
+            return res.json({message: "Всі ірни виделені із кошику"});
         } catch (e) {
             return next(ApiError.internal(e.message));
         }

@@ -52,14 +52,14 @@
 }
 
 .text {
-    min-height: 25px;
-    min-width: 100px;
 }
 .textSkeleton {
+    min-height: 25px;
+    min-width: 100px;
     background-color: var(--grayBrown);
 }
 
-.title {
+.itemTitle {
     font-size: 20px;
 }
 .titleSkeleton {

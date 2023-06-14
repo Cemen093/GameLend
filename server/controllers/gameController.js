@@ -113,7 +113,6 @@ class GameController {
             })
 
             res.json(data);
-
         } catch (e) {
             return next(ApiError.badRequest(e.message))
         }

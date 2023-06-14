@@ -7,10 +7,9 @@
 
 .containerSmall{
     height: 300px;
-    font-size: 10px;
 }
 
-.navigation {
+.navigationContainer {
     height: 100%;
     margin-top: 5px;
     display: flex;
@@ -29,7 +28,19 @@
     color: var(--white);
 }
 
-.content {
+.empty {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    color: var(--white);
+    background-color: var(--grayBrown);
+}
+
+/*item*/
+.itemContainer {
     flex-grow: 1;
     display: flex;
     flex-direction: row;
@@ -37,7 +48,7 @@
     height: 100%;
 }
 
-.imageContainer {
+.itemImageContainer {
     flex: 75;
     height: 100%;
     display: flex;
@@ -46,39 +57,36 @@
     overflow: hidden;
 }
 
-.itemCardImage {
+.itemImage {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
+.itemImageSkeleton {
+    background-color: var(--grayBrown);
+}
 
-.details {
+.itemDetails {
     flex: 25;
     padding: 10px;
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: var(--grayBrown);
     color: var(--white);
-    overflow: hidden;
+    background-color: var(--almostBlack);
 }
 
-.price {
+.itemPriceButton {
     align-self: center;
-    padding: 6px;
-    padding-inline: 20px;
-    background-color: var(--white);
-    color: var(--almostBlack);
-    cursor: pointer;
 }
 
-.description {
+.itemDescriptionContainer {
     margin-top: 5px;
     flex: 1 1 auto;
     overflow: hidden;
 }
 
-.descriptionText {
+.itemDescription {
     margin: 0;
     display: -webkit-box;
     -webkit-line-clamp: 15;
@@ -86,12 +94,18 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
-.descriptionTextSmall {
+.itemDescriptionSmall {
+    font-size: 10px;
     -webkit-line-clamp: 12;
 }
+.itemDescriptionSkeleton {
+    margin: 15px 0;
+    min-width: 85%;
+    min-height: 90%;
+    background-color: var(--grayBrown);
+}
 
-.platformContainer {
+.itemPlatformContainer {
     margin-top: 5px;
     display: flex;
     flex-direction: row;
@@ -99,10 +113,28 @@
     justify-content: start;
 }
 
-.platform {
+.itemPlatform {
     margin-right: 5px;
 }
+.itemPlatformSmall {
+    font-size: 10px;
+    margin-right: 5px;
+}
+.platformOneSkeleton {
+    height: 20px;
+    width: 20%;
+    background-color: var(--grayBrown);
+    border: 1px solid var(--almostBlack);
+}
+.platformTwoSkeleton {
+    height: 20px;
+    width: 50%;
+    background-color: var(--grayBrown);
+    border: 1px solid var(--almostBlack);
+}
 
+
+/*dot*/
 .dotContainer {
     height: 20px;
     flex: 1;

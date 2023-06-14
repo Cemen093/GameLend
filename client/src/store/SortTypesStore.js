@@ -5,7 +5,8 @@ import {createSortType, fetchSortTypes} from "../http/sortTypesAPI";
 
 export default class SortTypesStore {
     _sortTypes = [];
-    _loading = false;
+    _loadingCount = 0;
+    _init = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -13,26 +14,28 @@ export default class SortTypesStore {
 
     async createSortType(title, order) {
         try {
-            runInAction(() => this._loading = true);
+            runInAction(() => this._loadingCount++);
             await createSortType();
-            runInAction(() => this._loading = false);
+            runInAction(() => this._loadingCount--);
         } catch (error) {
             console.error('Помилка при створенні типоу сортування:', error);
-            this._loading = false;
+            this._loadingCount--;
         }
     }
 
     async fetchSortTypes() {
         try {
-            runInAction(() => this._loading = true);
+            runInAction(() => this._loadingCount++);
             const typeSorts = await fetchSortTypes().then(data => data.rows);
+            await new Promise(resolve => setTimeout(resolve, 1000));
             runInAction(() => {
                 this._sortTypes = typeSorts;
-                this._loading = false;
+                this._loadingCount--;
+                this._init = true;
             });
         } catch (error) {
             console.error('Помилка при отриманні типів сортування:', error);
-            this._loading = false;
+            this._loadingCount--;
         }
     }
 
@@ -41,7 +44,7 @@ export default class SortTypesStore {
             return  await fetchSortTypes();
         } catch (error) {
             console.error('Помилка при отриманні типу сортування:', error);
-            this._loading = false;
+            this._loadingCount--;
         }
     }
     get sortTypes() {
@@ -49,6 +52,6 @@ export default class SortTypesStore {
     }
 
     get loading() {
-        return this._loading;
+        return this._loadingCount > 0 || !this._init;
     }
 }

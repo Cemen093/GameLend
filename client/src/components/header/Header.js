@@ -3,7 +3,7 @@ import {Context} from "../../index";
 import {observer} from "mobx-react-lite";
 import {useLocation, useNavigate} from "react-router-dom";
 import {ACCOUNT_ROUTE, BASKET_ROUTE, MAIN_ROUTE, ORDERS_ROUTE, WISHLIST_ROUTE,} from "../../utils/consts";
-import SearchDropdown from "../searchDropdown/SearchDropdown";
+import SearchDropdown from "../dropdown/searchDropdown/SearchDropdown";
 import AuthorizationModal from "../modal/authorization/AuthorizationModal";
 import RoundImageButton from "../buttons/RoundImageButton";
 import styles from './header.module.css'
@@ -87,13 +87,14 @@ const Header = () => {
     const AccountBox = observer(() => {
         return (
             <div className={styles.accountBox}>
-                <OutlineButton onClick={handleAuthBtn}>{userStore.isAuth ? "Вихід" : "Вхід"}</OutlineButton>
                 <AuthorizationModal show={authorizationModalShow} onHide={() => setAuthorizationModalShow(false)}/>
+                <OutlineButton loading={!userStore.init} onClick={handleAuthBtn}>{userStore.isAuth ? "Вихід" : "Вхід"}</OutlineButton>
                 <RoundImageButton
-                    className={styles.profileButton}
                     image={userStore.isAuth ? process.env.REACT_APP_API_URL + '/' + userStore.user.imgName : unauthorizedUser}
-                    onClick={handleProfileImg}
                     diameter={40}
+                    loading={!userStore.init}
+                    className={styles.profileButton}
+                    onClick={handleProfileImg}
                 />
             </div>
         )
@@ -109,4 +110,4 @@ const Header = () => {
     );
 };
 
-export default observer(Header);
+export default Header;

@@ -8,7 +8,7 @@ import PageContent from "../components/pageContent/PageContent";
 import GameList from "../components/gameList/GameList";
 
 const BasketPage = () => {
-    const {userStore, dataStore} = useContext(Context);
+    const {userStore} = useContext(Context);
     const navigate = useNavigate();
 
     return (
@@ -16,13 +16,13 @@ const BasketPage = () => {
             <div className="bg-almostBlack">
                 <GameList
                     games={userStore.basketGames}
-                    loading={userStore.loading}
+                    loading={!userStore.init}
                     textEmpty="В кошику поки немає ігор"
                     buttons={{removeFromBasket: true, buy: true}}
                     className="bg-none px-4 py-2"
                     itemClassName="bg-grayBrown"
                 />
-                {!userStore.loading &&
+                {userStore.init &&
                     <div className="d-flex justify-content-end color-white py-2 pe-3">
                         Спільна сумма {userStore.basketGames.reduce((sum, game) => sum + Number(game.price), 0)} ₴
                     </div>

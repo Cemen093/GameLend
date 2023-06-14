@@ -1,21 +1,13 @@
 import React from 'react';
+import Button from "./Button";
 import styles from "./buttons.module.css"
 
-const GrayButton = ({className='', style={}, onClick, children, loading}) => {
-
-    if (loading) {
-        return <div className={`${styles.brayButton} ${styles.brayButtonLoading} ${className}`}
-             style={style}
-             onClick={onClick}
-        />
-    }
+const GrayButton = ({onClick, children, loading, active = true, className = '', style = {}, ...props}) => {
     return (
-        <div className={`${styles.brayButton} ${className}`}
-             style={style}
-             onClick={onClick}
-        >
+        <Button className={`${className} ${styles.grayButton} ${loading && styles.grayButtonSkeleton}`}
+                style={style} onClick={onClick} active={active}>
             {children}
-        </div>
+        </Button>
     );
 };
 

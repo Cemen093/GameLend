@@ -31,16 +31,15 @@ class WishlistController {
             }
 
             await wishList.addGame(game, { through: WishlistItem, individualHooks: true });
-            const games = await wishList.getGames({
-                include: [{model: Platform, through: {attributes: []},}],
-            });
-            return res.json({count: games.length, rows: games});
+            return res.json({message: "Гра додана до списку бажаного"});
         } catch (e) {
             return next(ApiError.internal(e.message));
         }
     }
 
     async moveGameToBasket(req, res, next) {
+
+        const transaction = await sequelize.transaction();
         try {
             const userId = req.user.id;
             const { gameId } = req.body;
@@ -60,11 +59,13 @@ class WishlistController {
                 return next(ApiError.badRequest("Игра уже находится в корзине"));
             }
 
-            await wishList.removeGame(game, { through: WishlistItem, individualHooks: true });
-            await basket.addGame(game, { through: BasketItem, individualHooks: true });
+            await wishList.removeGame(game, { through: WishlistItem, individualHooks: true, transaction });
+            await basket.addGame(game, { through: BasketItem, individualHooks: true, transaction });
+            await transaction.commit();
 
-            return res.json("Игра успешно перемещена из списка желаемого в корзину");
+            return res.json({message: "Гра переміщена до кошику"});
         } catch (e) {
+            await transaction.rollback();
             return next(ApiError.internal(e.message));
         }
     }
@@ -78,15 +79,11 @@ class WishlistController {
 
             const existingItem = await wishList.hasGame(game);
             if (!existingItem) {
-                return next(ApiError.badRequest("Нет в списке желаемого"));
+                return next(ApiError.badRequest("Гри немає у списку бажаного"));
             }
 
             await wishList.removeGame(game, { through: WishlistItem, individualHooks: true });
-
-            const games = await wishList.getGames({
-                include: [{model: Platform, through: {attributes: []},}],
-            });
-            return res.json({count: games.length, rows: games});
+            return res.json({message: "Гра видаленна із списку баженого"});
         } catch (e) {
             return next(ApiError.internal(e.message));
         }

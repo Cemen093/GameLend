@@ -1,10 +1,10 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-import axios from 'axios';
 import {fetchPlatforms} from "../http/platformAPI";
 
 export default class PlatformsStore {
     _platforms = [];
-    _loading = false;
+    _loadingCount = 0;
+    _init = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -13,18 +13,20 @@ export default class PlatformsStore {
     async fetchPlatforms() {
         try {
             runInAction(() => {
-                this._loading = true;
+                this._loadingCount++;
             });
 
             const platforms = await fetchPlatforms().then(data => data.rows);
+            await new Promise(resolve => setTimeout(resolve, 1000));
 
             runInAction(() => {
                 this._platforms = platforms;
-                this._loading = false;
+                this._loadingCount--;
+                this._init = true;
             });
         } catch (error) {
             console.error('Помилка при отриманні списку платформ:', error);
-            this._loading = false;
+            this._loadingCount--;
         }
     }
 
@@ -32,7 +34,12 @@ export default class PlatformsStore {
         return this._platforms;
     }
 
+    get platformsWithAll() {
+        return [{title: 'Усі', ids: this._platforms.map(platform => platform.id)},
+            ...this._platforms.map(platform => ({title: platform.title, ids: [platform.id]}))]
+    }
+
     get loading() {
-        return this._loading;
+        return this._loadingCount > 0 || !this._init;
     }
 }

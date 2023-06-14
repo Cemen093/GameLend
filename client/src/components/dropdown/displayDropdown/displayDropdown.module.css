@@ -1,0 +1,53 @@
+.container {
+    min-height: 26px;
+    min-width: 150px;
+    width: 170px;
+    display: inline-flex;
+    position: relative;
+    padding: 2px 6px;
+    color: var(--white);
+    background-color: var(--grayBrown);
+}
+
+.titleContainer {
+    width: 100%;
+    display: inline-flex;
+    justify-content: flex-end;
+    align-items: center;
+    cursor: pointer;
+}
+
+.title {
+    width: 100%;
+    text-align: center;
+    padding-right: 10px;
+}
+.titleSkeleton {
+
+}
+
+.icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.menu {
+    width: 100%;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 999;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    background-color: var(--grayBrown);
+    border-top: none;
+    border-bottom: 1px solid var(--almostBlack);
+}
+
+.item {
+    text-align: center;
+    padding: 0.5em 10px 0.5em 0.5em;
+    border-top: 1px solid var(--almostBlack);
+}

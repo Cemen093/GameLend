@@ -1,10 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Container, Image} from "react-bootstrap";
 import colors from "../utils/colors";
-import basket from "../assets/basket.png";
 import {Context} from "../index";
 import {useLocation, useParams} from "react-router-dom";
-import {fetchGame} from "../http/gameAPI";
 import {observer} from "mobx-react-lite";
 import ButtonsBox from "../components/buttons/ButtonsBox";
 

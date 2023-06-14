@@ -4,7 +4,7 @@ import {fetchAllCommentsForGame} from "../http/commentAPI";
 
 export default class PlatformsStore {
     _comments = [];
-    _loading = false;
+    _loadingCount = 0;
 
     constructor() {
         makeAutoObservable(this);
@@ -12,17 +12,17 @@ export default class PlatformsStore {
 
     async fetchComments(gameId) {
         try {
-            runInAction(() => this._loading = true);
+            runInAction(() => this._loadingCount++);
 
             const platforms = await fetchAllCommentsForGame(gameId).then(data => data.rows);
 
             runInAction(() => {
                 this._comments = platforms;
-                this._loading = false;
+                this._loadingCount--;
             });
         } catch (error) {
             console.error('Помилка при отриманні списку коментарів:', error);
-            this._loading = false;
+            this._loadingCount--;
         }
     }
 
@@ -31,6 +31,6 @@ export default class PlatformsStore {
     }
 
     get loading() {
-        return this._loading;
+        return this._loadingCount > 0;
     }
 }

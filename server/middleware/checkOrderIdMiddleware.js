@@ -2,7 +2,7 @@ const ApiError = require("../error/ApiError");
 const { Order } = require("../models/models");
 
 const checkOrderIdMiddleware = async (req, res, next) => {
-    const { orderId } = req.params;
+    const { orderId } = req.body;
     if (!orderId) {
         return next(ApiError.badRequest("orderId не задан"));
     }

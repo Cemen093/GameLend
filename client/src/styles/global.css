@@ -14,7 +14,7 @@ body {
 }
 
 .bg-grayBrown {
-    background-color: var(--grayBrown) !important;
+    background-color: var(--grayBrown);
 }
 
 .bg-almostBlack {

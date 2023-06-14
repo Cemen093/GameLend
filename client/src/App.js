@@ -8,23 +8,17 @@ import Footer from "./components/footer/Footer";
 import {observer} from "mobx-react-lite";
 
 const App = () => {
-    const {userStore, platformsStore, sortTypesStore} = useContext(Context)
-    const [loading, setLoading] = useState(true);
+    const {userStore, platformsStore, sortTypesStore, orderStore} = useContext(Context)
 
     useEffect(() => {
-        const init = async () => {
-            await userStore.fetchUser();
-            await platformsStore.fetchPlatforms();
-            await sortTypesStore.fetchSortTypes();
-            setLoading(false);
-        }
-
-        init();
+            platformsStore.fetchPlatforms();
+            sortTypesStore.fetchSortTypes();
+            userStore.fetchUser().then(() => {
+                if (userStore.isAdmin){
+                    orderStore.fetchAllOrders();
+                }
+            });
     }, [])
-
-    if (loading) {
-        return <div></div>;
-    }
 
     return (
         <Router>
@@ -37,4 +31,4 @@ const App = () => {
     );
 }
 
-export default App;
+export default observer(App);

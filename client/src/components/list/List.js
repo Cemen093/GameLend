@@ -1,6 +1,7 @@
 import React from 'react';
 import {useNavigate} from "react-router-dom";
 import styles from './list.module.css'
+import {observer} from "mobx-react-lite";
 
 const List = ({title, textEmpty, onTitleClick, items, itemsComponent, loading, className, style = {}, ...props}) => {
     const navigate = useNavigate();
@@ -19,4 +20,4 @@ const List = ({title, textEmpty, onTitleClick, items, itemsComponent, loading, c
     )
 }
 
-export default List;
+export default observer(List);

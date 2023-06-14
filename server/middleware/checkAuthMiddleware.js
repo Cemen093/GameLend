@@ -20,7 +20,7 @@ const authMiddleware = async (req, res, next) => {
                     return next(ApiError.forbidden('Користувач заблокований'));
                 }
 
-                req.user = userData;
+                req.user = { id, login, email, imgName, role } = user.dataValues;
                 next();
             } else {
                 next(ApiError.unauthorized('Не авторизований'));

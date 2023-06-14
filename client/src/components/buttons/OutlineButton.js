@@ -1,11 +1,13 @@
 import React from 'react';
+import Button from "./Button";
 import styles from "./buttons.module.css"
 
-const OutlineButton = ({className='', style={}, onClick, children}) => {
+const OutlineButton = ({onClick, children, loading, active = true, className = '', style = {}, ...props}) => {
     return (
-        <div className={`${styles.outlineButton} ${className}`} style={style} onClick={onClick}>
+        <Button className={`${className} ${styles.outlineButton} ${loading && styles.outlineButtonSkeleton}`}
+                style={style} onClick={onClick} active={active}>
             {children}
-        </div>
+        </Button>
     );
 };
 

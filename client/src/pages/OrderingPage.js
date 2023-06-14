@@ -3,7 +3,7 @@ import {Context} from "../index";
 import {observer} from "mobx-react-lite";
 import {useParams} from "react-router-dom";
 import {fetchGame} from "../http/gameAPI";
-import StyledDropdown from "../components/styledDropdown/StyledDropdown";
+import StyledDropdown from "../components/dropdown/selectDropdown/SelectDropdown";
 import StyledInput from "../components/styledInput/StyledInput";
 import GrayButton from "../components/buttons/GrayButton";
 import PageContent from "../components/pageContent/PageContent";
@@ -64,13 +64,23 @@ const OrderingPage = () => {
         });
     }
 
+    const handleBuy = async () => {
+        const result = await userStore.createOrder({items, platformId: selectedPlatform.id, promoCode, isFromBasket})
+        if (result) {
+            setIsPaySuccessful(true)
+        } else {
+            setIsPaySuccessful(false)
+        }
+        setIsPayDone(true)
+    }
+
     const GameItem = ({game, ...props}) => {
         return (
-            <div className={styles.item} {...props}>
-                <img className={styles.image} src={process.env.REACT_APP_API_URL + '/' + game.imgName} alt="poster"/>
+            <div className={styles.itemContainer} {...props}>
+                <img className={styles.itemImage} src={process.env.REACT_APP_API_URL + '/' + game.imgName} alt="poster"/>
                 <div className={styles.itemContent}>
                     <div className={styles.titleContainer}>
-                        <div className={styles.title}>{game.title}</div>
+                        <div className={styles.itemTitle}>{game.title}</div>
                     </div>
                     <div className={styles.quantityContainer}>
                         <div className={styles.quantityButton} onClick={() => decreaseQuantity(game.id)}>-</div>
@@ -83,16 +93,6 @@ const OrderingPage = () => {
                 </div>
             </div>
         )
-    }
-
-    const handleBuy = async (items) => {
-        const result = await userStore.createOrder(items, isFromBasket)
-        if (result) {
-            setIsPaySuccessful(true)
-        } else {
-            setIsPaySuccessful(false)
-        }
-        setIsPayDone(true)
     }
 
     return (
@@ -137,7 +137,7 @@ const OrderingPage = () => {
                     />
                     <div className={styles.whiteLine}/>
                     <div className={styles.buyButtonContainer}>
-                        <GrayButton className="mt-2 me-4" onClick={() => handleBuy(items)}>Купить</GrayButton>
+                        <GrayButton className="mt-2 me-4" onClick={handleBuy}>Купить</GrayButton>
                     </div>
                 </div>
             }

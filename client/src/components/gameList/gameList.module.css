@@ -1,7 +1,20 @@
 .container {
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
+}
+
+.textEmptyContainer {
+    min-height: 100px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--almostBlack);
+}
+
+.textEmpty {
+    font-size: 25px;
+    color: var(--white);
 }
 
 .itemContainer {
@@ -14,25 +27,19 @@
     background-color: var(--almostBlack);
 }
 
-.textEmpty {
-    font-size: 25px;
-    align-items: center;
-    justify-content: center;
-}
-
-.itemCardImage{
+.itemImage{
     height: 100px;
     width: 200px;
     object-fit: cover;
     object-position: center;
     cursor: pointer;
 }
-
-.imageLoading{
+.itemImageSkeleton{
     background-color: var(--grayBrown);
+    border-right: 1px solid var(--almostBlack);
 }
 
-.textContainer {
+.itemTextContainer {
     flex: 1;
     padding-left: 10px;
     padding-top: 10px;
@@ -43,14 +50,14 @@
     justify-content: space-between;
 }
 
-.title {
+.itemTitle {
     font-size: 22px;
 }
-
-.titleLoading{
+.titleSkeleton{
     height: 30px;
     width: 220px;
     background-color: var(--grayBrown);
+    border: 1px solid var(--almostBlack);
 }
 
 .platformsContainer {
@@ -60,30 +67,15 @@
 .platform {
     margin-right: 12px;
 }
-
-.platformOneLoading {
+.platformOneSkeleton {
     height: 20px;
     width: 50px;
     background-color: var(--grayBrown);
+    border: 1px solid var(--almostBlack);
 }
-
-.platformTwoLoading {
+.platformTwoSkeleton {
     height: 20px;
     width: 110px;
     background-color: var(--grayBrown);
-}
-
-.buttonsContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: space-around;
-    padding: 10px;
-}
-
-.rowButtons {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
+    border: 1px solid var(--almostBlack);
 }

@@ -12,7 +12,7 @@ const StyledSearch = ({searchText, setSearchText, onClick, placeholder, classNam
                 type="text"
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
-                placeholder={placeholder || "Поиск..."}
+                placeholder={placeholder || "Пошук..."}
             />
             <FaSearch
                 className={styles.searchIcon}

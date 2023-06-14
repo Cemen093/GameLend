@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './buttons.module.css'
+import {observer} from "mobx-react-lite";
 
-const RoundImageButton = ({ image, diameter, onClick, alt='img-btn', loading, className = '' }) => {
+const RoundImageButton = ({ image, diameter, alt='img-btn', loading, onClick, className = '' }) => {
 
     const imageStyle = {
         width: `${diameter}px`,
@@ -10,7 +11,7 @@ const RoundImageButton = ({ image, diameter, onClick, alt='img-btn', loading, cl
 
     if (loading) {
         return <div
-            className={`${styles.roundImageButton} ${styles.roundImageButtonLoading} ${className}`}
+            className={`${styles.roundImageButton} ${styles.roundImageButtonSkeleton} ${className}`}
             style={imageStyle}
         />
     }
@@ -24,4 +25,4 @@ const RoundImageButton = ({ image, diameter, onClick, alt='img-btn', loading, cl
         />
 };
 
-export default RoundImageButton;
+export default observer(RoundImageButton);

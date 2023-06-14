@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from "./table.module.css";
 
-const Table = ({items, headerTableComponent, itemsComponent, itemsEmptyComponent, loading, textEmpty,
+const Table = ({items, headerTableComponent, itemsComponent, itemsEmptyComponent, loading,
                    className='', style={}}) => {
     return (
         <div className={`${styles.tabContainer} ${className}`} style={style}>

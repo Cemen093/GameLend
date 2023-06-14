@@ -4,6 +4,7 @@ import {Container} from "react-bootstrap";
 import {Context} from "../index";
 import Table from "../components/table/Table";
 import styles from "../styles/page/ordersPage.module.css"
+import PageContent from "../components/pageContent/PageContent";
 
 const OrdersPages = () => {
     const {userStore} = useContext(Context);
@@ -40,7 +41,7 @@ const OrdersPages = () => {
                     <div className={`${styles.itemCardTitle}`}>{item.title}</div>
                 </div>
                 <div className={`${styles.orderCol} ${styles.orderCol2}`}>{item.price} ₴</div>
-                <div className={`${styles.orderCol} ${styles.orderCol3}`}>{item.isPaid ? "Оплачен" : "Не оплачен"}</div>
+                <div className={`${styles.orderCol} ${styles.orderCol3}`}>{item.isPaid ? "Оплачено" : "Не оплачено"}</div>
                 <div className={`${styles.orderCol} ${styles.orderCol4}`}>{new Date(item.buyAt).toLocaleDateString()}</div>
             </div>
         )
@@ -55,7 +56,7 @@ const OrdersPages = () => {
     }
 
     return (
-        <Container fluid className={`${styles.container} p-0 mt-2 mb-4 pb-4`}>
+        <PageContent className={`${styles.container}`}>
             <Table
                 className={``}
                 style={{}}
@@ -65,7 +66,7 @@ const OrdersPages = () => {
                 itemsEmptyComponent={<ItemsEmpty/>}
                 loading={userStore.loading}
             />
-        </Container>
+        </PageContent>
     );
 };
 

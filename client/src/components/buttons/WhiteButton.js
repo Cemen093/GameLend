@@ -1,24 +1,13 @@
 import React from 'react';
 import styles from "./buttons.module.css"
+import Button from "./Button";
 
-const WhiteButton = ({className='', style={}, onClick, children, loading}) => {
-
-    if (loading) {
-        return <div
-            className={`${styles.whiteButton} ${styles.whiteButtonLoading} ${className}`}
-            style={style}
-            onClick={onClick}
-        />
-    }
-
+const WhiteButton = ({onClick, children, loading, active = true, className = '', style = {}, ...props}) => {
     return (
-        <div
-            className={`${styles.whiteButton} ${className}`}
-             style={style}
-            onClick={onClick}
-        >
+        <Button className={`${className} ${styles.whiteButton} ${loading && styles.whiteButtonSkeleton}`}
+                style={style} onClick={onClick} active={active}>
             {children}
-        </div>
+        </Button>
     );
 };
 

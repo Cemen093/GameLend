@@ -112,20 +112,19 @@ Game.belongsToMany(Wishlist, {through: WishlistItem})
 //список заказов
 User.hasOne(OrderList, {foreignKey: {allowNull: false}});
 OrderList.belongsTo(User, {foreignKey: {allowNull: false}});
-
 OrderList.hasMany(Order, { foreignKey: { allowNull: false } });
 Order.belongsTo(OrderList, { foreignKey: { allowNull: false } });
-
 Order.hasMany(OrderItem, { foreignKey: { allowNull: false } });
 OrderItem.belongsTo(Order, { foreignKey: { allowNull: false } });
-
-OrderItem.belongsTo(Game, { foreignKey: { allowNull: false } });
+Platform.hasOne(Order, { foreignKey: { allowNull: false } })
+Order.belongsTo(Platform, { foreignKey: { allowNull: false } })
 Game.hasMany(OrderItem, { foreignKey: { allowNull: false } });
+OrderItem.belongsTo(Game, { foreignKey: { allowNull: false } });
 
 //комментарии
 User.hasMany(Comment);
-Game.hasMany(Comment);
 Comment.belongsTo(User);
+Game.hasMany(Comment);
 Comment.belongsTo(Game);
 
 //игра
@@ -139,8 +138,8 @@ Platform.belongsToMany(Game, { through: GamePlatform });
 //ключи
 Game.hasMany(Key, {foreignKey: {allowNull: false}});
 Key.belongsTo(Game, {foreignKey: {allowNull: false}});
-Platform.hasOne(Key);
-Key.belongsTo(Platform);
+Platform.hasOne(Key, {foreignKey: {allowNull: false}});
+Key.belongsTo(Platform, {foreignKey: {allowNull: false}});
 
 module.exports = {
     User,

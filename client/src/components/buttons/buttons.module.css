@@ -1,35 +1,51 @@
-.brayButton {
-    padding: 3px;
-    padding-inline: 10px;
+.button {
+    min-width: 100px;
+    min-height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px 10px;
+    cursor: pointer;
+    font-size: 18px;
+}
+.notActive{
+    cursor: default !important;
+    color: var(--grayBrown) !important;
+    background: rgba(255, 255, 255, 0.5) !important;
+}
+.buttonSkeleton {
+    border: 1px solid var(--almostBlack);
+}
+.grayButton {
     color: var(--white);
     background-color: var(--grayBrown);
-    cursor: pointer;
 }
-.brayButtonLoading {
-    min-width: 70px;
-    min-height: 25px;
+.grayButtonSkeleton {
+    border: 1px solid var(--almostBlack);
+}
+.blackButton {
+    color: var(--white);
+    background-color: var(--almostBlack);
+}
+.blackButtonSkeleton {
+    border: 1px solid var(--almostBlack);
 }
 .whiteButton {
-    padding: 3px;
-    padding-inline: 10px;
     color: var(--almostBlack);
     background-color: var(--white);
-    cursor: pointer;
 }
-.whiteButtonLoading {
-    min-width: 100px;
-    min-height: 25px;
+.whiteButtonSkeleton {
+    border: 1px solid var(--almostBlack);
 }
 .outlineButton {
-    display: inline-block;
-    padding: 1px 15px;
-    border: 1px solid var(--almostBlack);
-    border-radius: 4px;
-    background: none;
-    cursor: pointer;
-    text-decoration: none;
     color: var(--almostBlack);
+    background: none;
+    border: 1px solid var(--almostBlack);
 }
+.outlineButtonSkeleton {
+    color: transparent;
+}
+
 .roundImageButton {
     width: 30px;
     height: 30px;
@@ -38,9 +54,11 @@
     overflow: hidden;
     cursor: pointer;
 }
-.roundImageButtonLoading {
+.roundImageButtonSkeleton {
     background-color: var(--grayBrown);
+    border: 1px solid var(--almostBlack);
 }
+
 .buttonsBox {
     display: flex;
     flex-direction: column;
@@ -48,7 +66,6 @@
     justify-content: space-around;
     padding: 10px;
 }
-
 .buttonsBoxRow {
     margin: 10px 0;
     display: flex;
