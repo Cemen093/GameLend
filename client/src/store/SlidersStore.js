@@ -20,7 +20,6 @@ export default class DataStore {
             const allPlatformGames = await fetchRandomGames({ platformsId: [1, 2], limit: 10 });
             const pcPlatformGames = await fetchRandomGames({ platformsId: [1], limit: 6 });
             const playstationPlatformGames = await fetchRandomGames({ platformsId: [2], limit: 6 });
-            await new Promise(resolve => setTimeout(resolve, 1000));
 
             runInAction(() => {
                 this._gamesAllPlatform = allPlatformGames;

@@ -1,6 +1,4 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-import axios from 'axios';
-import {fetchPlatforms} from "../http/platformAPI";
 import {createSortType, fetchSortTypes} from "../http/sortTypesAPI";
 
 export default class SortTypesStore {
@@ -27,7 +25,6 @@ export default class SortTypesStore {
         try {
             runInAction(() => this._loadingCount++);
             const typeSorts = await fetchSortTypes().then(data => data.rows);
-            await new Promise(resolve => setTimeout(resolve, 1000));
             runInAction(() => {
                 this._sortTypes = typeSorts;
                 this._loadingCount--;

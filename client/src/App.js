@@ -11,13 +11,16 @@ const App = () => {
     const {userStore, platformsStore, sortTypesStore, orderStore} = useContext(Context)
 
     useEffect(() => {
-            platformsStore.fetchPlatforms();
-            sortTypesStore.fetchSortTypes();
-            userStore.fetchUser().then(() => {
-                if (userStore.isAdmin){
-                    orderStore.fetchAllOrders();
+        const init = async () => {
+            await platformsStore.fetchPlatforms();
+            await sortTypesStore.fetchSortTypes();
+            await userStore.fetchUser().then(async () => {
+                if (userStore.isAdmin) {
+                    await orderStore.fetchAllOrders();
                 }
             });
+        }
+        init();
     }, [])
 
     return (

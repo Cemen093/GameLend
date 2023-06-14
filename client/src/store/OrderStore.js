@@ -19,7 +19,6 @@ export default class OrderStore {
         try {
             runInAction(() => this._loadingCount++);
             const orders = await fetchAllOrders().then(data => data.rows)
-            await new Promise(resolve => setTimeout(resolve, 1000));
 
             runInAction(() => {
                 this._orders = orders;
@@ -38,7 +37,6 @@ export default class OrderStore {
             runInAction(() => this._loadingCount++);
 
             const res = await sendPaymentDetails(orderId)
-            await new Promise(resolve => setTimeout(resolve, 1000));
 
             runInAction(() => this._loadingCount--);
             return res.message
@@ -53,9 +51,8 @@ export default class OrderStore {
         try {
             runInAction(() => this._loadingCount++);
 
-            await new Promise(resolve => setTimeout(resolve, 1000));
             const res = await confirmPaymentOrder(orderId)
-            this.fetchAllOrders()
+            await this.fetchAllOrders()
 
             runInAction(() => this._loadingCount--);
             return res.message
@@ -71,7 +68,7 @@ export default class OrderStore {
             runInAction(() => this._loadingCount++);
 
             const res = await deleteOrder(id)
-            this.fetchAllOrders()
+            await this.fetchAllOrders()
 
             runInAction(() => {
                 this._loadingCount--;

@@ -17,7 +17,6 @@ export default class PlatformsStore {
             });
 
             const platforms = await fetchPlatforms().then(data => data.rows);
-            await new Promise(resolve => setTimeout(resolve, 1000));
 
             runInAction(() => {
                 this._platforms = platforms;

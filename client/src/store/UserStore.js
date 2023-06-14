@@ -37,11 +37,9 @@ export default class UserStore {
             const user = jwt_decode(token)
             runInAction(() => this._user = user);
 
-            await Promise.all([
-                this.fetchUserBasketGames(),
-                this.fetchUserWishlistGames(),
-                this.fetchUserOrders()
-            ])
+            await this.fetchUserBasketGames()
+            await this.fetchUserWishlistGames()
+            await this.fetchUserOrders()
 
             runInAction(() => this._loadingCount--);
         } catch (error) {
@@ -61,11 +59,9 @@ export default class UserStore {
             const user = jwt_decode(token)
             runInAction(() => this._user = user);
 
-            await Promise.all([
-                this.fetchUserBasketGames(),
-                this.fetchUserWishlistGames(),
-                this.fetchUserOrders()
-            ])
+            await this.fetchUserBasketGames()
+            await this.fetchUserWishlistGames()
+            await this.fetchUserOrders()
 
             runInAction(() => this._loadingCount--);
         } catch (error) {
@@ -78,7 +74,6 @@ export default class UserStore {
     async fetchUser() {
         try {
             runInAction(() => this._loadingCount++);
-            await new Promise(resolve => setTimeout(resolve, 1000));
 
             const token = await checkAuth().then(data => data.token);
             localStorage.setItem('token', token);
@@ -86,11 +81,9 @@ export default class UserStore {
             const user = jwt_decode(token)
             runInAction(() => this._user = user);
 
-            await Promise.all([
-                this.fetchUserBasketGames(),
-                this.fetchUserWishlistGames(),
-                this.fetchUserOrders()
-            ])
+            await this.fetchUserBasketGames()
+            await this.fetchUserWishlistGames()
+            await this.fetchUserOrders()
 
             runInAction(() => {
                 this._loadingCount--;
@@ -219,7 +212,7 @@ export default class UserStore {
             runInAction(() => this._loadingCount++);
 
             await addGameToBasket(id).then(data => data.rows);
-            this.fetchUserBasketGames()
+            await this.fetchUserBasketGames()
 
             runInAction(() => {
                 this._loadingCount--;
@@ -233,10 +226,9 @@ export default class UserStore {
     async removeGameFromBasket(id) {
         try {
             runInAction(() => this._loadingCount++);
-            await new Promise(resolve => setTimeout(resolve, 1000));
 
             await removeGameFromBasket(id)
-            this.fetchUserBasketGames()
+            await this.fetchUserBasketGames()
 
             runInAction(() => {
                 this._loadingCount--;
@@ -250,10 +242,9 @@ export default class UserStore {
     async addGameToWishlist(id) {
         try {
             runInAction(() => this._loadingCount++);
-            await new Promise(resolve => setTimeout(resolve, 1000));
 
             await addGameToWishlist(id).then(data => data.rows)
-            this.fetchUserWishlistGames()
+            await this.fetchUserWishlistGames()
 
             runInAction(() => {
                 this._loadingCount--;
@@ -267,10 +258,9 @@ export default class UserStore {
     async removeGameFromWishlist(id) {
         try {
             runInAction(() => this._loadingCount++);
-            await new Promise(resolve => setTimeout(resolve, 1000));
 
             await removeGameFromWishlist(id).then(data => data.rows)
-            this.fetchUserWishlistGames()
+            await this.fetchUserWishlistGames()
 
             runInAction(() => {
                 this._loadingCount--;
@@ -286,8 +276,8 @@ export default class UserStore {
             runInAction(() => this._loadingCount++);
 
             await moveGameFromWishlistToBasket(id).then(data => data.rows)
-            this.fetchUserBasketGames()
-            this.fetchUserWishlistGames()
+            await this.fetchUserBasketGames()
+            await this.fetchUserWishlistGames()
 
             runInAction(() => {
                 this._loadingCount--;
@@ -301,15 +291,14 @@ export default class UserStore {
     async createOrder({isFromBasket, ...props}) {
         try {
             runInAction(() => this._loadingCount++);
-            await new Promise(resolve => setTimeout(resolve, 1000));
 
             await createOrder({...props}).then(data => data.rows)
 
             if (isFromBasket){
                 removeAllGameFromBasket();
             }
-            this.fetchUserOrders()
-            this.fetchUserBasketGames()
+            await this.fetchUserOrders()
+            await this.fetchUserBasketGames()
 
             runInAction(() => {
                 this._loadingCount--;

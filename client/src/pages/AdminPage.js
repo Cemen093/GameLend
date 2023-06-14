@@ -12,7 +12,7 @@ const AdminPage = () => {
     const [isBlockUserModalOpen, setIsBlockUserModalOpen] = useState(false);
     const [isMakeAdminModalOpen, setIsMakeAdminModalOpen] = useState(false);
     const [isOrdersModalOpen, setIsOrdersModalOpen] = useState(false);
-    const {userStore} = useContext(Context)
+    const {userStore, orderStore} = useContext(Context)
 
     const Modals = () => {
         return (
@@ -64,7 +64,7 @@ const AdminPage = () => {
             <BlackButton className={styles.button} onClick={() => setIsMakeAdminModalOpen(true)}>
                 Зробити користувача адміністратором
             </BlackButton>
-            <BlackButton className={styles.button} onClick={() => setIsOrdersModalOpen(true)}>
+            <BlackButton className={styles.button} onClick={() => orderStore.sendPaymentDetails(0)}>
                 Замовлення
             </BlackButton>
         </PageContent>

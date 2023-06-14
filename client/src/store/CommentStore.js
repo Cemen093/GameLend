@@ -1,5 +1,4 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-import {fetchPlatforms} from "../http/platformAPI";
 import {fetchAllCommentsForGame} from "../http/commentAPI";
 
 export default class PlatformsStore {

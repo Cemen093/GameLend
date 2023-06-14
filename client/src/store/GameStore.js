@@ -53,7 +53,6 @@ export default class GameStore {
         try {
             runInAction(() => this._loadingCount++);
             const gamesNavbarSearch = await fetchGames({...props}).then(data => data.rows);
-            await new Promise(resolve => setTimeout(resolve, 1000));
 
             runInAction(() => {
                 this._gamesNavbarSearch = gamesNavbarSearch;
@@ -69,7 +68,6 @@ export default class GameStore {
         try {
             runInAction(() => this._loadingCount++);
             const gamesSearch = await fetchGames({...props}).then(data => data.rows);
-            await new Promise(resolve => setTimeout(resolve, 1000));
 
             runInAction(() => {
                 this._gamesSearch = gamesSearch;
@@ -85,7 +83,6 @@ export default class GameStore {
         try {
             runInAction(() => this._loadingCount++);
             const game = await fetchGame(id);
-            await new Promise(resolve => setTimeout(resolve, 1000));
 
             runInAction(() => {
                 this._game = game;
