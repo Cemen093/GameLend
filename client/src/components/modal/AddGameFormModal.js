@@ -1,7 +1,6 @@
 import React, {useContext, useState} from 'react';
-import {Button, Dropdown, Form, Modal} from 'react-bootstrap';
+import {Button, Form, Modal} from 'react-bootstrap';
 import {Context} from "../../index";
-import {createGame} from "../../http/gameAPI";
 
 const AddGameFormModal = ({...props}) => {
     const {gameStore, platformsStore} = useContext(Context)
@@ -26,7 +25,6 @@ const AddGameFormModal = ({...props}) => {
             space: '',
         },
     });
-//TODO rating
     const clearGameData = () => {
         setGameData({
             title: '',
@@ -67,7 +65,7 @@ const AddGameFormModal = ({...props}) => {
     };
 
     const handlePlatformsChange = (e) => {
-        const {name, value, checked} = e.target;
+        const {value, checked} = e.target;
 
         if (checked) {
             setGameData((prevData) => ({
@@ -105,8 +103,8 @@ const AddGameFormModal = ({...props}) => {
 
 
         await gameStore.createGame({...gameData, trailer: match[1]})
-            // .then(() => clearGameData())
-            // .then(() => props.onHide())
+            .then(() => clearGameData())
+            .then(() => props.onHide())
     };
     const createRequirement = (title, requirement, handleChange) => {
         return (

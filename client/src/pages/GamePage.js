@@ -1,6 +1,4 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Container, Image} from "react-bootstrap";
-import colors from "../utils/colors";
 import {Context} from "../index";
 import {useLocation, useParams} from "react-router-dom";
 import {observer} from "mobx-react-lite";
@@ -41,7 +39,7 @@ const GamePage = () => {
             <div className={styles.multimediaContainer}>
                 <img src={process.env.REACT_APP_API_URL + '/' + gameStore.game.imgName} className={styles.poster}
                      alt="poster"/>
-                <iframe className={styles.trailer} src={"https://www.youtube.com/embed/" + gameStore.game.trailer} frameBorder="0"
+                <iframe className={styles.trailer} src={"https://www.youtube.com/embed/" + gameStore.game.trailer}
                         allowFullScreen></iframe>
             </div>
             <div className={styles.buttonsContainer}>

@@ -4,8 +4,6 @@ import FormModal from "../components/formModal/FormModal";
 import BlackButton from "../components/buttons/BlackButton";
 import PageContent from "../components/pageContent/PageContent";
 import {Context} from "../index";
-import Modal from "../components/modal/modal/Modal";
-import FormWrapper from "../components/formWrapper/FormWrapper";
 import OrdersModal from "../components/modal/orders/OrdersModal";
 import styles from "../styles/page/adminPage.module.css"
 
